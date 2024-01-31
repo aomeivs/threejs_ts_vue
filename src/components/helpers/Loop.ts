@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 17:26:42
- * @LastEditTime: 2024-01-29 17:30:37
+ * @LastEditTime: 2024-01-31 15:15:33
  * @LastEditors: zhou lei
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/Loop.ts
@@ -23,6 +23,7 @@ class Loop {
   }
   start(){
     this.renderer.setAnimationLoop(() => {
+      this.tick()
       this.renderer.render(this.scene, this.camera)
     })
   }
