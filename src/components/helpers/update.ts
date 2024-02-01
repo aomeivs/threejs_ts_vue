@@ -1,11 +1,11 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 13:11:12
- * @LastEditTime: 2024-01-31 15:14:06
- * @LastEditors: zhou lei
+ * @LastEditTime: 2024-02-01 17:39:36
+ * @LastEditors: Do not edit
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/update.ts
- * 联系方式:910592680@qq.com 科海达信息技术有限公司
+ * 联系方式:910592680@qq.com
  */
 import { Clock, Object3D } from 'three'
 export type UpdateTable = Object3D & { tick?: (delta: number) => void } & any

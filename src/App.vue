@@ -1,11 +1,11 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-02-01 14:38:40
- * @LastEditors: zhou lei
+ * @LastEditTime: 2024-02-01 17:54:19
+ * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.vue
- * 联系方式:910592680@qq.com 科海达信息技术有限公司
+ * 联系方式:910592680@qq.com 
 -->
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
@@ -15,6 +15,7 @@ const isPlay = ref(true)
 let app: App
 const main = async () => {
   const container = document.getElementById('scene-container')
+  // const css2container = document.getElementById('css2object')
   app = new App(container!)
   await app.init()
   app.start()
@@ -31,7 +32,15 @@ const play = async () => {
 
 <template>
   <div class="wrapper" id="scene-container"></div>
-  <div></div>
+  <div class="css2object" id="css2object">
+    <ul>
+      <li>设备名:{{}}</li>
+      <li>编号</li>
+      <li>温度</li>
+      <li>状态{{}}</li>
+      <li>运行时间{{}}</li>
+    </ul>
+  </div>
   <div class="control">
     <button type="button" @click="play">play</button>
   </div>
@@ -44,7 +53,7 @@ const play = async () => {
 }
 .control {
   position: absolute;
-  left: 10px;
+  right: 10px;
   top: 10px;
 }
 </style>

@@ -1,14 +1,13 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-01 14:53:13
- * @LastEditors: zhou lei
+ * @LastEditTime: 2024-02-01 17:54:08
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/app.ts
- * 联系方式:910592680@qq.com 科海达信息技术有限公司
+ * 联系方式:910592680@qq.com
  */
 import { createCamera } from './components/helpers/camera'
-import { createRenderer } from './components/helpers/renderer'
+import { createCSS2Renderer, createRenderer } from './components/helpers/renderer'
 import { createScene } from './components/helpers/scene'
 import { creatControls } from './components/helpers/controls'
 import { createLights } from './components/helpers/lights'
@@ -18,26 +17,34 @@ import { type AnimationAction, type PerspectiveCamera, type Scene, type WebGLRen
 import { Loop } from './components/helpers/Loop'
 import { loadAnimals } from './components/models/gltf/animal'
 import { loadingManager } from './components/helpers/loadingManager'
+import Stats from 'three/examples/jsm/libs/stats.module.js'
+import type { CSS2DRenderer } from 'three/examples/jsm/Addons.js'
 let camera: PerspectiveCamera
 let renderer: WebGLRenderer
+let cssRenderer: CSS2DRenderer
 let scene: Scene
 let loop: Loop
+let stats: Stats
 
 class App {
   actions: { [key: string]: AnimationAction }
   constructor(container: HTMLElement) {
     this.actions = {}
+    stats = new Stats()
     camera = createCamera()
     camera.position.set(-2, 4, 6)
     renderer = createRenderer()
+    cssRenderer = createCSS2Renderer()
     scene = createScene()
-    loop = new Loop(camera, scene, renderer)
+    loop = new Loop(camera, scene, renderer, stats)
     container.appendChild(renderer.domElement)
+    container.appendChild(cssRenderer.domElement)
+    container.appendChild(stats.dom)
     const controls = creatControls(camera, renderer.domElement)
     const { ambientLight, directionalLight } = createLights()
     // const cube = createCube()
     directionalLight.position.set(2, -2, 2)
-    new Resizer(container, camera, renderer)
+    new Resizer(container, camera, renderer, cssRenderer)
     scene.add(ambientLight, directionalLight)
     loop.updatables.push(controls)
   }

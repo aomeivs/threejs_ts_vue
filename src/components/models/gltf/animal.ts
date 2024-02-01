@@ -5,7 +5,7 @@
  * @LastEditors: zhou lei
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/models/gltf/animal.ts
- * 联系方式:910592680@qq.com 科海达信息技术有限公司
+ * 联系方式:910592680@qq.com 
  */
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import turbine from '@/assets/3d-gltf-model/turbine.glb'

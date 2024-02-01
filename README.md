@@ -5,7 +5,7 @@
  * @LastEditors: zhou lei
  * @Description: Description
  * @FilePath: /vue3_ts_three/README.md
- * 联系方式:910592680@qq.com 科海达信息技术有限公司
+ * 联系方式:910592680@qq.com 
 -->
 # vue3_ts_three
 
