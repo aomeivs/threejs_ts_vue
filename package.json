@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@types/three": "^0.160.0",
+    "element-plus": "^2.5.3",
     "pinia": "^2.1.7",
     "three": "^0.160.1",
     "vue": "^3.3.11",
