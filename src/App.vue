@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-02-02 10:23:36
+ * @LastEditTime: 2024-02-02 17:41:22
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.vue
@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 
-import { App } from './App'
+import { App, show } from './App'
 const isPlay = ref(true)
 let app: App
 const main = async () => {
@@ -32,7 +32,7 @@ const play = async () => {
 
 <template>
   <div class="wrapper" id="scene-container"></div>
-  <div class="css2object" id="css2object">
+  <div class="css2object" id="css2object" v-show="show">
     <ul>
       <li>设备名:{{}}</li>
       <li>编号</li>
@@ -55,5 +55,11 @@ const play = async () => {
   position: absolute;
   right: 10px;
   top: 10px;
+}
+.css2object {
+  position: absolute;
+  top: 0;
+  width: 300px;
+  height: 200px;
 }
 </style>

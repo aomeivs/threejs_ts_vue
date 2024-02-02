@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:57:11
- * @LastEditTime: 2024-02-01 17:56:37
+ * @LastEditTime: 2024-02-02 17:53:37
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/Resizer.ts
@@ -22,7 +22,7 @@ const setSize = (
   cssRenderer.setSize(container.clientWidth, container.clientHeight)
   cssRenderer.domElement.style.position = 'absolute'
   cssRenderer.domElement.style.top = '0'
-  cssRenderer.domElement.style.pointerEvents='none'
+  // cssRenderer.domElement.style.pointerEvents='none'
   renderer.setPixelRatio(window.devicePixelRatio)
 }
 class Resizer {
