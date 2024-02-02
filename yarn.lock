@@ -1556,6 +1556,11 @@ levn@^0.4.1:
     prelude-ls "^1.2.1"
     type-check "~0.4.0"
 
+lil-gui@^0.19.1:
+  version "0.19.1"
+  resolved "https://registry.npmmirror.com/lil-gui/-/lil-gui-0.19.1.tgz"
+  integrity sha512-9dbIg+UxS8RIROI6OH5gV2KrVE0Cn37bcLOQGF2GKN8ibTxDrUSLzzZfkQR82LnZsgs7DEZOOGfn3zhtd6hk0Q==
+
 lines-and-columns@^2.0.3:
   version "2.0.4"
   resolved "https://registry.npmmirror.com/lines-and-columns/-/lines-and-columns-2.0.4.tgz"

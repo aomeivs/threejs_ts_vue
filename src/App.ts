@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-01 17:54:08
+ * @LastEditTime: 2024-02-02 10:39:28
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/app.ts
  * 联系方式:910592680@qq.com
@@ -17,8 +17,11 @@ import { type AnimationAction, type PerspectiveCamera, type Scene, type WebGLRen
 import { Loop } from './components/helpers/Loop'
 import { loadAnimals } from './components/models/gltf/animal'
 import { loadingManager } from './components/helpers/loadingManager'
+// 调试工具
 import Stats from 'three/examples/jsm/libs/stats.module.js'
+
 import type { CSS2DRenderer } from 'three/examples/jsm/Addons.js'
+import { createGUI } from './components/helpers/gui'
 let camera: PerspectiveCamera
 let renderer: WebGLRenderer
 let cssRenderer: CSS2DRenderer
@@ -31,6 +34,9 @@ class App {
   constructor(container: HTMLElement) {
     this.actions = {}
     stats = new Stats()
+
+    createGUI(this)
+
     camera = createCamera()
     camera.position.set(-2, 4, 6)
     renderer = createRenderer()
@@ -70,6 +76,12 @@ class App {
       } else {
         action.paused = true
       }
+    }
+  }
+  show(showName: string, show: boolean) {
+    const model = scene.getObjectByName(showName)
+    if (model) {
+      model.visible = show
     }
   }
   stop() {

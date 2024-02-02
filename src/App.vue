@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-02-01 17:54:19
+ * @LastEditTime: 2024-02-02 10:23:36
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.vue
@@ -42,7 +42,7 @@ const play = async () => {
     </ul>
   </div>
   <div class="control">
-    <button type="button" @click="play">play</button>
+    <!-- <button type="button" @click="play">play</button> -->
   </div>
 </template>
 
