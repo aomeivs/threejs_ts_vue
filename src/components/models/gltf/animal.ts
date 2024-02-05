@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-30 15:59:40
- * @LastEditTime: 2024-02-02 15:11:38
+ * @LastEditTime: 2024-02-05 16:08:31
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/models/gltf/animal.ts
@@ -41,8 +41,6 @@ export type AnimationClipExtends = AnimationAction & { name?: string }
  */
 const setupModel = (data: any, animalName: string) => {
   const model = data.scene
-  // const model = scene.children[0]
-  // const clip = data.animations[0]
   const clip = AnimationClip.findByName(data.animations, animalName)
   const mixer = new AnimationMixer(model)
   const action: AnimationClipExtends = mixer.clipAction(clip)

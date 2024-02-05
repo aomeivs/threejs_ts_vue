@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-05 14:13:05
+ * @LastEditTime: 2024-02-05 16:23:48
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/app.ts
  * 联系方式:910592680@qq.com
@@ -34,7 +34,10 @@ import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 import type { ModelEntity } from '@/components/models/gltf/animal'
 import { createGUI } from './components/helpers/gui'
-import { ref } from 'vue'
+import { reactive, ref } from 'vue'
+export type Equipment = {
+  name?: string
+}
 let camera: PerspectiveCamera
 let renderer: WebGLRenderer
 let cssRenderer: CSS2DRenderer
@@ -44,6 +47,7 @@ let stats: Stats
 let turbineLabel: any
 const equipmentMaterialMap = new Map()
 const show = ref(false)
+const equipment = ref<Equipment>({})
 class App {
   actions: { [key: string]: AnimationAction }
   model: ModelEntity
@@ -59,12 +63,12 @@ class App {
     }
 
     // scene\camera\renderer\light\helper
-    {
-      scene = createScene()
-      camera = createCamera()
-      renderer = createRenderer()
-      cssRenderer = createCSS2Renderer()
 
+    scene = createScene()
+    camera = createCamera()
+    renderer = createRenderer()
+    cssRenderer = createCSS2Renderer()
+    {
       const { ambientLight, directionalLights } = createLights()
       const axesHelper = new AxesHelper(5)
       const lightHelper: DirectionalLightHelper[] = []
@@ -98,6 +102,7 @@ class App {
       // 模型同步缩放合适尺寸
       model.scale.multiplyScalar(0.0003)
       scene.add(model)
+      // equipment 材质设置以及部件存储
       this.model.equipment.model.traverse((child: any) => {
         const meshChild = child as Mesh & {
           currentHex?: number
@@ -111,6 +116,7 @@ class App {
           equipmentMaterialMap.set(meshChild.name, meshChild) // Map 存储各个部件
         }
       })
+      // turbine 材质设置
       this.model.turbine.model.traverse((child: any) => {
         const meshChild = child as Mesh & {
           currentHex?: number
@@ -124,7 +130,7 @@ class App {
         }
       })
     })
-    this.createTurbineLabel()
+    this.createTurbineLabel('#css2object')
     this.onPointerClick()
   }
   // render() {
@@ -150,6 +156,9 @@ class App {
       model.visible = show
     }
   }
+  showTurbineLabel(show: boolean) {
+    turbineLabel.visible = show
+  }
   stop() {
     loop.stop()
   }
@@ -167,17 +176,24 @@ class App {
       const selectMesh = intersects[0].object as Mesh
       if (selectMesh?.isMesh) {
         const equipmentMaterial = equipmentMaterialMap.get(selectMesh.name)
+        equipment.value = selectMesh
         // currentEquipment.value.name = selectMesh.name
         if (equipmentMaterial) {
           this.model.equipment.model.traverse((child: any) => {
             if (child.isMesh) {
-              equipmentMaterial.name !== child.name &&
+              if (equipmentMaterial.name !== child.name) {
                 child.material.emissive.setHex(child.currentHex)
+              } else {
+                if (equipmentMaterial.material.emissive.getHex() == equipmentMaterial.currentHex) {
+                  equipmentMaterial.material.emissive.setHex(0x00ff00)
+                  show.value = false
+                } else {
+                  equipmentMaterial.material.emissive.setHex(equipmentMaterial.currentHex)
+                  show.value = true
+                }
+              }
             }
           })
-          equipmentMaterial.material.emissive.getHex() == equipmentMaterial.currentHex
-            ? equipmentMaterial.material.emissive.setHex(0x00ff00)
-            : equipmentMaterial.material.emissive.setHex(equipmentMaterial.currentHex)
 
           this.updateLabal(intersects[0])
         }
@@ -186,23 +202,15 @@ class App {
   }
 
   updateLabal(intersect: any) {
-    show.value = true
-    if (show.value) {
-      turbineLabel.visible = true
-    } else {
-      turbineLabel.visible = false
-    }
+    turbineLabel.visible = !show.value
     const point = intersect.point
-    // const vector = new Vector3(point.x, point.y, point.z)
-    // vector.project(camera)
-    // console.log(vector,point)
     turbineLabel.position.set(point.x, point.y, point.z)
   }
-  createTurbineLabel() {
-    const dom: HTMLElement = document.querySelector('#css2object')!
-    // dom.style.pointerEvents = 'none'
+  createTurbineLabel(target: string) {
+    const dom: HTMLElement = document.querySelector(target)!
     dom.style.background = 'rgba(100,100,0,0.5)'
     turbineLabel = new CSS2DObject(dom)
+    turbineLabel.name = 'turbineLabel'
     turbineLabel.scale.set(0.003, 0.003, 0.003)
 
     if (show.value) {
@@ -210,10 +218,10 @@ class App {
     } else {
       turbineLabel.visible = false
     }
-    turbineLabel.addEventListener('pointerdown', () => {
+    dom.addEventListener('pointerdown', () => {
       console.log('label.element.addEventListener("click')
     })
     scene.add(turbineLabel)
   }
 }
-export { App, show }
+export { App, show, equipment }
