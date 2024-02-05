@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-02-02 17:41:22
+ * @LastEditTime: 2024-02-05 14:13:50
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.vue
@@ -61,5 +61,7 @@ const play = async () => {
   top: 0;
   width: 300px;
   height: 200px;
+  margin-left: 150px;
+  margin-top: -100px;
 }
 </style>

@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 11:06:34
- * @LastEditTime: 2024-02-02 17:21:51
+ * @LastEditTime: 2024-02-05 10:16:03
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/controls.ts
@@ -14,7 +14,7 @@ export type ExtendedOrbitControls = OrbitControls & {
 }
 const creatControls = (camera: PerspectiveCamera, canvas: HTMLElement) => {
   const cameraControls: ExtendedOrbitControls = new OrbitControls(camera, canvas)
-  cameraControls.enableDamping = true
+  // cameraControls.enableDamping = true
   cameraControls.tick = () => cameraControls.update()
   return cameraControls
 }

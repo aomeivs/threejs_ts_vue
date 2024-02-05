@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-02 17:57:38
+ * @LastEditTime: 2024-02-05 14:13:05
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/app.ts
  * 联系方式:910592680@qq.com
@@ -76,8 +76,8 @@ class App {
 
     const controls = creatControls(camera, cssRenderer.domElement)
     controls.target.set(0, 1.5, 0)
-    container.appendChild(renderer.domElement)
     container.appendChild(cssRenderer.domElement)
+    container.appendChild(renderer.domElement)
     container.appendChild(stats.dom)
     loop = new Loop(camera, scene, renderer, cssRenderer, stats)
     loop.updatables.push(controls)
@@ -196,7 +196,7 @@ class App {
     // const vector = new Vector3(point.x, point.y, point.z)
     // vector.project(camera)
     // console.log(vector,point)
-    turbineLabel.position.set(point.x + (300 / 2) * 0.003, point.y + (200 / 2) * 0.003, point.z)
+    turbineLabel.position.set(point.x, point.y, point.z)
   }
   createTurbineLabel() {
     const dom: HTMLElement = document.querySelector('#css2object')!
