@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-05 16:23:48
+ * @LastEditTime: 2024-02-18 14:32:33
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/app.ts
  * 联系方式:910592680@qq.com
@@ -34,7 +34,7 @@ import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 import type { ModelEntity } from '@/components/models/gltf/animal'
 import { createGUI } from './components/helpers/gui'
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 export type Equipment = {
   name?: string
 }
