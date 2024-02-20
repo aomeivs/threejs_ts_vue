@@ -1,9 +1,9 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-18 14:32:33
+ * @LastEditTime: 2024-02-20 13:37:49
  * @Description: Description
- * @FilePath: /vue3_ts_three/src/app.ts
+ * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
  */
 import { createCamera } from './components/helpers/camera'
@@ -35,6 +35,10 @@ import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRe
 import type { ModelEntity } from '@/components/models/gltf/animal'
 import { createGUI } from './components/helpers/gui'
 import { ref } from 'vue'
+import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
+import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
+import { FXAAShader, OutputPass, ShaderPass } from 'three/examples/jsm/Addons.js'
 export type Equipment = {
   name?: string
 }
@@ -45,6 +49,7 @@ let scene: Scene
 let loop: Loop
 let stats: Stats
 let turbineLabel: any
+let outline: { compose: EffectComposer; outlinePass: OutlinePass }
 const equipmentMaterialMap = new Map()
 const show = ref(false)
 const equipment = ref<Equipment>({})
@@ -84,7 +89,9 @@ class App {
     container.appendChild(renderer.domElement)
     container.appendChild(stats.dom)
     loop = new Loop(camera, scene, renderer, cssRenderer, stats)
-    loop.updatables.push(controls)
+    outline = this.outline([])
+    loop.updatables.push(controls, outline.compose)
+
     // 响应式renderer
     {
       new Resizer(container, camera, renderer, cssRenderer)
@@ -184,11 +191,13 @@ class App {
               if (equipmentMaterial.name !== child.name) {
                 child.material.emissive.setHex(child.currentHex)
               } else {
+                outline.outlinePass.selectedObjects = [child]
                 if (equipmentMaterial.material.emissive.getHex() == equipmentMaterial.currentHex) {
-                  equipmentMaterial.material.emissive.setHex(0x00ff00)
+                  equipmentMaterial.material.emissive.setHex(1)
                   show.value = false
                 } else {
                   equipmentMaterial.material.emissive.setHex(equipmentMaterial.currentHex)
+                  outline.outlinePass.selectedObjects = []
                   show.value = true
                 }
               }
@@ -222,6 +231,47 @@ class App {
       console.log('label.element.addEventListener("click')
     })
     scene.add(turbineLabel)
+  }
+
+  // 为点击的模型添加 outlinepass 效果
+  outline(
+    selectedObjects: any,
+    color: number = 0x15c5e8
+  ): { compose: EffectComposer; outlinePass: OutlinePass } {
+    const [w, h] = [window.innerWidth, window.innerHeight]
+    const compose = new EffectComposer(renderer)
+    const renderPass = new RenderPass(scene, camera)
+    const outlinePass = new OutlinePass(new Vector2(w, h), scene, camera)
+    const effectFXAA = new ShaderPass(FXAAShader)
+    effectFXAA.uniforms[ 'resolution' ].value.set( 1 / window.innerWidth, 1 / window.innerHeight );
+    const outputPass = new OutputPass()
+    outlinePass.renderToScreen = true
+    outlinePass.selectedObjects = selectedObjects
+    compose.addPass(renderPass)
+    compose.addPass(outlinePass)
+    compose.addPass(outputPass)
+    compose.addPass(effectFXAA)
+    const params = {
+      edgeStrength: 3,
+      edgeGlow: 1,
+      edgeThickness: 2,
+      pulsePeriod: 1,
+      usePatternTexture: false
+    }
+    outlinePass.edgeStrength = params.edgeStrength
+    outlinePass.edgeGlow = params.edgeGlow
+    outlinePass.visibleEdgeColor.set(color)
+    outlinePass.hiddenEdgeColor.set(color)
+    compose.setSize(w, h)
+    compose.setPixelRatio(window.devicePixelRatio)
+
+    Object.assign(compose, {
+      tick: (delta: number) => {
+        compose.render(delta)
+      }
+    })
+
+    return { compose, outlinePass }
   }
 }
 export { App, show, equipment }
