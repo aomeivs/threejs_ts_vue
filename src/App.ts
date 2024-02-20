@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-20 14:04:55
+ * @LastEditTime: 2024-02-20 14:14:04
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -94,7 +94,7 @@ class App {
 
     // 响应式renderer
     {
-      new Resizer(container, camera, renderer, cssRenderer)
+      new Resizer(container, camera, renderer, cssRenderer,outline.compose)
     }
   }
   async init() {

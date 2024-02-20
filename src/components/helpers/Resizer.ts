@@ -1,20 +1,21 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:57:11
- * @LastEditTime: 2024-02-02 17:53:37
+ * @LastEditTime: 2024-02-20 14:13:43
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/Resizer.ts
  * 联系方式:910592680@qq.com
  */
 import type { PerspectiveCamera, WebGLRenderer } from 'three'
-import type { CSS2DRenderer } from 'three/examples/jsm/Addons.js'
+import type { CSS2DRenderer, EffectComposer } from 'three/examples/jsm/Addons.js'
 
 const setSize = (
   container: HTMLElement,
   camera: PerspectiveCamera,
   renderer: WebGLRenderer,
-  cssRenderer: CSS2DRenderer
+  cssRenderer: CSS2DRenderer,
+  composer:EffectComposer
 ) => {
   camera.aspect = container.clientWidth / container.clientHeight
   camera.updateProjectionMatrix()
@@ -24,18 +25,20 @@ const setSize = (
   cssRenderer.domElement.style.top = '0'
   // cssRenderer.domElement.style.pointerEvents='none'
   renderer.setPixelRatio(window.devicePixelRatio)
+  composer.setSize(container.clientWidth, container.clientHeight)
 }
 class Resizer {
   constructor(
     container: HTMLElement,
     camera: PerspectiveCamera,
     renderer: WebGLRenderer,
-    cssRenderer: CSS2DRenderer
+    cssRenderer: CSS2DRenderer,
+    composer:EffectComposer
   ) {
-    setSize(container, camera, renderer, cssRenderer)
+    setSize(container, camera, renderer, cssRenderer,composer)
     window.addEventListener('resize', () => {
       // set the size again if a resize occurs
-      setSize(container, camera, renderer, cssRenderer)
+      setSize(container, camera, renderer, cssRenderer,composer)
     })
   }
 }
