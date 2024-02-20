@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-20 13:37:49
+ * @LastEditTime: 2024-02-20 14:04:55
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -38,7 +38,7 @@ import { ref } from 'vue'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
-import { FXAAShader, OutputPass, ShaderPass } from 'three/examples/jsm/Addons.js'
+import { FXAAShader, GammaCorrectionShader, OutputPass, SMAAPass, ShaderPass } from 'three/examples/jsm/Addons.js'
 export type Equipment = {
   name?: string
 }
@@ -243,14 +243,23 @@ class App {
     const renderPass = new RenderPass(scene, camera)
     const outlinePass = new OutlinePass(new Vector2(w, h), scene, camera)
     const effectFXAA = new ShaderPass(FXAAShader)
-    effectFXAA.uniforms[ 'resolution' ].value.set( 1 / window.innerWidth, 1 / window.innerHeight );
+    const effectSMAA = new SMAAPass(w * renderer.getPixelRatio(), h * renderer.getPixelRatio())
+    const gammaPass = new ShaderPass(GammaCorrectionShader)
+    effectFXAA.uniforms['resolution'].value.set(
+      1 / (window.innerWidth * renderer.getPixelRatio()),
+      1 / (window.innerHeight * renderer.getPixelRatio())
+    )
     const outputPass = new OutputPass()
     outlinePass.renderToScreen = true
     outlinePass.selectedObjects = selectedObjects
     compose.addPass(renderPass)
     compose.addPass(outlinePass)
     compose.addPass(outputPass)
-    compose.addPass(effectFXAA)
+    // 抗锯齿方式
+    // compose.addPass(effectFXAA)
+    compose.addPass(effectSMAA)
+    // 伽马校正
+    compose.addPass(gammaPass)
     const params = {
       edgeStrength: 3,
       edgeGlow: 1,
