@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-20 14:14:04
+ * @LastEditTime: 2024-02-20 16:40:01
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -38,7 +38,13 @@ import { ref } from 'vue'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
-import { FXAAShader, GammaCorrectionShader, OutputPass, SMAAPass, ShaderPass } from 'three/examples/jsm/Addons.js'
+import {
+  FXAAShader,
+  GammaCorrectionShader,
+  OutputPass,
+  SMAAPass,
+  ShaderPass
+} from 'three/examples/jsm/Addons.js'
 export type Equipment = {
   name?: string
 }
@@ -53,6 +59,22 @@ let outline: { compose: EffectComposer; outlinePass: OutlinePass }
 const equipmentMaterialMap = new Map()
 const show = ref(false)
 const equipment = ref<Equipment>({})
+
+//  声明一个 EnumerationModelType
+enum ModelName {
+  /**
+   * 工厂模型
+   */
+  FACTORY = 'factory',
+  /**
+   * 风车
+   */
+  TURBINE = 'turbine',
+  /**
+   * 设备
+   */
+  EQUIPMENT = 'equipment'
+}
 class App {
   actions: { [key: string]: AnimationAction }
   model: ModelEntity
@@ -94,51 +116,81 @@ class App {
 
     // 响应式renderer
     {
-      new Resizer(container, camera, renderer, cssRenderer,outline.compose)
+      new Resizer(container, camera, renderer, cssRenderer, outline.compose)
     }
   }
   async init() {
     // const { scene: animalScene, action } = await loadAnimals(loadingManager)
     this.model = await loadAnimals(loadingManager)
-    Object.values(this.model).forEach((data) => {
-      const { model, action } = data
+    Object.entries(this.model).forEach((data) => {
+      const { model, action } = data[1]
+      const name = data[0]
       if (action) {
         this.actions[action.name!] = action
         loop.updatables.push(model)
       }
       // 模型同步缩放合适尺寸
-      model.scale.multiplyScalar(0.0003)
-      scene.add(model)
+      if (name == 'factory') {
+        model.scale.multiplyScalar(0.03)
+        scene.add(model)
+      } else {
+        model.scale.multiplyScalar(0.0003)
+        // scene.add(model)
+      }
       // equipment 材质设置以及部件存储
-      this.model.equipment.model.traverse((child: any) => {
-        const meshChild = child as Mesh & {
-          currentHex?: number
-        }
-        if (meshChild.isMesh) {
-          const newMaterial = (meshChild.material as MeshStandardMaterial).clone()
-          meshChild.currentHex = newMaterial.emissive.getHex()
-          newMaterial.roughness = 0.5
-          newMaterial.metalness = 0.8
-          meshChild.material = newMaterial
-          equipmentMaterialMap.set(meshChild.name, meshChild) // Map 存储各个部件
-        }
-      })
+      // this.initEquipment()
       // turbine 材质设置
-      this.model.turbine.model.traverse((child: any) => {
-        const meshChild = child as Mesh & {
-          currentHex?: number
-        }
-        if (meshChild.isMesh) {
-          const newMaterial = (meshChild.material as MeshStandardMaterial).clone()
-          meshChild.currentHex = newMaterial.emissive.getHex()
-          newMaterial.roughness = 0.7
-          newMaterial.metalness = 0.7
-          meshChild.material = newMaterial
-        }
-      })
+      // this.initTurbine()
+      // factory 材质设置
+      this.initFactory()
     })
     this.createTurbineLabel('#css2object')
-    this.onPointerClick()
+    this.onPointerClick(ModelName.FACTORY)
+  }
+  initEquipment() {
+    this.model.equipment.model.traverse((child: any) => {
+      const meshChild = child as Mesh & {
+        currentHex?: number
+      }
+      if (meshChild.isMesh) {
+        const newMaterial = (meshChild.material as MeshStandardMaterial).clone()
+        meshChild.currentHex = newMaterial.emissive.getHex()
+        newMaterial.roughness = 0
+        newMaterial.metalness = 0.8
+        meshChild.material = newMaterial
+        equipmentMaterialMap.set(meshChild.name, meshChild) // Map 存储各个部件
+      }
+    })
+  }
+  initTurbine() {
+    this.model.turbine.model.traverse((child: any) => {
+      const meshChild = child as Mesh & {
+        currentHex?: number
+      }
+      if (meshChild.isMesh) {
+        const newMaterial = (meshChild.material as MeshStandardMaterial).clone()
+        meshChild.currentHex = newMaterial.emissive.getHex()
+        newMaterial.roughness = 0.7
+        newMaterial.metalness = 0.7
+        meshChild.material = newMaterial
+        equipmentMaterialMap.set(meshChild.name, meshChild) // Map 存储各个部件
+      }
+    })
+  }
+  initFactory() {
+    this.model.factory.model.traverse((child: any) => {
+      const meshChild = child as Mesh & {
+        currentHex?: number
+      }
+      if (meshChild.isMesh) {
+        const newMaterial = (meshChild.material as MeshStandardMaterial).clone()
+        meshChild.currentHex = newMaterial.emissive.getHex()
+        newMaterial.roughness = 0.5
+        newMaterial.metalness = 0.8
+        meshChild.material = newMaterial
+        equipmentMaterialMap.set(meshChild.name, meshChild) // Map 存储各个部件
+      }
+    })
   }
   // render() {
   //   renderer.render(scene, camera)
@@ -169,14 +221,14 @@ class App {
   stop() {
     loop.stop()
   }
-  onPointerClick() {
+  onPointerClick(name: string) {
     document.addEventListener('click', (event: MouseEvent) => {
       const mouse = new Vector2()
       mouse.x = (event.clientX / this.container.clientWidth) * 2 - 1
       mouse.y = -(event.clientY / this.container.clientHeight) * 2 + 1
       const raycaster = new Raycaster()
       raycaster.setFromCamera(mouse, camera)
-      const intersects = raycaster.intersectObjects(this.model.equipment.model.children, true)
+      const intersects = raycaster.intersectObjects(this.model[name].model.children, true)
       if (intersects.length <= 0) {
         return false
       }
@@ -186,14 +238,15 @@ class App {
         equipment.value = selectMesh
         // currentEquipment.value.name = selectMesh.name
         if (equipmentMaterial) {
-          this.model.equipment.model.traverse((child: any) => {
+          this.model[name].model.traverse((child: any) => {
             if (child.isMesh) {
               if (equipmentMaterial.name !== child.name) {
                 child.material.emissive.setHex(child.currentHex)
               } else {
                 outline.outlinePass.selectedObjects = [child]
                 if (equipmentMaterial.material.emissive.getHex() == equipmentMaterial.currentHex) {
-                  equipmentMaterial.material.emissive.setHex(1)
+                  // equipmentMaterial.material.emissive.setHex(1)
+                  equipmentMaterial.material.emissive.setHex(0x00ff00)
                   show.value = false
                 } else {
                   equipmentMaterial.material.emissive.setHex(equipmentMaterial.currentHex)
