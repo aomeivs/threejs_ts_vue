@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-20 16:40:01
+ * @LastEditTime: 2024-02-21 12:42:55
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -56,6 +56,7 @@ let loop: Loop
 let stats: Stats
 let turbineLabel: any
 let outline: { compose: EffectComposer; outlinePass: OutlinePass }
+let count = 0
 const equipmentMaterialMap = new Map()
 const show = ref(false)
 const equipment = ref<Equipment>({})
@@ -79,10 +80,12 @@ class App {
   actions: { [key: string]: AnimationAction }
   model: ModelEntity
   container: HTMLElement
+  isOrbiting: boolean
   constructor(container: HTMLElement) {
     this.container = container
     this.actions = {}
     this.model = {}
+    this.isOrbiting = false
     // 控制GUI\STATS
     {
       stats = new Stats()
@@ -104,9 +107,12 @@ class App {
       })
       scene.add(ambientLight, ...directionalLights, axesHelper, ...lightHelper)
     }
-
     const controls = creatControls(camera, cssRenderer.domElement)
     controls.target.set(0, 1.5, 0)
+    controls.addEventListener('change', () => {
+      count++
+      if (count > 1) this.isOrbiting = true
+    })
     container.appendChild(cssRenderer.domElement)
     container.appendChild(renderer.domElement)
     container.appendChild(stats.dom)
@@ -192,6 +198,7 @@ class App {
       }
     })
   }
+
   // render() {
   //   renderer.render(scene, camera)
   // }
@@ -222,7 +229,12 @@ class App {
     loop.stop()
   }
   onPointerClick(name: string) {
+    // 监听mouseup事件
     document.addEventListener('click', (event: MouseEvent) => {
+      if (this.isOrbiting) {
+        this.isOrbiting = false
+        return
+      }
       const mouse = new Vector2()
       mouse.x = (event.clientX / this.container.clientWidth) * 2 - 1
       mouse.y = -(event.clientY / this.container.clientHeight) * 2 + 1
