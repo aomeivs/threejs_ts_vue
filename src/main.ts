@@ -1,3 +1,12 @@
+/*
+ * @Author: zhou lei
+ * @Date: 2024-01-29 10:38:55
+ * @LastEditTime: 2024-02-23 15:46:53
+ * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @Description: Description
+ * @FilePath: /vue3_ts_three/src/main.ts
+ * 联系方式:910592680@qq.com
+ */
 import './assets/main.css'
 
 import { createApp } from 'vue'
@@ -7,9 +16,11 @@ import App from './App.vue'
 import router from './router'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
+import DataVVue3 from '@kjgl77/datav-vue3'
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(router)
 app.use(ElementPlus)
+app.use(DataVVue3)
 app.mount('#app')

@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-21 12:42:55
+ * @LastEditTime: 2024-02-23 17:39:02
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -108,7 +108,10 @@ class App {
       scene.add(ambientLight, ...directionalLights, axesHelper, ...lightHelper)
     }
     const controls = creatControls(camera, cssRenderer.domElement)
-    controls.target.set(0, 1.5, 0)
+    // 看向风车位置
+    // controls.target.set(0, 1.5, 0)
+    // 最好视角
+    // controls.target.set(-3, 3, 8)
     controls.addEventListener('change', () => {
       count++
       if (count > 1) this.isOrbiting = true
@@ -282,7 +285,7 @@ class App {
   }
   createTurbineLabel(target: string) {
     const dom: HTMLElement = document.querySelector(target)!
-    dom.style.background = 'rgba(100,100,0,0.5)'
+    // dom.style.background = 'rgba(100,100,0,0.5)'
     turbineLabel = new CSS2DObject(dom)
     turbineLabel.name = 'turbineLabel'
     turbineLabel.scale.set(0.003, 0.003, 0.003)
