@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-02-23 17:49:07
+ * @LastEditTime: 2024-02-26 15:04:55
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.vue
@@ -210,7 +210,7 @@ const play = async () => {
         align-content: space-between;
         flex-direction: column;
       }
-      ::v-deep .content {
+      :deep(.content) {
         padding: 12px;
         height: 350px;
       }

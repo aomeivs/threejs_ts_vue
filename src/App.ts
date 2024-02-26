@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-23 17:39:02
+ * @LastEditTime: 2024-02-26 17:47:48
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -26,7 +26,7 @@ import {
 } from 'three'
 // import { createCube } from './components/models/cube'
 import { Loop } from './components/helpers/Loop'
-import { loadAnimals } from './components/models/gltf/animal'
+import { loadAnimals, loadBackground } from './components/models/gltf/animal'
 import { loadingManager } from './components/helpers/loadingManager'
 // 调试工具
 import Stats from 'three/examples/jsm/libs/stats.module.js'
@@ -43,7 +43,8 @@ import {
   GammaCorrectionShader,
   OutputPass,
   SMAAPass,
-  ShaderPass
+  ShaderPass,
+  ViewHelper
 } from 'three/examples/jsm/Addons.js'
 export type Equipment = {
   name?: string
@@ -107,6 +108,8 @@ class App {
       })
       scene.add(ambientLight, ...directionalLights, axesHelper, ...lightHelper)
     }
+    const viewHelper = new ViewHelper(camera, renderer.domElement)
+    Object.assign(viewHelper, { tick: (delta: number) => viewHelper.update(delta) })
     const controls = creatControls(camera, cssRenderer.domElement)
     // 看向风车位置
     // controls.target.set(0, 1.5, 0)
@@ -119,7 +122,7 @@ class App {
     container.appendChild(cssRenderer.domElement)
     container.appendChild(renderer.domElement)
     container.appendChild(stats.dom)
-    loop = new Loop(camera, scene, renderer, cssRenderer, stats)
+    loop = new Loop(camera, scene, renderer, cssRenderer, stats, viewHelper)
     outline = this.outline([])
     loop.updatables.push(controls, outline.compose)
 
@@ -129,6 +132,7 @@ class App {
     }
   }
   async init() {
+    await loadBackground(scene)
     // const { scene: animalScene, action } = await loadAnimals(loadingManager)
     this.model = await loadAnimals(loadingManager)
     Object.entries(this.model).forEach((data) => {
@@ -194,8 +198,8 @@ class App {
       if (meshChild.isMesh) {
         const newMaterial = (meshChild.material as MeshStandardMaterial).clone()
         meshChild.currentHex = newMaterial.emissive.getHex()
-        newMaterial.roughness = 0.5
-        newMaterial.metalness = 0.8
+        newMaterial.roughness = 0.4
+        newMaterial.metalness = 0.9
         meshChild.material = newMaterial
         equipmentMaterialMap.set(meshChild.name, meshChild) // Map 存储各个部件
       }

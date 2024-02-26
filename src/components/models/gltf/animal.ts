@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-30 15:59:40
- * @LastEditTime: 2024-02-20 15:12:49
+ * @LastEditTime: 2024-02-26 17:49:43
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/models/gltf/animal.ts
@@ -11,7 +11,17 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import turbine from '@/assets/3d-gltf-model/turbine.glb'
 import equipment from '@/assets/3d-gltf-model/equipment.glb'
 import factory from '@/assets/3d-gltf-model/factory.glb'
-import { AnimationAction, AnimationClip, AnimationMixer, LoadingManager, Object3D } from 'three'
+import sky from '@/assets/hdr/small_workshop_4k.hdr'
+import {
+  AnimationAction,
+  AnimationClip,
+  AnimationMixer,
+  EquirectangularReflectionMapping,
+  LoadingManager,
+  Object3D,
+  Scene
+} from 'three'
+import { RGBELoader } from 'three/examples/jsm/Addons.js'
 export type ModelEntity = { [key: string]: { model: Object3D; action?: AnimationClipExtends } }
 const model: ModelEntity = {}
 /**
@@ -32,7 +42,7 @@ const loadAnimals = async (loadManager?: LoadingManager): Promise<ModelEntity> =
   equipmentModel.model.position.set(0, -1, 0)
   const factoryModel = { model: factoryData.scene }
   factoryModel.model.position.set(0, 1, 0)
-  
+
   model['turbine'] = turbineModel
   model['equipment'] = equipmentModel
   model['factory'] = factoryModel
@@ -57,5 +67,13 @@ const setupModel = (data: any, animalName: string) => {
   }
   return { model, action }
 }
+const loadBackground = async (scene: Scene) => {
+  const rgbeLoader = new RGBELoader()
+  const texture = await rgbeLoader.loadAsync(sky)
+  // scene.background = new Color(0xffff00)
+  // scene.background = texture
+  texture.mapping = EquirectangularReflectionMapping
+  scene.environment = texture
+}
 
-export { loadAnimals }
+export { loadAnimals, loadBackground }
