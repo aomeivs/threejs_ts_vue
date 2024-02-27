@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-26 17:47:48
+ * @LastEditTime: 2024-02-27 10:47:00
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -198,8 +198,14 @@ class App {
       if (meshChild.isMesh) {
         const newMaterial = (meshChild.material as MeshStandardMaterial).clone()
         meshChild.currentHex = newMaterial.emissive.getHex()
-        newMaterial.roughness = 0.4
-        newMaterial.metalness = 0.9
+        if (meshChild.name.includes('支架盖')) {
+          newMaterial.roughness = .7
+          newMaterial.metalness = .5
+        } else {
+          newMaterial.roughness = 0.2
+          newMaterial.metalness = 1
+        }
+
         meshChild.material = newMaterial
         equipmentMaterialMap.set(meshChild.name, meshChild) // Map 存储各个部件
       }

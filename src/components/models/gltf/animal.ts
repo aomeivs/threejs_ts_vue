@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-30 15:59:40
- * @LastEditTime: 2024-02-26 17:49:43
+ * @LastEditTime: 2024-02-27 10:43:15
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/models/gltf/animal.ts
@@ -11,7 +11,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import turbine from '@/assets/3d-gltf-model/turbine.glb'
 import equipment from '@/assets/3d-gltf-model/equipment.glb'
 import factory from '@/assets/3d-gltf-model/factory.glb'
-import sky from '@/assets/hdr/small_workshop_4k.hdr'
+import sky from '@/assets/hdr/dancing_hall_2k.hdr'
 import {
   AnimationAction,
   AnimationClip,
