@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-27 10:47:00
+ * @LastEditTime: 2024-02-27 11:45:47
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -22,7 +22,10 @@ import {
   Vector2,
   Raycaster,
   Mesh,
-  MeshStandardMaterial
+  MeshStandardMaterial,
+  WebGLRenderTarget,
+  HalfFloatType,
+  RGBAFormat
 } from 'three'
 // import { createCube } from './components/models/cube'
 import { Loop } from './components/helpers/Loop'
@@ -124,7 +127,9 @@ class App {
     container.appendChild(stats.dom)
     loop = new Loop(camera, scene, renderer, cssRenderer, stats, viewHelper)
     outline = this.outline([])
-    loop.updatables.push(controls, outline.compose)
+    loop.updatables.push(controls)
+    // outline 渲染会导致抗锯齿问题和其它显示问题
+    // loop.updatables.push(controls, outline.compose)
 
     // 响应式renderer
     {
@@ -199,8 +204,8 @@ class App {
         const newMaterial = (meshChild.material as MeshStandardMaterial).clone()
         meshChild.currentHex = newMaterial.emissive.getHex()
         if (meshChild.name.includes('支架盖')) {
-          newMaterial.roughness = .7
-          newMaterial.metalness = .5
+          newMaterial.roughness = 0.7
+          newMaterial.metalness = 0.5
         } else {
           newMaterial.roughness = 0.2
           newMaterial.metalness = 1
@@ -317,7 +322,12 @@ class App {
     color: number = 0x15c5e8
   ): { compose: EffectComposer; outlinePass: OutlinePass } {
     const [w, h] = [window.innerWidth, window.innerHeight]
-    const compose = new EffectComposer(renderer)
+    const targetRenderer = new WebGLRenderTarget(w, h, {
+      type: HalfFloatType,
+      format: RGBAFormat,
+    })
+    targetRenderer.samples = 8
+    const compose = new EffectComposer(renderer, targetRenderer)
     const renderPass = new RenderPass(scene, camera)
     const outlinePass = new OutlinePass(new Vector2(w, h), scene, camera)
     const effectFXAA = new ShaderPass(FXAAShader)

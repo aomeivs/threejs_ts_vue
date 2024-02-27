@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-30 15:59:40
- * @LastEditTime: 2024-02-27 10:43:15
+ * @LastEditTime: 2024-02-27 11:46:31
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/models/gltf/animal.ts
@@ -16,6 +16,7 @@ import {
   AnimationAction,
   AnimationClip,
   AnimationMixer,
+  CubeTextureLoader,
   EquirectangularReflectionMapping,
   LoadingManager,
   Object3D,
@@ -70,7 +71,6 @@ const setupModel = (data: any, animalName: string) => {
 const loadBackground = async (scene: Scene) => {
   const rgbeLoader = new RGBELoader()
   const texture = await rgbeLoader.loadAsync(sky)
-  // scene.background = new Color(0xffff00)
   // scene.background = texture
   texture.mapping = EquirectangularReflectionMapping
   scene.environment = texture
