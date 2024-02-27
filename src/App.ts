@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-27 11:45:47
+ * @LastEditTime: 2024-02-27 14:37:38
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -42,6 +42,7 @@ import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
 import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
 import {
+  DotScreenShader,
   FXAAShader,
   GammaCorrectionShader,
   OutputPass,
@@ -117,7 +118,7 @@ class App {
     // 看向风车位置
     // controls.target.set(0, 1.5, 0)
     // 最好视角
-    // controls.target.set(-3, 3, 8)
+    // controls.target.set(-3, 2, 2)
     controls.addEventListener('change', () => {
       count++
       if (count > 1) this.isOrbiting = true
@@ -127,9 +128,9 @@ class App {
     container.appendChild(stats.dom)
     loop = new Loop(camera, scene, renderer, cssRenderer, stats, viewHelper)
     outline = this.outline([])
-    loop.updatables.push(controls)
+    // loop.updatables.push(controls)
     // outline 渲染会导致抗锯齿问题和其它显示问题
-    // loop.updatables.push(controls, outline.compose)
+    loop.updatables.push(controls, outline.compose)
 
     // 响应式renderer
     {
@@ -322,20 +323,27 @@ class App {
     color: number = 0x15c5e8
   ): { compose: EffectComposer; outlinePass: OutlinePass } {
     const [w, h] = [window.innerWidth, window.innerHeight]
+    const pixelRatio: number = 2
     const targetRenderer = new WebGLRenderTarget(w, h, {
       type: HalfFloatType,
-      format: RGBAFormat,
+      format: RGBAFormat
     })
     targetRenderer.samples = 8
     const compose = new EffectComposer(renderer, targetRenderer)
     const renderPass = new RenderPass(scene, camera)
+    // renderPass.clear = false
     const outlinePass = new OutlinePass(new Vector2(w, h), scene, camera)
     const effectFXAA = new ShaderPass(FXAAShader)
-    const effectSMAA = new SMAAPass(w * renderer.getPixelRatio(), h * renderer.getPixelRatio())
-    const gammaPass = new ShaderPass(GammaCorrectionShader)
+    const effectSMAA = new SMAAPass(
+      w * renderer.getPixelRatio() * pixelRatio,
+      h * renderer.getPixelRatio() * pixelRatio
+    )
+    // const gammaPass = new ShaderPass(GammaCorrectionShader)
+    // const dotScreenShader = new ShaderPass(DotScreenShader)
+    // dotScreenShader.uniforms['scale'].value = 4
     effectFXAA.uniforms['resolution'].value.set(
-      1 / (window.innerWidth * renderer.getPixelRatio()),
-      1 / (window.innerHeight * renderer.getPixelRatio())
+      1 / (window.innerWidth * renderer.getPixelRatio() * pixelRatio),
+      1 / (window.innerHeight * renderer.getPixelRatio() * pixelRatio)
     )
     const outputPass = new OutputPass()
     outlinePass.renderToScreen = true
@@ -347,7 +355,8 @@ class App {
     // compose.addPass(effectFXAA)
     compose.addPass(effectSMAA)
     // 伽马校正
-    compose.addPass(gammaPass)
+    // compose.addPass(gammaPass)
+    // compose.addPass(dotScreenShader)
     const params = {
       edgeStrength: 3,
       edgeGlow: 1,
@@ -360,7 +369,7 @@ class App {
     outlinePass.visibleEdgeColor.set(color)
     outlinePass.hiddenEdgeColor.set(color)
     compose.setSize(w, h)
-    compose.setPixelRatio(window.devicePixelRatio)
+    compose.setPixelRatio(window.devicePixelRatio * pixelRatio)
 
     Object.assign(compose, {
       tick: (delta: number) => {

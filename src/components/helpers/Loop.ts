@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 17:26:42
- * @LastEditTime: 2024-02-27 11:44:09
+ * @LastEditTime: 2024-02-27 13:36:22
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/Loop.ts
  * 联系方式:910592680@qq.com
@@ -38,7 +38,7 @@ class Loop {
     this.renderer.setAnimationLoop(() => {
       this.tick()
       // 使用了compse renderer的话，这里不需要渲染
-      this.renderer.render(this.scene, this.camera)
+      // this.renderer.render(this.scene, this.camera)
       // this.renderer.autoClear = false
       this.cssRenderer.render(this.scene, this.camera)
       this.viewHelper.render(this.renderer)
