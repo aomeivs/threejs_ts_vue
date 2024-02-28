@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-28 11:24:07
+ * @LastEditTime: 2024-02-28 17:51:44
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -152,19 +152,19 @@ class App {
         loop.updatables.push(model)
       }
       // 模型同步缩放合适尺寸
-      if (name == 'factory') {
+      if (name == ModelName.FACTORY) {
         model.scale.multiplyScalar(0.03)
         scene.add(model)
+        // factory 材质设置
+        this.initFactory()
       } else {
-        model.scale.multiplyScalar(0.0003)
+        model.scale.multiplyScalar(0.001)
         // scene.add(model)
+        // equipment 材质设置以及部件存储
+        this.initEquipment()
+        // turbine 材质设置
+        this.initTurbine()
       }
-      // equipment 材质设置以及部件存储
-      // this.initEquipment()
-      // turbine 材质设置
-      // this.initTurbine()
-      // factory 材质设置
-      this.initFactory()
     })
     this.createTurbineLabel('#css2object')
     this.onPointerClick(ModelName.FACTORY)
@@ -176,6 +176,8 @@ class App {
     ])
     arrow.scale.multiplyScalar(0.3)
     arrow.rotation.set(0, Math.PI, 0)
+    arrow.material.emissive.setHex(0x00ff00)
+
     loop.updatables.push(texture)
     scene.add(arrow)
   }
