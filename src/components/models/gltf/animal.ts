@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-30 15:59:40
- * @LastEditTime: 2024-02-27 14:19:45
+ * @LastEditTime: 2024-02-28 11:23:26
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/models/gltf/animal.ts
@@ -12,16 +12,28 @@ import turbine from '@/assets/3d-gltf-model/turbine.glb'
 import equipment from '@/assets/3d-gltf-model/equipment.glb'
 import factory from '@/assets/3d-gltf-model/factory.glb'
 import sky from '@/assets/hdr/dancing_hall_2k.hdr'
+import arrowImg from '@/assets/arror.webp'
 import {
   AnimationAction,
   AnimationClip,
   AnimationMixer,
-  CubeTextureLoader,
+  BoxGeometry,
+  CylinderGeometry,
+  DoubleSide,
   EquirectangularReflectionMapping,
+  HalfFloatType,
   LoadingManager,
+  Mesh,
+  MeshBasicMaterial,
+  MeshStandardMaterial,
   Object3D,
+  PlaneGeometry,
+  RepeatWrapping,
   Scene,
-  sRGBEncoding
+  Sprite,
+  SpriteMaterial,
+  Texture,
+  TextureLoader
 } from 'three'
 import { RGBELoader } from 'three/examples/jsm/Addons.js'
 export type ModelEntity = { [key: string]: { model: Object3D; action?: AnimationClipExtends } }
@@ -71,10 +83,47 @@ const setupModel = (data: any, animalName: string) => {
 }
 const loadBackground = async (scene: Scene) => {
   const rgbeLoader = new RGBELoader()
-  const texture = await rgbeLoader.loadAsync(sky)
+  const texture = await rgbeLoader.setDataType(HalfFloatType).loadAsync(sky)
   scene.background = texture
   texture.mapping = EquirectangularReflectionMapping
+  // texture.colorSpace = 'srgb-linear'
   scene.environment = texture
 }
 
-export { loadAnimals, loadBackground }
+const loadArrow = async (position?: [x: number, y: number, z: number]) => {
+  const texture = await new TextureLoader().loadAsync(arrowImg)
+  // const material = new SpriteMaterial({ map: texture, color: 0xffff00 })
+  // const arrow = new Sprite(material)
+  const geometry = new PlaneGeometry(1, 1)
+  const material = new MeshBasicMaterial({
+    map: texture,
+    transparent: true, // 开启透明
+    side: DoubleSide //两面可见
+  })
+  const arrow = new Mesh(geometry, material)
+
+  
+  if (position) {
+    const [x, y, z] = position
+    arrow.position.set(x, y, z)
+  }
+  textureAnimator(texture, 13, 1)
+  return { arrow, texture }
+}
+
+const textureAnimator = (texture: Texture, tilesHoriz: number, tilesVert: number) => {
+  texture.wrapS = RepeatWrapping
+  texture.wrapT = RepeatWrapping
+  texture.repeat.set(1 / tilesHoriz, 1 / tilesVert)
+  // 当前帧
+  let currentTile = 0
+
+  Object.assign(texture, {
+    tick: () => {
+      currentTile++
+      const currentColumn = currentTile % tilesHoriz
+      texture.offset.x = currentColumn / tilesHoriz
+    }
+  })
+}
+export { loadAnimals, loadBackground, loadArrow, textureAnimator }

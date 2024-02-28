@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-02-27 14:37:38
+ * @LastEditTime: 2024-02-28 11:24:07
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -25,11 +25,12 @@ import {
   MeshStandardMaterial,
   WebGLRenderTarget,
   HalfFloatType,
-  RGBAFormat
+  RGBAFormat,
+  Vector3
 } from 'three'
 // import { createCube } from './components/models/cube'
 import { Loop } from './components/helpers/Loop'
-import { loadAnimals, loadBackground } from './components/models/gltf/animal'
+import { loadAnimals, loadArrow, loadBackground } from './components/models/gltf/animal'
 import { loadingManager } from './components/helpers/loadingManager'
 // 调试工具
 import Stats from 'three/examples/jsm/libs/stats.module.js'
@@ -50,6 +51,7 @@ import {
   ShaderPass,
   ViewHelper
 } from 'three/examples/jsm/Addons.js'
+import useEffectHooks, { type OutlineEffectType } from './components/effect/outline'
 export type Equipment = {
   name?: string
 }
@@ -60,7 +62,7 @@ let scene: Scene
 let loop: Loop
 let stats: Stats
 let turbineLabel: any
-let outline: { compose: EffectComposer; outlinePass: OutlinePass }
+let outline: OutlineEffectType
 let count = 0
 const equipmentMaterialMap = new Map()
 const show = ref(false)
@@ -127,7 +129,8 @@ class App {
     container.appendChild(renderer.domElement)
     container.appendChild(stats.dom)
     loop = new Loop(camera, scene, renderer, cssRenderer, stats, viewHelper)
-    outline = this.outline([])
+    outline = useEffectHooks(renderer, scene, camera).outlineEffect([])
+    //this.outline([])
     // loop.updatables.push(controls)
     // outline 渲染会导致抗锯齿问题和其它显示问题
     loop.updatables.push(controls, outline.compose)
@@ -165,6 +168,16 @@ class App {
     })
     this.createTurbineLabel('#css2object')
     this.onPointerClick(ModelName.FACTORY)
+    /**
+     * 加载箭头
+     */
+    const { arrow, texture } = await loadArrow([
+      -3.5417959329413384, 0.5421365928649903, -3.000390667002838
+    ])
+    arrow.scale.multiplyScalar(0.3)
+    arrow.rotation.set(0, Math.PI, 0)
+    loop.updatables.push(texture)
+    scene.add(arrow)
   }
   initEquipment() {
     this.model.equipment.model.traverse((child: any) => {
@@ -287,6 +300,7 @@ class App {
               }
             }
           })
+          console.log('[当前点击的部件]:', intersects)
 
           this.updateLabal(intersects[0])
         }
@@ -315,69 +329,6 @@ class App {
       console.log('label.element.addEventListener("click')
     })
     scene.add(turbineLabel)
-  }
-
-  // 为点击的模型添加 outlinepass 效果
-  outline(
-    selectedObjects: any,
-    color: number = 0x15c5e8
-  ): { compose: EffectComposer; outlinePass: OutlinePass } {
-    const [w, h] = [window.innerWidth, window.innerHeight]
-    const pixelRatio: number = 2
-    const targetRenderer = new WebGLRenderTarget(w, h, {
-      type: HalfFloatType,
-      format: RGBAFormat
-    })
-    targetRenderer.samples = 8
-    const compose = new EffectComposer(renderer, targetRenderer)
-    const renderPass = new RenderPass(scene, camera)
-    // renderPass.clear = false
-    const outlinePass = new OutlinePass(new Vector2(w, h), scene, camera)
-    const effectFXAA = new ShaderPass(FXAAShader)
-    const effectSMAA = new SMAAPass(
-      w * renderer.getPixelRatio() * pixelRatio,
-      h * renderer.getPixelRatio() * pixelRatio
-    )
-    // const gammaPass = new ShaderPass(GammaCorrectionShader)
-    // const dotScreenShader = new ShaderPass(DotScreenShader)
-    // dotScreenShader.uniforms['scale'].value = 4
-    effectFXAA.uniforms['resolution'].value.set(
-      1 / (window.innerWidth * renderer.getPixelRatio() * pixelRatio),
-      1 / (window.innerHeight * renderer.getPixelRatio() * pixelRatio)
-    )
-    const outputPass = new OutputPass()
-    outlinePass.renderToScreen = true
-    outlinePass.selectedObjects = selectedObjects
-    compose.addPass(renderPass)
-    compose.addPass(outlinePass)
-    compose.addPass(outputPass)
-    // 抗锯齿方式
-    // compose.addPass(effectFXAA)
-    compose.addPass(effectSMAA)
-    // 伽马校正
-    // compose.addPass(gammaPass)
-    // compose.addPass(dotScreenShader)
-    const params = {
-      edgeStrength: 3,
-      edgeGlow: 1,
-      edgeThickness: 2,
-      pulsePeriod: 1,
-      usePatternTexture: false
-    }
-    outlinePass.edgeStrength = params.edgeStrength
-    outlinePass.edgeGlow = params.edgeGlow
-    outlinePass.visibleEdgeColor.set(color)
-    outlinePass.hiddenEdgeColor.set(color)
-    compose.setSize(w, h)
-    compose.setPixelRatio(window.devicePixelRatio * pixelRatio)
-
-    Object.assign(compose, {
-      tick: (delta: number) => {
-        compose.render(delta)
-      }
-    })
-
-    return { compose, outlinePass }
   }
 }
 export { App, show, equipment }
