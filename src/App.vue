@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-02-26 15:04:55
+ * @LastEditTime: 2024-03-04 13:39:57
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.vue
@@ -21,12 +21,15 @@ const main = async () => {
   const container = document.getElementById('scene-container')
   // const css2container = document.getElementById('css2object')
   app = new App(container!)
-  await app.init()
+  // await app.init()
   app.start()
 }
 onMounted(() => {
   main()
 })
+const demo = () => {
+  alert('这是方向3icon')
+}
 
 const play = async () => {
   app.play('Anim_0', isPlay.value)
@@ -59,7 +62,10 @@ const play = async () => {
       <div class="v-b v-b-1">
         <div demo-bg>
           <dv-border-box12>
-            <div class="content" dv-bg>数据内容1</div>
+            <div class="content" dv-bg>
+              数据内容1
+              <div id="line1" @click="demo">这是方向icon</div>
+            </div>
           </dv-border-box12>
         </div>
         <div demo-bg>
@@ -90,7 +96,10 @@ const play = async () => {
       <div class="v-b v-b-3">
         <div demo-bg>
           <dv-border-box12>
-            <div class="content" dv-bg>数据内容3</div>
+            <div class="content" dv-bg>
+              数据内容3
+              <div id="line3">这是方向3icon</div>
+            </div>
           </dv-border-box12>
         </div>
         <div demo-bg>
@@ -221,5 +230,15 @@ const play = async () => {
       }
     }
   }
+}
+</style>
+<style>
+#svgContainer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 </style>
