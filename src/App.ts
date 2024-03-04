@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-04 13:29:14
+ * @LastEditTime: 2024-03-04 15:06:04
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -267,96 +267,57 @@ class App {
     turbineLabel.visible = show
   }
   showLineHTML() {
-    this.createLineSVG('#line1')
-    this.createLineSVG('#line3')
-    // this.createLineHTML('#line1')
-  }
-  /**
-   *
-   * @param target 方法1，把target 点转换到webgl中，不太好；
-   * @param position
-   */
-  createLineHTML(target: string, position?: []) {
-    const element = document.querySelector(target)!
-    const targetRect = element.getBoundingClientRect()
-    console.log('targetRect:', targetRect)
-    // 创建起点和终点
-    const startPoint = new Vector3(0, 0, 0)
-    const endPoint = new Vector3(
-      targetRect.left - window.innerWidth / 2,
-      window.innerHeight / 2 - targetRect.top,
-      0
-    )
-
-    // 创建线条
-    const lineGeometry = new BufferGeometry().setFromPoints([startPoint, endPoint])
-    const lineMaterial = new LineBasicMaterial({ color: 0xfffff00 })
-    const line = new Line(lineGeometry, lineMaterial)
-    Object.assign(line, {
-      tick: (delta: number) => {
-        // 获取 HTML 元素在屏幕上的位置
-        const targetX = (targetRect.left + targetRect.right) / 2
-        const targetY = (targetRect.top + targetRect.bottom) / 2
-
-        // 将 HTML 元素在屏幕上的位置转换为 Three.js 场景中的三维坐标
-        const vector = new Vector3()
-        vector.set(
-          (targetX / window.innerWidth) * 2 - 1,
-          -(targetY / window.innerHeight) * 2 + 1,
-          0.5
-        )
-        vector.unproject(camera)
-        line.geometry.attributes.position.setXYZ(1, vector.x, vector.y, vector.z)
-        line.geometry.attributes.position.needsUpdate = true
-      }
-    })
-    // 将线条添加到场景中
-    scene.add(line)
-    loop.updatables.push(line)
+    this.createLineSVG(['#line1', '#line3'])
   }
 
-  createLineSVG(target: string) {
-    const element = document.querySelector(target)!
-    const targetRect = element.getBoundingClientRect()
-    // const mesh = scene.getObjectByName('turbine')
-    const geometry = new BoxGeometry()
-    const material = new MeshBasicMaterial({ color: 0x00ff00 })
-    const mesh = new Mesh(geometry, material)
-    scene.add(mesh)
+  createLineSVG(target: string[], meshName?: string[]) {
     // Create SVG line
     const svgNS = 'http://www.w3.org/2000/svg'
-    const svgContainer = document.createElementNS(svgNS, "svg");
-        svgContainer.setAttribute("id", "svgContainer");
-        svgContainer.setAttribute("width", "100%");
-        svgContainer.setAttribute("height", "100%");
+    const svgContainer = document.createElementNS(svgNS, 'svg')
+    svgContainer.setAttribute('id', 'svgContainer')
+    svgContainer.setAttribute('width', '100%')
+    svgContainer.setAttribute('height', '100%')
 
-    const svgLine = document.createElementNS(svgNS, 'line')
-    svgLine.setAttribute('id', 'demoline')
-    svgLine.setAttribute('stroke', 'red')
-    svgLine.setAttribute('stroke-width', '2')
-    svgContainer.appendChild(svgLine);
-    document.body.appendChild(svgContainer)
-    Object.assign(mesh, {
-      tick: () => {
-         // Convert Mesh position to screen coordinates
-         const meshPosition = new Vector3();
-         meshPosition.setFromMatrixPosition(mesh.matrixWorld);
-         const screenPosition = meshPosition.project(camera);
-         const screenX = (screenPosition.x + 1) * window.innerWidth / 2;
-         const screenY = (-screenPosition.y + 1) * window.innerHeight / 2;
+    target.forEach((target: string) => {
+      // const mesh = scene.getObjectByName('turbine')
+      const geometry = new BoxGeometry()
+      const material = new MeshBasicMaterial({ color: 0x00ff00 })
+      const mesh = new Mesh(geometry, material)
+      scene.add(mesh)
+      const element = document.querySelector(target)!
+      const targetRect = element.getBoundingClientRect()
+      const svgLine = document.createElementNS(svgNS, 'path')
+      svgLine.setAttribute('id', 'demoline')
+      svgLine.setAttribute('stroke', 'red')
+      svgLine.setAttribute('stroke-width', '2')
+      svgLine.setAttribute('fill', 'none')
+      svgContainer.appendChild(svgLine)
+      Object.assign(mesh, {
+        tick: () => {
+          // Convert Mesh position to screen coordinates
+          const meshPosition = new Vector3()
+          meshPosition.setFromMatrixPosition(mesh.matrixWorld)
+          const screenPosition = meshPosition.project(camera)
+          const screenX = ((screenPosition.x + 1) * window.innerWidth) / 2
+          const screenY = ((-screenPosition.y + 1) * window.innerHeight) / 2
 
-         // Get HTML element position
-         const targetX = (targetRect.left + targetRect.right) / 2;
-         const targetY = (targetRect.top + targetRect.bottom) / 2;
+          // Get HTML element position
+          const targetX = (targetRect.left + targetRect.right) / 2
+          const targetY = (targetRect.top + targetRect.bottom) / 2
 
-         // Update SVG line position
-         svgLine.setAttribute("x1", screenX as unknown as string);
-         svgLine.setAttribute("y1", screenY as unknown as string);
-         svgLine.setAttribute("x2", targetX as unknown as string);
-         svgLine.setAttribute("y2", targetY as unknown as string);
-      }
+          // Create SVG path using straight lines
+          const midX = (screenX + targetX) / 2
+          // Create SVG path using smooth curve
+          const path = `M ${screenX} ${screenY} L ${midX} ${screenY} L ${midX} ${screenY} L ${midX} ${targetY} L ${targetX} ${targetY}`
+
+          svgLine.setAttribute('d', path)
+          
+        }
+      })
+      loop.updatables.push(mesh)
     })
-    loop.updatables.push(mesh)
+
+    document.body.appendChild(svgContainer)
   }
   stop() {
     loop.stop()
