@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-04 15:37:58
+ * @LastEditTime: 2024-03-04 17:18:59
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.vue
@@ -21,7 +21,7 @@ const main = async () => {
   const container = document.getElementById('scene-container')
   // const css2container = document.getElementById('css2object')
   app = new App(container!)
-  // await app.init()
+  await app.init()
   app.start()
 }
 onMounted(() => {
@@ -104,7 +104,8 @@ const play = async () => {
         </div>
         <div demo-bg>
           <dv-border-box12>
-            <div class="content" dv-bg>数据内容4
+            <div class="content" dv-bg>
+              数据内容4
               <div id="line4">icon4</div>
             </div>
           </dv-border-box12>
@@ -236,6 +237,7 @@ const play = async () => {
     }
   }
 }
+
 </style>
 <style>
 #svgContainer {
@@ -245,5 +247,11 @@ const play = async () => {
   width: 100%;
   height: 100%;
   pointer-events: none;
+}
+.pathshadow {
+  filter: drop-shadow(1px 1px 5px rgb(131, 255, 255));
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: 0.3s;
 }
 </style>

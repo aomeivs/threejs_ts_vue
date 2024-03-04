@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-02-02 10:29:09
- * @LastEditTime: 2024-02-05 15:30:00
+ * @LastEditTime: 2024-03-04 16:46:02
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/gui.ts
@@ -21,7 +21,7 @@ const createGUI = (app: App) => {
   const viewParams = {
     颜色材质: true,
     线框材质: true,
-    turbineLabel:false,
+    turbineLabel: false
   }
   view
     .add(viewParams, '颜色材质')
@@ -35,11 +35,12 @@ const createGUI = (app: App) => {
     .onChange((value: boolean) => {
       app.show('线框材质', value)
     })
-  view.add(viewParams,'turbineLabel')
-  .name('标签')
-  .onChange((value: boolean) => {
-    app.showTurbineLabel(value)
-  })
+  view
+    .add(viewParams, 'turbineLabel')
+    .name('标签')
+    .onChange((value: boolean) => {
+      app.showTurbineLabel(value)
+    })
   const animationParams = {
     播放: false
   }
@@ -47,5 +48,6 @@ const createGUI = (app: App) => {
   animation.add(animationParams, '播放').onChange((value: boolean) => {
     app.play('Anim_0', value)
   })
+  return gui
 }
 export { createGUI }

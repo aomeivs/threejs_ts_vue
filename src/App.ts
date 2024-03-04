@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-04 15:35:00
+ * @LastEditTime: 2024-03-04 17:17:54
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -72,7 +72,7 @@ let count = 0
 const equipmentMaterialMap = new Map()
 const show = ref(false)
 const equipment = ref<Equipment>({})
-
+export type HtmlMeshCollection = { target: string; meshName: string }
 //  声明一个 EnumerationModelType
 enum ModelName {
   /**
@@ -101,7 +101,7 @@ class App {
     // 控制GUI\STATS
     {
       stats = new Stats()
-      createGUI(this)
+      createGUI(this).hide()
     }
 
     // scene\camera\renderer\light\helper
@@ -159,12 +159,13 @@ class App {
       // 模型同步缩放合适尺寸
       if (name == ModelName.FACTORY) {
         model.scale.multiplyScalar(0.03)
+        model.position.set(0, -1, 0)
         scene.add(model)
         // factory 材质设置
         this.initFactory()
       } else {
         model.scale.multiplyScalar(0.001)
-        scene.add(model)
+        // scene.add(model)
         // equipment 材质设置以及部件存储
         this.initEquipment()
         // turbine 材质设置
@@ -228,6 +229,9 @@ class App {
         if (meshChild.name.includes('支架盖')) {
           newMaterial.roughness = 0.7
           newMaterial.metalness = 0.5
+        } else if (meshChild.name.includes('地面')) {
+          newMaterial.roughness = 0.7
+          newMaterial.metalness = 0.5
         } else {
           newMaterial.roughness = 0.2
           newMaterial.metalness = 1
@@ -267,10 +271,24 @@ class App {
     turbineLabel.visible = show
   }
   showLineHTML() {
-    this.createLineSVG(['#line1', '#line3','#line4'])
+    // '#line1', '#line3', '#line4'
+    this.createLineSVG([
+      {
+        target: '#line1',
+        meshName: '支架盖045'
+      },
+      {
+        target: '#line3',
+        meshName: '支架盖024'
+      },
+      {
+        target: '#line4',
+        meshName: '支架盖012'
+      }
+    ])
   }
 
-  createLineSVG(target: string[], meshName?: string[]) {
+  createLineSVG(targets: HtmlMeshCollection[]) {
     // Create SVG line
     const svgNS = 'http://www.w3.org/2000/svg'
     const svgContainer = document.createElementNS(svgNS, 'svg')
@@ -278,18 +296,18 @@ class App {
     svgContainer.setAttribute('width', '100%')
     svgContainer.setAttribute('height', '100%')
 
-    target.forEach((target: string) => {
-      // const mesh = scene.getObjectByName('turbine')
-      const geometry = new BoxGeometry()
-      const material = new MeshBasicMaterial({ color: 0x00ff00 })
-      const mesh = new Mesh(geometry, material)
-      scene.add(mesh)
-      const element = document.querySelector(target)!
+    targets.forEach((item: HtmlMeshCollection) => {
+      const mesh = scene.getObjectByName(item.meshName) as Mesh
+      // const geometry = new BoxGeometry()
+      // const material = new MeshBasicMaterial({ color: 0x00ff00 })
+      // const mesh = new Mesh(geometry, material)
+      // scene.add(mesh)
+      const element = document.querySelector(item.target)!
       const targetRect = element.getBoundingClientRect()
       const svgLine = document.createElementNS(svgNS, 'path')
-      svgLine.setAttribute('id', 'demoline')
-      svgLine.setAttribute('stroke', 'red')
-      svgLine.setAttribute('stroke-width', '2')
+      svgLine.setAttribute('class', 'pathshadow')
+      svgLine.setAttribute('stroke', 'rgb(0, 148, 253)')
+      svgLine.setAttribute('stroke-width', '2.5')
       svgLine.setAttribute('fill', 'none')
       svgContainer.appendChild(svgLine)
       Object.assign(mesh, {
@@ -306,10 +324,10 @@ class App {
 
           const midX = (screenX + targetX) / 2
           const midY = (screenY + targetY) / 2
-          const path = `M ${screenX} ${screenY} L ${midX} ${screenY} L ${midX} ${midY} L ${targetX} ${midY} L ${targetX} ${targetY}`
+          //  L ${midX} ${midY}
+          const path = `M ${screenX} ${screenY} L ${midX} ${midY}  L ${targetX} ${midY} L ${targetX} ${targetY}`
 
           svgLine.setAttribute('d', path)
-          
         }
       })
       loop.updatables.push(mesh)
