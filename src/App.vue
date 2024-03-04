@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-04 13:54:36
+ * @LastEditTime: 2024-03-04 15:37:58
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.vue
@@ -104,7 +104,9 @@ const play = async () => {
         </div>
         <div demo-bg>
           <dv-border-box12>
-            <div class="content" dv-bg>数据内容4</div>
+            <div class="content" dv-bg>数据内容4
+              <div id="line4">icon4</div>
+            </div>
           </dv-border-box12>
         </div>
         <div class="water">

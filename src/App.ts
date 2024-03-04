@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-04 15:06:04
+ * @LastEditTime: 2024-03-04 15:35:00
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -267,7 +267,7 @@ class App {
     turbineLabel.visible = show
   }
   showLineHTML() {
-    this.createLineSVG(['#line1', '#line3'])
+    this.createLineSVG(['#line1', '#line3','#line4'])
   }
 
   createLineSVG(target: string[], meshName?: string[]) {
@@ -300,15 +300,13 @@ class App {
           const screenPosition = meshPosition.project(camera)
           const screenX = ((screenPosition.x + 1) * window.innerWidth) / 2
           const screenY = ((-screenPosition.y + 1) * window.innerHeight) / 2
-
           // Get HTML element position
           const targetX = (targetRect.left + targetRect.right) / 2
           const targetY = (targetRect.top + targetRect.bottom) / 2
 
-          // Create SVG path using straight lines
           const midX = (screenX + targetX) / 2
-          // Create SVG path using smooth curve
-          const path = `M ${screenX} ${screenY} L ${midX} ${screenY} L ${midX} ${screenY} L ${midX} ${targetY} L ${targetX} ${targetY}`
+          const midY = (screenY + targetY) / 2
+          const path = `M ${screenX} ${screenY} L ${midX} ${screenY} L ${midX} ${midY} L ${targetX} ${midY} L ${targetX} ${targetY}`
 
           svgLine.setAttribute('d', path)
           
