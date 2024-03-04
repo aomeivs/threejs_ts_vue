@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-04 13:39:57
+ * @LastEditTime: 2024-03-04 13:54:36
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.vue
@@ -209,6 +209,9 @@ const play = async () => {
     grid-gap: 8px;
     // grid-template-areas: 'a . c';
     .v-b {
+      .content {
+        pointer-events: all;
+      }
       flex: 1 1 0;
       padding-top: 80px;
       &-1,
