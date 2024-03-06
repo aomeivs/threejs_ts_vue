@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-04 17:17:54
+ * @LastEditTime: 2024-03-05 09:10:43
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -101,7 +101,7 @@ class App {
     // 控制GUI\STATS
     {
       stats = new Stats()
-      createGUI(this).hide()
+      createGUI(this)//.hide()
     }
 
     // scene\camera\renderer\light\helper
@@ -165,7 +165,7 @@ class App {
         this.initFactory()
       } else {
         model.scale.multiplyScalar(0.001)
-        // scene.add(model)
+        scene.add(model)
         // equipment 材质设置以及部件存储
         this.initEquipment()
         // turbine 材质设置

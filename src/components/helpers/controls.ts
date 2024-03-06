@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 11:06:34
- * @LastEditTime: 2024-02-27 10:03:38
+ * @LastEditTime: 2024-03-05 14:41:33
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/controls.ts
@@ -20,7 +20,13 @@ const creatControls = (camera: PerspectiveCamera, canvas: HTMLElement) => {
     // cameraControls.dampingFactor = 0.1
   }
   cameraControls.maxPolarAngle = Math.PI / 2
-  cameraControls.tick = () => cameraControls.update()
+  // 缩放范围
+  cameraControls.minDistance = cameraControls.getDistance() / 2
+  cameraControls.maxDistance = cameraControls.getDistance() * 2
+
+  cameraControls.tick = () => {
+    cameraControls.update()
+  }
   return cameraControls
 }
 export { creatControls }

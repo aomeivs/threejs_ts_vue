@@ -1,0 +1,231 @@
+.bg {
+  width: 1920px;
+  height: 1080px;
+  background: url('/images/bg-body.png') no-repeat 0 0 #051045;
+  display: flex;
+  position: relative;
+  .bg-border {
+    flex: 1;
+    background: url('/images/bg-body3.png') no-repeat center transparent;
+    width: 1890px;
+    height: 1072px;
+    background-size: contain;
+    .title {
+      font-weight: 500;
+      font-size: 38px;
+      color: #f3f7ff;
+      line-height: 53px;
+      letter-spacing: 1px;
+      text-shadow: 0px 2px 17px rgba(255, 255, 255, 0.25);
+      text-align: center;
+      font-style: normal;
+      text-align: center;
+      margin-top: 5px;
+    }
+    .time {
+      position: absolute;
+      height: 28px;
+      font-weight: 500;
+      font-size: 20px;
+      color: #ffffff;
+      line-height: 28px;
+      text-align: center;
+      font-style: normal;
+      right: 64px;
+      top: 12px;
+      text-align: right;
+    }
+
+    .board {
+      display: flex;
+      .board-left {
+        margin-left: 45px;
+        width: 420px;
+        .board-item {
+          width: 420px;
+          margin-bottom: 15px;
+          &-title {
+            background: url(images/bg-title.png) no-repeat left top;
+            width: 100%;
+            height: 36px;
+            line-height: 36px;
+            margin-bottom: 15px;
+          }
+          &-value {
+            // 传输线速度
+            &.speed {
+              :deep(.el-progress-bar__outer) {
+                background-color: #ebeef569;
+              }
+              :deep(.el-progress__text) {
+                min-width: auto;
+              }
+              .item {
+                display: flex;
+                height: 50px;
+                .no {
+                  flex: 32px 0 0;
+                  margin-left: 8px;
+                  display: flex;
+                  align-items: center;
+                  .icon {
+                    width: 22px;
+                    height: 20px;
+                    line-height: 20px;
+                    text-align: center;
+                    background: rgba(255, 255, 0, 0.1);
+                    margin-top: 32px;
+                    font-size: 12px;
+                  }
+                }
+                .line-container {
+                  flex: 1 0 auto;
+                  .labels {
+                    margin-bottom: 8px;
+                    margin-top: 8px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-around;
+                    .value{
+                      color: white;
+                    }
+                  }
+                }
+              }
+            }
+            /**
+            温度控制
+            **/
+            &.temperature {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              .item {
+                color: white;
+                display: flex;
+                width: 198px;
+                height: 40px;
+                box-shadow: inset 0px 0px 75px 0px rgba(23, 156, 255, 0.2);
+                justify-content: space-around;
+                align-items: center;
+                padding: 8px;
+                & > div {
+                  flex: 1;
+                }
+              }
+            }
+
+            .table-head {
+              display: flex;
+              font-size: 14px;
+              margin-bottom: 5px;
+              padding-right: 0;
+              & > div {
+                flex: 1 0 0;
+                &:nth-child(n + 2) {
+                  flex: 0.5 0 0;
+                  text-align: center;
+                }
+              }
+            }
+            .scroll {
+              height: 200px;
+              width: 100%;
+              overflow: hidden;
+            }
+
+            .scroll .item {
+              display: flex;
+              align-items: center;
+              &:nth-child(even) {
+                background-color: #5773ff11;
+              }
+              & > div {
+                &:nth-child(n + 2) {
+                  flex: 0.5 0 0;
+                  text-align: center;
+                  & > .btn {
+                    color: #5773ff;
+                    display: inline-block;
+                    border: 1px solid #274bfe;
+                    background: #274bfe66;
+                    padding: 0 5px;
+                    margin-right: 4px;
+                  }
+                }
+                flex: 1 0 0;
+              }
+            }
+          }
+        }
+        .device-total {
+          display: flex;
+          width: 417px;
+
+          background: rgba(181, 197, 255, 0.06);
+          box-shadow: inset 0px 2px 12px 0px rgba(39, 115, 255, 0.3);
+          backdrop-filter: blur(2px);
+          margin-bottom: 15px;
+          .total-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            .txt {
+              margin-left: 23px;
+            }
+            .num {
+              font-size: 26px;
+              margin-left: 12px;
+              color: white;
+            }
+          }
+        }
+      }
+      .board-container {
+        flex: 1 0 0;
+        padding-left: 50px;
+        .webgl-view {
+          width: 1340px;
+          height: 600px;
+          margin-top: 40px;
+          border: 1px solid #a3a3a3;
+        }
+        .device-status {
+          width: 1284px;
+          .board-item {
+            &-title {
+              background: url(images/bg-title.png) no-repeat left top;
+              width: 100%;
+              height: 36px;
+              line-height: 36px;
+              margin-bottom: 15px;
+            }
+            &-value {
+              height: 297px;
+              display: grid;
+              grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+              grid-gap: 8px;
+              .device-status-item {
+                display: flex;
+                align-items: center;
+                .icon {
+                  width: 12px;
+                  height: 12px;
+                  border-radius: 50%;
+                  background: #a4a9a6;
+                  margin-right: 8px;
+                  box-shadow: 0 0 0 4px #a4a9a67a;
+                  transition: 0.2s;
+                }
+                .online {
+                  background: #00ffcc;
+                  box-shadow: 0 0 0 4px #9dfff47a;
+                  transition: 0.2s;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
