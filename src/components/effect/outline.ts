@@ -16,14 +16,14 @@ import {
   SMAAPass,
   OutputPass
 } from 'three/examples/jsm/Addons.js'
-let renderer: WebGLRenderer, scene: Scene, camera: Camera
+let renderer: WebGLRenderer, scene: Scene, camera: Camera, container: HTMLElement
 export type OutlineEffectType = { compose: EffectComposer; outlinePass: OutlinePass }
 // 为点击的模型添加 outlinepass 效果
-const outlineEffect = (
-  selectedObjects: any,
-  color: number = 0x15c5e8
-): OutlineEffectType => {
-  const [w, h] = [window.innerWidth, window.innerHeight]
+const outlineEffect = (selectedObjects: any, color: number = 0x15c5e8): OutlineEffectType => {
+  const [w, h] = [
+    (container && container.clientWidth) || window.innerWidth,
+    (container && container.clientHeight) || window.innerHeight
+  ]
   const pixelRatio: number = 2
   const targetRenderer = new WebGLRenderTarget(w, h, {
     type: HalfFloatType,
@@ -43,8 +43,12 @@ const outlineEffect = (
   // const dotScreenShader = new ShaderPass(DotScreenShader)
   // dotScreenShader.uniforms['scale'].value = 4
   effectFXAA.uniforms['resolution'].value.set(
-    1 / (window.innerWidth * renderer.getPixelRatio() * pixelRatio),
-    1 / (window.innerHeight * renderer.getPixelRatio() * pixelRatio)
+    1 /
+      ((container && container.clientHeight) ||
+        window.innerHeight * renderer.getPixelRatio() * pixelRatio),
+    1 /
+      ((container && container.clientHeight) ||
+        window.innerHeight * renderer.getPixelRatio() * pixelRatio)
   )
   const outputPass = new OutputPass()
   outlinePass.renderToScreen = true
@@ -80,10 +84,16 @@ const outlineEffect = (
 
   return { compose, outlinePass }
 }
-const useEffectHooks = (use_renderer: WebGLRenderer, use_scene: Scene, use_camera: Camera) => {
+const useEffectHooks = (
+  use_renderer: WebGLRenderer,
+  use_scene: Scene,
+  use_camera: Camera,
+  use_container?: HTMLElement
+) => {
   renderer = use_renderer
   scene = use_scene
   camera = use_camera
+  container = use_container!
   return {
     outlineEffect
   }

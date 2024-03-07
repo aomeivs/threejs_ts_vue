@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-05 09:10:43
+ * @LastEditTime: 2024-03-07 17:44:35
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -11,7 +11,7 @@ import { createCSS2Renderer, createRenderer } from './components/helpers/rendere
 import { createScene } from './components/helpers/scene'
 import { creatControls } from './components/helpers/controls'
 import { createLights } from './components/helpers/lights'
-import { Resizer } from './components/helpers/Resizer'
+import { Resizer, updatables } from './components/helpers/Resizer'
 import {
   type AnimationAction,
   type PerspectiveCamera,
@@ -23,15 +23,7 @@ import {
   Raycaster,
   Mesh,
   MeshStandardMaterial,
-  WebGLRenderTarget,
-  HalfFloatType,
-  RGBAFormat,
-  Vector3,
-  BufferGeometry,
-  LineBasicMaterial,
-  Line,
-  BoxGeometry,
-  MeshBasicMaterial
+  Vector3
 } from 'three'
 // import { createCube } from './components/models/cube'
 import { Loop } from './components/helpers/Loop'
@@ -44,18 +36,7 @@ import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRe
 import type { ModelEntity } from '@/components/models/gltf/animal'
 import { createGUI } from './components/helpers/gui'
 import { ref } from 'vue'
-import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
-import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
-import { OutlinePass } from 'three/examples/jsm/postprocessing/OutlinePass.js'
-import {
-  DotScreenShader,
-  FXAAShader,
-  GammaCorrectionShader,
-  OutputPass,
-  SMAAPass,
-  ShaderPass,
-  ViewHelper
-} from 'three/examples/jsm/Addons.js'
+import { ViewHelper } from 'three/examples/jsm/Addons.js'
 import useEffectHooks, { type OutlineEffectType } from './components/effect/outline'
 export type Equipment = {
   name?: string
@@ -69,6 +50,8 @@ let stats: Stats
 let turbineLabel: any
 let outline: OutlineEffectType
 let count = 0
+let w = 0
+let h = 0
 const equipmentMaterialMap = new Map()
 const show = ref(false)
 const equipment = ref<Equipment>({})
@@ -101,13 +84,14 @@ class App {
     // 控制GUI\STATS
     {
       stats = new Stats()
-      createGUI(this)//.hide()
+      createGUI(this) //.hide()
     }
 
     // scene\camera\renderer\light\helper
-
+    w = (container && container.clientWidth) || window.innerWidth
+    h = (container && container.clientHeight) || window.innerHeight
     scene = createScene()
-    camera = createCamera()
+    camera = createCamera(container)
     renderer = createRenderer()
     cssRenderer = createCSS2Renderer()
     {
@@ -249,6 +233,7 @@ class App {
   start() {
     loop.start()
     this.showLineHTML()
+    updatables.push(this.showLineHTML.bind(this))
   }
   play(actionName: string, play: boolean) {
     const action = this.actions[actionName]
@@ -271,6 +256,7 @@ class App {
     turbineLabel.visible = show
   }
   showLineHTML() {
+    document.querySelector('#svgContainer')?.remove()
     // '#line1', '#line3', '#line4'
     this.createLineSVG([
       {
@@ -278,17 +264,21 @@ class App {
         meshName: '支架盖045'
       },
       {
-        target: '#line3',
-        meshName: '支架盖024'
+        target: '#line2',
+        meshName: '支架盖1'
       },
       {
-        target: '#line4',
-        meshName: '支架盖012'
+        target: '#line3',
+        meshName: '支架盖024'
       }
     ])
   }
 
   createLineSVG(targets: HtmlMeshCollection[]) {
+    const scale =
+      window.innerWidth / window.innerHeight < 1920 / 1080
+        ? window.innerWidth / 1920
+        : window.innerHeight / 1080
     // Create SVG line
     const svgNS = 'http://www.w3.org/2000/svg'
     const svgContainer = document.createElementNS(svgNS, 'svg')
@@ -316,15 +306,18 @@ class App {
           const meshPosition = new Vector3()
           meshPosition.setFromMatrixPosition(mesh.matrixWorld)
           const screenPosition = meshPosition.project(camera)
-          const screenX = ((screenPosition.x + 1) * window.innerWidth) / 2
-          const screenY = ((-screenPosition.y + 1) * window.innerHeight) / 2
+          const screenX =
+            ((screenPosition.x + 1) * w) / 2 + this.container.getBoundingClientRect().left / scale
+          const screenY =
+            ((-screenPosition.y + 1) * h) / 2 + this.container.getBoundingClientRect().top / scale
           // Get HTML element position
-          const targetX = (targetRect.left + targetRect.right) / 2
-          const targetY = (targetRect.top + targetRect.bottom) / 2
+          const targetX = (targetRect.left + targetRect.right) / 2 / scale
+          const targetY = (targetRect.top + targetRect.bottom) / 2 / scale
 
           const midX = (screenX + targetX) / 2
           const midY = (screenY + targetY) / 2
           //  L ${midX} ${midY}
+          // const path = `M ${screenX} ${screenY} L ${targetX} ${targetY}`
           const path = `M ${screenX} ${screenY} L ${midX} ${midY}  L ${targetX} ${midY} L ${targetX} ${targetY}`
 
           svgLine.setAttribute('d', path)
@@ -332,7 +325,7 @@ class App {
       })
       loop.updatables.push(mesh)
     })
-
+    // this.container.appendChild()
     document.body.appendChild(svgContainer)
   }
   stop() {
@@ -346,8 +339,24 @@ class App {
         return
       }
       const mouse = new Vector2()
-      mouse.x = (event.clientX / this.container.clientWidth) * 2 - 1
-      mouse.y = -(event.clientY / this.container.clientHeight) * 2 + 1
+      const scale =
+        window.innerWidth / window.innerHeight < 1920 / 1080
+          ? window.innerWidth / 1920
+          : window.innerHeight / 1080
+      mouse.x =
+        (((event.clientX - this.container.getBoundingClientRect().left) /
+          this.container.clientWidth) *
+          2) /
+          scale -
+        1
+      mouse.y =
+        (-(
+          (event.clientY - this.container.getBoundingClientRect().top) /
+          this.container.clientHeight
+        ) *
+          2) /
+          scale +
+        1
       const raycaster = new Raycaster()
       raycaster.setFromCamera(mouse, camera)
       const intersects = raycaster.intersectObjects(this.model[name].model.children, true)

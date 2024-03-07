@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-06 15:25:58
+ * @LastEditTime: 2024-03-07 16:33:48
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/HomeView.vue
@@ -9,18 +9,18 @@
 -->
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { App } from '@/App'
+import { App, show, equipment  } from '@/App'
 let app: App
 const main = async () => {
-  const container = document.getElementById('scene-container')
+  const container = document.getElementById('webgl-container')
   // const css2container = document.getElementById('css2object')
   app = new App(container!)
   await app.init()
   app.start()
 }
-onMounted(() => {
-  // main()
+onMounted(async () => {
   initScrollData()
+  main()
 })
 const list = ref<any>([])
 const initScrollData = () => {
@@ -119,9 +119,42 @@ const initScrollData = () => {
         </div>
         <div class="board-container">
           <div class="webgl-view">
-            <div class="tips-top"></div>
-            <div class="webgl-container"></div>
-            <div class="tips-bottom"></div>
+            <div class="tips-top">
+              <div class="item item-1" id="line1">
+                <div class="line"><div class="icon"></div></div>
+                <div class="device">
+                  <div class="name">水份烘干</div>
+                  <div class="code">XHN5263</div>
+                </div>
+                <div class="state">
+                  <div class="icon"></div>
+                </div>
+              </div>
+            </div>
+            <div class="tips-bottom">
+              <div class="item item-1" id="line3">
+                <div class="line"><div class="icon"></div></div>
+                <div class="device">
+                  <div class="name">水份烘干</div>
+                  <div class="code">XHN5263</div>
+                </div>
+                <div class="state">
+                  <div class="icon"></div>
+                </div>
+              </div>
+              <div class="item item-2" id="line2">
+                <div class="line"><div class="icon"></div></div>
+                <div class="device">
+                  <div class="name">水份烘干2</div>
+                  <div class="code">XHN5263</div>
+                </div>
+                <div class="state">
+                  <div class="icon"></div>
+                </div>
+              </div>
+            </div>
+            <!-- webgl-container -->
+            <div class="webgl-container" id="webgl-container"></div>
           </div>
 
           <div class="board-item device-status">
@@ -137,6 +170,16 @@ const initScrollData = () => {
       </div>
     </div>
   </div>
+  <dov class="css2object" id="css2object" v-show="show">
+    <div>
+      <div>设备名:{{ equipment.name }}</div>
+      <div>编号</div>
+      <div>温度</div>
+      <div>状态{{}}</div>
+      <div>运行时间{{}}</div>
+    </div>
+    <div class="triangle"></div>
+  </dov>
 </template>
 <style lang="scss" scoped>
 @import './HomeView.scss';

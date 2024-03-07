@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-30 15:59:40
- * @LastEditTime: 2024-03-04 15:52:47
+ * @LastEditTime: 2024-03-06 16:51:57
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/models/gltf/animal.ts
@@ -87,7 +87,7 @@ const setupModel = (data: any, animalName: string) => {
 const loadBackground = async (scene: Scene) => {
   const rgbeLoader = new RGBELoader()
   const texture = await rgbeLoader.setDataType(HalfFloatType).loadAsync(sky)
-  scene.background = texture
+  // scene.background = texture
   texture.mapping = EquirectangularReflectionMapping
   // texture.colorSpace = 'srgb-linear'
   scene.environment = texture
