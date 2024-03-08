@@ -18,6 +18,7 @@
     "autofit.js": "^3.1.0",
     "axios": "^1.6.7",
     "element-plus": "^2.5.3",
+    "json-server": "^1.0.0-alpha.23",
     "lil-gui": "^0.19.1",
     "lodash": "^4.17.21",
     "nprogress": "^0.2.0",

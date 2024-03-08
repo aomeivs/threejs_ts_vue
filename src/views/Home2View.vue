@@ -29,7 +29,7 @@ const play = async () => {
 
 <template>
   <div class="wrapper" id="scene-container"></div>
-  <dov class="css2object" id="css2object" v-show="show">
+  <div class="css2object" id="css2object" v-show="show">
     <div>
       <div>设备名:{{ equipment.name }}</div>
       <div>编号</div>
@@ -38,7 +38,7 @@ const play = async () => {
       <div>运行时间{{}}</div>
     </div>
     <div class="triangle"></div>
-  </dov>
+  </div>
   <div class="control">
     <!-- <button type="button" @click="play">play</button> -->
   </div>

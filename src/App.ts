@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-08 13:58:52
+ * @LastEditTime: 2024-03-08 17:14:04
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -36,12 +36,15 @@ import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 import type { ModelEntity } from '@/components/models/gltf/animal'
 import { createGUI } from './components/helpers/gui'
-import { ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import { ViewHelper } from 'three/examples/jsm/Addons.js'
 import useEffectHooks, { type OutlineEffectType } from './components/effect/outline'
-export type Equipment = {
-  name?: string
-}
+import { deviceList } from './api/factory'
+export type Equipment = Partial<{
+  name: string
+  userData: any
+  date: any
+}>
 let camera: PerspectiveCamera
 let renderer: WebGLRenderer
 let cssRenderer: CSS2DRenderer
@@ -72,6 +75,8 @@ enum ModelName {
    */
   EQUIPMENT = 'equipment'
 }
+
+
 class App {
   actions: { [key: string]: AnimationAction }
   model: ModelEntity
@@ -181,7 +186,7 @@ class App {
     })
     for (let i = 0; i < positions.length; i++) {
       const pos = positions[i].toArray()
-      pos[1] = pos[1] + .2
+      pos[1] = pos[1] + 0.2
       const { arrow, texture } = await loadArrow(pos)
       arrow.name = 'arrow'
       arrow.scale.multiplyScalar(0.3)
@@ -190,17 +195,6 @@ class App {
       loop.updatables.push(texture)
       scene.add(arrow)
     }
-
-    // const { arrow, texture } = await loadArrow([
-    //   -1.3, 1.1, -2
-    // ])
-    // arrow.name = 'arrow'
-    // arrow.scale.multiplyScalar(0.3)
-    // arrow.rotation.set(0, Math.PI, 0)
-    // arrow.material.emissive.setHex(0x00ff00)
-
-    // loop.updatables.push(texture)
-    // scene.add(arrow)
   }
   initEquipment() {
     this.model.equipment.model.traverse((child: any) => {
@@ -335,35 +329,36 @@ class App {
       svgLine.setAttribute('stroke-width', '2.5')
       svgLine.setAttribute('fill', 'none')
       svgContainer.appendChild(svgLine)
-      Object.assign(mesh, {
-        tick: () => {
-          // Convert Mesh position to screen coordinates
-          const meshPosition = new Vector3()
-          meshPosition.setFromMatrixPosition(mesh.matrixWorld)
-          const screenPosition = meshPosition.project(camera)
-          const screenX =
-            ((screenPosition.x + 1) * w) / 2 + this.container.getBoundingClientRect().left / scale
-          const screenY =
-            ((-screenPosition.y + 1) * h) / 2 + this.container.getBoundingClientRect().top / scale
-          // Get HTML element position
-          const iconPosition =
-            element.children[2].getBoundingClientRect().width +
-            (element.getBoundingClientRect().right -
-              element.children[2].getBoundingClientRect().left) /
-              2
-          const targetX =
-            (targetRect.left + targetRect.right + targetRect.width - iconPosition) / 2 / scale
-          const targetY = (targetRect.top + targetRect.bottom) / 2 / scale
+      mesh &&
+        Object.assign(mesh, {
+          tick: () => {
+            // Convert Mesh position to screen coordinates
+            const meshPosition = new Vector3()
+            meshPosition.setFromMatrixPosition(mesh.matrixWorld)
+            const screenPosition = meshPosition.project(camera)
+            const screenX =
+              ((screenPosition.x + 1) * w) / 2 + this.container.getBoundingClientRect().left / scale
+            const screenY =
+              ((-screenPosition.y + 1) * h) / 2 + this.container.getBoundingClientRect().top / scale
+            // Get HTML element position
+            const iconPosition =
+              element.children[2].getBoundingClientRect().width +
+              (element.getBoundingClientRect().right -
+                element.children[2].getBoundingClientRect().left) /
+                2
+            const targetX =
+              (targetRect.left + targetRect.right + targetRect.width - iconPosition) / 2 / scale
+            const targetY = (targetRect.top + targetRect.bottom) / 2 / scale
 
-          const midX = (screenX + targetX) / 2
-          const midY = (screenY + targetY) / 2
-          //  L ${midX} ${midY}
-          // const path = `M ${screenX} ${screenY} L ${targetX} ${targetY}`
-          const path = `M ${screenX} ${screenY} L ${midX} ${midY}  L ${targetX} ${midY} L ${targetX} ${targetY}`
+            const midX = (screenX + targetX) / 2
+            const midY = (screenY + targetY) / 2
+            //  L ${midX} ${midY}
+            // const path = `M ${screenX} ${screenY} L ${targetX} ${targetY}`
+            const path = `M ${screenX} ${screenY} L ${midX} ${midY}  L ${targetX} ${midY} L ${targetX} ${targetY}`
 
-          svgLine.setAttribute('d', path)
-        }
-      })
+            svgLine.setAttribute('d', path)
+          }
+        })
       loop.updatables.push(mesh)
     })
     // this.container.appendChild()
@@ -374,7 +369,7 @@ class App {
   }
   onPointerClick(name: string) {
     // 监听mouseup事件
-    document.addEventListener('click', (event: MouseEvent) => {
+    document.addEventListener('click', async (event: MouseEvent) => {
       if (this.isOrbiting) {
         this.isOrbiting = false
         return
@@ -407,7 +402,14 @@ class App {
       const selectMesh = intersects[0].object as Mesh
       if (selectMesh?.isMesh) {
         const equipmentMaterial = equipmentMaterialMap.get(selectMesh.name)
-        equipment.value = selectMesh
+
+        deviceList().then((res) => {
+          Object.assign(selectMesh, {
+            userData: res
+          })
+          equipment.value = selectMesh
+        })
+
         // currentEquipment.value.name = selectMesh.name
         if (equipmentMaterial) {
           this.model[name].model.traverse((child: any) => {

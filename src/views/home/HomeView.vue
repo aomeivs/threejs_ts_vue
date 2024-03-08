@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-08 09:48:24
+ * @LastEditTime: 2024-03-08 17:06:45
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/HomeView.vue
@@ -170,16 +170,16 @@ const initScrollData = () => {
       </div>
     </div>
   </div>
-  <dov class="css2object" id="css2object" v-show="show">
+  <div class="css2object" id="css2object" v-show="show">
     <div>
       <div>设备名:{{ equipment.name }}</div>
-      <div>编号</div>
+      <div>编号{{ equipment.userData }}</div>
       <div>温度</div>
       <div>状态{{}}</div>
-      <div>运行时间{{}}</div>
+      <div>运行时间{{equipment.date}}</div>
     </div>
     <div class="triangle"></div>
-  </dov>
+  </div>
 </template>
 <style lang="scss" scoped>
 @import './HomeView.scss';
