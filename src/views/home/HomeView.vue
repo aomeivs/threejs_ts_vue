@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-07 16:33:48
+ * @LastEditTime: 2024-03-08 09:48:24
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/HomeView.vue
@@ -52,13 +52,13 @@ const initScrollData = () => {
             <div class="board-item-title">输送线速度</div>
             <div class="board-item-value speed" style="height: 310px">
               <!-- speed -->
-              <div v-for="n in 6" :key="n" class="item">
+              <div v-for="n in 4" :key="n" class="item">
                 <div class="no">
                   <div class="icon">{{ n }}</div>
                 </div>
                 <div class="line-container">
                   <div class="labels">
-                    <div class="name">循环风机</div>
+                    <div class="name">循环风机{{ n }}</div>
                     <div class="value">32432</div>
                     <div class="unit">辆/时</div>
                   </div>
@@ -183,4 +183,9 @@ const initScrollData = () => {
 </template>
 <style lang="scss" scoped>
 @import './HomeView.scss';
+</style>
+<style>
+.pathshadow{
+  opacity: .5;
+}
 </style>

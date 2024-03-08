@@ -62,7 +62,7 @@
               }
               .item {
                 display: flex;
-                height: 50px;
+                height: 80px;
                 .no {
                   flex: 32px 0 0;
                   margin-left: 8px;
@@ -74,7 +74,7 @@
                     line-height: 20px;
                     text-align: center;
                     background: rgba(255, 255, 0, 0.1);
-                    margin-top: 32px;
+                    // margin-top: 32px;
                     font-size: 12px;
                   }
                 }
@@ -88,6 +88,8 @@
                     justify-content: space-around;
                     .value {
                       color: white;
+                  font-size: 18px;
+
                     }
                   }
                 }
@@ -220,6 +222,7 @@
                   font-size: 18px;
                   color: #40a9ff;
                   line-height: 25px;
+                  text-shadow: 1px 1px 2px #000;
                 }
                 .code {
                   width: 88px;

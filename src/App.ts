@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-07 17:44:35
+ * @LastEditTime: 2024-03-08 11:32:29
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -23,7 +23,8 @@ import {
   Raycaster,
   Mesh,
   MeshStandardMaterial,
-  Vector3
+  Vector3,
+  CameraHelper,
 } from 'three'
 // import { createCube } from './components/models/cube'
 import { Loop } from './components/helpers/Loop'
@@ -98,7 +99,11 @@ class App {
       const { ambientLight, directionalLights } = createLights()
       const axesHelper = new AxesHelper(5)
       const lightHelper: DirectionalLightHelper[] = []
-      directionalLights.forEach((light) => {
+      directionalLights.forEach((light,index) => {
+        if(index===0){
+          const cameraHelper = new CameraHelper(light.shadow.camera);
+          scene.add(cameraHelper);
+        }
         lightHelper.push(new DirectionalLightHelper(light, 0.2))
       })
       scene.add(ambientLight, ...directionalLights, axesHelper, ...lightHelper)
@@ -130,7 +135,7 @@ class App {
     }
   }
   async init() {
-    await loadBackground(scene)
+   await loadBackground(scene)
     // const { scene: animalScene, action } = await loadAnimals(loadingManager)
     this.model = await loadAnimals(loadingManager)
     Object.entries(this.model).forEach((data) => {
@@ -211,16 +216,20 @@ class App {
         const newMaterial = (meshChild.material as MeshStandardMaterial).clone()
         meshChild.currentHex = newMaterial.emissive.getHex()
         if (meshChild.name.includes('支架盖')) {
-          newMaterial.roughness = 0.7
+          newMaterial.emissive.setHex(0x000000)
+          newMaterial.roughness = 1
           newMaterial.metalness = 0.5
+         
         } else if (meshChild.name.includes('地面')) {
-          newMaterial.roughness = 0.7
-          newMaterial.metalness = 0.5
+          newMaterial.roughness = 1
+          newMaterial.metalness = 0.1
         } else {
           newMaterial.roughness = 0.2
-          newMaterial.metalness = 1
+          newMaterial.metalness = .7
         }
-
+        meshChild.castShadow = true
+        meshChild.receiveShadow = true
+        newMaterial.envMapIntensity = 0.3
         meshChild.material = newMaterial
         equipmentMaterialMap.set(meshChild.name, meshChild) // Map 存储各个部件
       }
@@ -257,6 +266,7 @@ class App {
   }
   showLineHTML() {
     document.querySelector('#svgContainer')?.remove()
+
     // '#line1', '#line3', '#line4'
     this.createLineSVG([
       {
@@ -293,6 +303,7 @@ class App {
       // const mesh = new Mesh(geometry, material)
       // scene.add(mesh)
       const element = document.querySelector(item.target)!
+      if (!element) return
       const targetRect = element.getBoundingClientRect()
       const svgLine = document.createElementNS(svgNS, 'path')
       svgLine.setAttribute('class', 'pathshadow')
@@ -311,7 +322,13 @@ class App {
           const screenY =
             ((-screenPosition.y + 1) * h) / 2 + this.container.getBoundingClientRect().top / scale
           // Get HTML element position
-          const targetX = (targetRect.left + targetRect.right) / 2 / scale
+          const iconPosition =
+            element.children[2].getBoundingClientRect().width +
+            (element.getBoundingClientRect().right -
+              element.children[2].getBoundingClientRect().left) /
+              2
+          const targetX =
+            (targetRect.left + targetRect.right + targetRect.width - iconPosition) / 2 / scale
           const targetY = (targetRect.top + targetRect.bottom) / 2 / scale
 
           const midX = (screenX + targetX) / 2
