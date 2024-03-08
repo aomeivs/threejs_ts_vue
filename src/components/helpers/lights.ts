@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 11:04:58
- * @LastEditTime: 2024-03-08 11:42:06
+ * @LastEditTime: 2024-03-08 13:20:04
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/lights.ts
@@ -17,7 +17,7 @@ const createLights = () => {
     [-5, 5, -5]
   ]
   lightArr.forEach((item, index) => {
-    const directionalLight = new DirectionalLight(0xffffff, 1)
+    const directionalLight = new DirectionalLight(0xffffff, .4)
     if (index === 0) {
       directionalLight.castShadow = true
       directionalLight.shadow.camera.left = -12

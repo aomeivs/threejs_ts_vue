@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-08 11:53:02
+ * @LastEditTime: 2024-03-08 13:58:52
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -24,7 +24,7 @@ import {
   Mesh,
   MeshStandardMaterial,
   Vector3,
-  CameraHelper,
+  CameraHelper
 } from 'three'
 // import { createCube } from './components/models/cube'
 import { Loop } from './components/helpers/Loop'
@@ -99,12 +99,13 @@ class App {
       const { ambientLight, directionalLights } = createLights()
       const axesHelper = new AxesHelper(5)
       const lightHelper: DirectionalLightHelper[] = []
-      directionalLights.forEach((light,index) => {
-        if(index===0){
-          const cameraHelper = new CameraHelper(light.shadow.camera);
-          scene.add(cameraHelper);
+      directionalLights.forEach((light, index) => {
+        if (index === 0) {
+          const cameraHelper = new CameraHelper(light.shadow.camera)
+          lightHelper.push(new DirectionalLightHelper(light, 0.2))
+
+          scene.add(cameraHelper)
         }
-        lightHelper.push(new DirectionalLightHelper(light, 0.2))
       })
       scene.add(ambientLight, ...directionalLights, axesHelper, ...lightHelper)
     }
@@ -136,7 +137,7 @@ class App {
     }
   }
   async init() {
-   await loadBackground(scene)
+    await loadBackground(scene)
     // const { scene: animalScene, action } = await loadAnimals(loadingManager)
     this.model = await loadAnimals(loadingManager)
     Object.entries(this.model).forEach((data) => {
@@ -167,16 +168,39 @@ class App {
     /**
      * 加载箭头
      */
-    const { arrow, texture } = await loadArrow([
-      -3.5417959329413384, 0.5421365928649903, -3.000390667002838
-    ])
-    arrow.name = 'arrow'
-    arrow.scale.multiplyScalar(0.3)
-    arrow.rotation.set(0, Math.PI, 0)
-    arrow.material.emissive.setHex(0x00ff00)
+    this.createArrow()
+  }
+  async createArrow() {
+    const pointName = ['支架盖045', '支架盖042', '支架盖039', '支架盖024']
+    const positions = pointName.map((name) => {
+      const worldPosition = new Vector3()
+      const mesh = scene.getObjectByName(name)!
+      mesh.getWorldPosition(worldPosition)
+      // mesh.visible = false
+      return worldPosition
+    })
+    for (let i = 0; i < positions.length; i++) {
+      const pos = positions[i].toArray()
+      pos[1] = pos[1] + .2
+      const { arrow, texture } = await loadArrow(pos)
+      arrow.name = 'arrow'
+      arrow.scale.multiplyScalar(0.3)
+      arrow.rotation.set(0, Math.PI, 0)
+      arrow.material.emissive.setHex(0x00ff00)
+      loop.updatables.push(texture)
+      scene.add(arrow)
+    }
 
-    loop.updatables.push(texture)
-    scene.add(arrow)
+    // const { arrow, texture } = await loadArrow([
+    //   -1.3, 1.1, -2
+    // ])
+    // arrow.name = 'arrow'
+    // arrow.scale.multiplyScalar(0.3)
+    // arrow.rotation.set(0, Math.PI, 0)
+    // arrow.material.emissive.setHex(0x00ff00)
+
+    // loop.updatables.push(texture)
+    // scene.add(arrow)
   }
   initEquipment() {
     this.model.equipment.model.traverse((child: any) => {
@@ -219,14 +243,13 @@ class App {
         if (meshChild.name.includes('支架盖')) {
           newMaterial.emissive.setHex(0x000000)
           newMaterial.roughness = 1
-          newMaterial.metalness = 0.5
-         
+          newMaterial.metalness = 0
         } else if (meshChild.name.includes('地面')) {
           newMaterial.roughness = 1
           newMaterial.metalness = 0.1
         } else {
           newMaterial.roughness = 0.2
-          newMaterial.metalness = .7
+          newMaterial.metalness = 0.7
         }
         meshChild.castShadow = true
         meshChild.receiveShadow = true

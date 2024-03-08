@@ -25,7 +25,7 @@ const setSize = (
   cssRenderer.domElement.style.position = 'absolute'
   cssRenderer.domElement.style.top = '0'
   // cssRenderer.domElement.style.pointerEvents='none'
-  renderer.setPixelRatio(window.devicePixelRatio)
+  renderer.setPixelRatio(2) //window.devicePixelRatio
   composer.setSize(container.clientWidth, container.clientHeight)
   updatables.forEach((callback: any) => callback())
 }
