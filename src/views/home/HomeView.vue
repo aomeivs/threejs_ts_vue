@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-08 17:06:45
+ * @LastEditTime: 2024-03-08 18:01:27
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/HomeView.vue
@@ -9,7 +9,8 @@
 -->
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { App, show, equipment  } from '@/App'
+import { App, show, equipment } from '@/App'
+import TipsBoard from '@/views/home/component/TipsBoard.vue'
 let app: App
 const main = async () => {
   const container = document.getElementById('webgl-container')
@@ -120,16 +121,19 @@ const initScrollData = () => {
         <div class="board-container">
           <div class="webgl-view">
             <div class="tips-top">
-              <div class="item item-1" id="line1">
+              <tips-board id="XHN5261" class="item item-1"></tips-board>
+              <tips-board id="XHN5262" class="item item-2"></tips-board>
+
+              <!-- <div class="item item-2" id="XHN5262">
                 <div class="line"><div class="icon"></div></div>
                 <div class="device">
-                  <div class="name">水份烘干</div>
-                  <div class="code">XHN5263</div>
+                  <div class="name">支架盖045</div>
+                  <div class="code">XHN5262</div>
                 </div>
                 <div class="state">
                   <div class="icon"></div>
                 </div>
-              </div>
+              </div> -->
             </div>
             <div class="tips-bottom">
               <div class="item item-1" id="line3">
@@ -176,7 +180,7 @@ const initScrollData = () => {
       <div>编号{{ equipment.userData }}</div>
       <div>温度</div>
       <div>状态{{}}</div>
-      <div>运行时间{{equipment.date}}</div>
+      <div>运行时间{{ equipment.date }}</div>
     </div>
     <div class="triangle"></div>
   </div>
@@ -185,7 +189,7 @@ const initScrollData = () => {
 @import './HomeView.scss';
 </style>
 <style>
-.pathshadow{
-  opacity: .5;
+.pathshadow {
+  opacity: 0.5;
 }
 </style>

@@ -88,8 +88,7 @@
                     justify-content: space-around;
                     .value {
                       color: white;
-                  font-size: 18px;
-
+                      font-size: 18px;
                     }
                   }
                 }
@@ -185,13 +184,12 @@
       .board-container {
         flex: 1 0 0;
         padding-left: 50px;
-        .webgl-view {
+        :deep(.webgl-view) {
           width: 1340px;
           height: 600px;
           margin-top: 40px;
           position: relative;
           .webgl-container {
-           
             width: 1340px;
             height: 600px;
             border: 1px solid #a3a3a333;
@@ -248,10 +246,15 @@
               }
             }
           }
+          .tips-top {
+            .item-2 {
+              left: 200px;
+            }
+          }
           .tips-bottom {
             .item {
               bottom: 0;
-              &.item-2{
+              &.item-2 {
                 left: 200px;
               }
             }

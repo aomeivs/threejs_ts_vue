@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-08 17:14:04
+ * @LastEditTime: 2024-03-08 17:52:44
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -36,10 +36,11 @@ import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 import type { ModelEntity } from '@/components/models/gltf/animal'
 import { createGUI } from './components/helpers/gui'
-import { onBeforeMount, ref } from 'vue'
+import { ref } from 'vue'
 import { ViewHelper } from 'three/examples/jsm/Addons.js'
 import useEffectHooks, { type OutlineEffectType } from './components/effect/outline'
-import { deviceList } from './api/factory'
+// components
+
 export type Equipment = Partial<{
   name: string
   userData: any
@@ -75,7 +76,6 @@ enum ModelName {
    */
   EQUIPMENT = 'equipment'
 }
-
 
 class App {
   actions: { [key: string]: AnimationAction }
@@ -288,9 +288,14 @@ class App {
     // '#line1', '#line3', '#line4'
     this.createLineSVG([
       {
-        target: '#line1',
+        target: '#XHN5261',
+        meshName: '支架盖042'
+      },
+      {
+        target: '#XHN5262',
         meshName: '支架盖045'
       },
+
       {
         target: '#line2',
         meshName: '支架盖1'
@@ -403,12 +408,13 @@ class App {
       if (selectMesh?.isMesh) {
         const equipmentMaterial = equipmentMaterialMap.get(selectMesh.name)
 
-        deviceList().then((res) => {
-          Object.assign(selectMesh, {
-            userData: res
-          })
-          equipment.value = selectMesh
-        })
+        // deviceList().then((res) => {
+        //   Object.assign(selectMesh, {
+        //     userData: res
+        //   })
+        //   equipment.value = selectMesh
+        // })
+        equipment.value = selectMesh
 
         // currentEquipment.value.name = selectMesh.name
         if (equipmentMaterial) {
