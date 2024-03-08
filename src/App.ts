@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-08 11:32:29
+ * @LastEditTime: 2024-03-08 11:53:02
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -114,8 +114,9 @@ class App {
     // 看向风车位置
     // controls.target.set(0, 1.5, 0)
     // 最好视角
-    // controls.target.set(-3, 2, 2)
+    controls.target.set(1, -1, 1)
     controls.addEventListener('change', () => {
+      // console.log('change', camera.position, controls.target, camera.quaternion)
       count++
       if (count > 1) this.isOrbiting = true
     })
