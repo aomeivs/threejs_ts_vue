@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-11 09:25:43
+ * @LastEditTime: 2024-03-11 10:43:09
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -36,9 +36,11 @@ import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 import type { ModelEntity } from '@/components/models/gltf/animal'
 import { createGUI } from './components/helpers/gui'
-import { ref } from 'vue'
+import { nextTick, ref } from 'vue'
 import { ViewHelper } from 'three/examples/jsm/Addons.js'
 import useEffectHooks, { type OutlineEffectType } from './components/effect/outline'
+import { htmlMeshCollection } from './views/home/data'
+import TipsBoard from './views/home/component/TipsBoard.vue'
 // components
 
 export type Equipment = Partial<{
@@ -60,7 +62,7 @@ let h = 0
 const equipmentMaterialMap = new Map()
 const show = ref(false)
 const equipment = ref<Equipment>({})
-export type HtmlMeshCollection = { target: string; meshName: string }
+export type HtmlMeshCollection = { target: string; meshName: string; position: string }
 //  声明一个 EnumerationModelType
 enum ModelName {
   /**
@@ -259,8 +261,8 @@ class App {
   // }
   start() {
     loop.start()
-    this.showLineHTML()
-    updatables.push(this.showLineHTML.bind(this))
+    this.createLineSVG(htmlMeshCollection)
+    // updatables.push(this.showLineHTML.bind(this))
   }
   play(actionName: string, play: boolean) {
     const action = this.actions[actionName]
@@ -282,32 +284,15 @@ class App {
   showTurbineLabel(show: boolean) {
     turbineLabel.visible = show
   }
-  showLineHTML() {
-    document.querySelector('#svgContainer')?.remove()
+  // showLineHTML() {
+    
 
-    // '#line1', '#line3', '#line4'
-    this.createLineSVG([
-      {
-        target: '#XHN5261',
-        meshName: '支架盖042'
-      },
-      {
-        target: '#XHN5262',
-        meshName: '支架盖045'
-      },
-
-      {
-        target: '#XHN5263',
-        meshName: '支架盖015'
-      },
-      {
-        target: '#XHN5264',
-        meshName: '支架盖033'
-      }
-    ])
-  }
+  //   // '#line1', '#line3', '#line4'
+   
+  // }
 
   createLineSVG(targets: HtmlMeshCollection[]) {
+    document.querySelector('#svgContainer')?.remove()
     const scale =
       window.innerWidth / window.innerHeight < 1920 / 1080
         ? window.innerWidth / 1920

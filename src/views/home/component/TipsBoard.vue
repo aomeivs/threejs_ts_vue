@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-08 17:30:37
- * @LastEditTime: 2024-03-11 09:31:40
+ * @LastEditTime: 2024-03-11 10:04:59
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/TipsBoard.vue
@@ -12,8 +12,8 @@
     <div class="line"><div class="icon"></div></div>
     <div class="device">
       <slot name="default">
-        <div class="name">支架盖042</div>
-        <div class="code">XHN5261</div>
+        <div class="name">{{ name }}</div>
+        <div class="code">{{ id }}</div>
       </slot>
     </div>
     <div class="state">
@@ -24,6 +24,6 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
 // class 和 id都是从父组件获得的
-const props = defineProps(['className', 'id'])
+const props = defineProps(['className', 'id', 'name'])
 const { className, id } = props
 </script>

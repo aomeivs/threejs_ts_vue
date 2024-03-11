@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-11 09:31:22
+ * @LastEditTime: 2024-03-11 11:00:56
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/HomeView.vue
@@ -121,23 +121,33 @@ const initScrollData = () => {
         <div class="board-container">
           <div class="webgl-view">
             <div class="tips-top">
-              <tips-board id="XHN5261" class="item item-1">
-                <div class="name">支架盖042</div>
-                <div class="code">XHN5261</div>
-              </tips-board>
-              <tips-board id="XHN5262" class="item item-2">
-                <div class="name">支架盖045</div>
-                <div class="code">XHN5262</div>
-              </tips-board>
+              <tips-board id="XHN5261" class="item item-1" name="支架盖042"> </tips-board>
+              <tips-board id="XHN5262" class="item item-2" name="支架盖045"> </tips-board>
+              <tips-board id="XHN5262" class="item item-2" name="支架盖045"> </tips-board>
             </div>
             <div class="tips-bottom">
-              <tips-board id="XHN5263" class="item item-1">
-                <div class="name">支架盖015</div>
-                <div class="code">XHN5263</div>
+              <tips-board id="XHN5263" class="item item-1" name="支架盖015"> </tips-board>
+              <tips-board id="XHN5264" class="item item-2" name="支架盖033"> </tips-board>
+              <tips-board
+                id="XHN5266"
+                class="item"
+                name="支架盖024"
+                :style="{ left: 220 * 2 + 'px' }"
+              >
               </tips-board>
-              <tips-board id="XHN5264" class="item item-2">
-                <div class="name">支架盖033</div>
-                <div class="code">XHN5264</div>
+              <tips-board
+                id="XHN5267"
+                class="item"
+                name="支架盖033"
+                :style="{ left: 220 * 3 + 'px' }"
+              >
+              </tips-board>
+              <tips-board
+                id="XHN5265"
+                class="item"
+                name="支架盖012"
+                :style="{ left: 220 * 4 + 'px' }"
+              >
               </tips-board>
             </div>
             <!-- webgl-container -->
