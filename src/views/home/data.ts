@@ -1,13 +1,14 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-11 09:46:03
- * @LastEditTime: 2024-03-11 09:50:14
+ * @LastEditTime: 2024-03-11 11:28:00
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/data.ts
  * 联系方式:910592680@qq.com
  */
 import type { HtmlMeshCollection } from '@/App'
+import { computed } from 'vue'
 
 export const htmlMeshCollection: HtmlMeshCollection[] = [
   {

@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-11 11:00:56
+ * @LastEditTime: 2024-03-11 12:43:18
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/HomeView.vue
@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { App, show, equipment } from '@/App'
-import TipsBoard from '@/views/home/component/TipsBoard.vue'
+import TipBoard from '@/views/home/component/TipBoard.vue'
 let app: App
 const main = async () => {
   const container = document.getElementById('webgl-container')
@@ -120,7 +120,8 @@ const initScrollData = () => {
         </div>
         <div class="board-container">
           <div class="webgl-view">
-            <div class="tips-top">
+            <tip-board ref="tipBoardRef" :app="app"></tip-board>
+            <!-- <div class="tips-top">
               <tips-board id="XHN5261" class="item item-1" name="支架盖042"> </tips-board>
               <tips-board id="XHN5262" class="item item-2" name="支架盖045"> </tips-board>
               <tips-board id="XHN5262" class="item item-2" name="支架盖045"> </tips-board>
@@ -149,7 +150,7 @@ const initScrollData = () => {
                 :style="{ left: 220 * 4 + 'px' }"
               >
               </tips-board>
-            </div>
+            </div> -->
             <!-- webgl-container -->
             <div class="webgl-container" id="webgl-container"></div>
           </div>

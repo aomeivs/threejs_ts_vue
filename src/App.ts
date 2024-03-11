@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-11 10:43:09
+ * @LastEditTime: 2024-03-11 12:50:44
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -36,11 +36,12 @@ import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 import type { ModelEntity } from '@/components/models/gltf/animal'
 import { createGUI } from './components/helpers/gui'
-import { nextTick, ref } from 'vue'
+import { ref, defineEmits, VueElement } from 'vue'
 import { ViewHelper } from 'three/examples/jsm/Addons.js'
 import useEffectHooks, { type OutlineEffectType } from './components/effect/outline'
 import { htmlMeshCollection } from './views/home/data'
 import TipsBoard from './views/home/component/TipsBoard.vue'
+
 // components
 
 export type Equipment = Partial<{
@@ -62,6 +63,7 @@ let h = 0
 const equipmentMaterialMap = new Map()
 const show = ref(false)
 const equipment = ref<Equipment>({})
+const tipBoardRef = ref()
 export type HtmlMeshCollection = { target: string; meshName: string; position: string }
 //  声明一个 EnumerationModelType
 enum ModelName {
@@ -78,7 +80,7 @@ enum ModelName {
    */
   EQUIPMENT = 'equipment'
 }
-
+const emit = defineEmits(['threeInitialized'])
 class App {
   actions: { [key: string]: AnimationAction }
   model: ModelEntity
@@ -176,6 +178,7 @@ class App {
      * 加载箭头
      */
     this.createArrow()
+    // emit('threeInitialized')
   }
   async createArrow() {
     const pointName = ['支架盖045', '支架盖042', '支架盖039', '支架盖024']
@@ -261,7 +264,7 @@ class App {
   // }
   start() {
     loop.start()
-    this.createLineSVG(htmlMeshCollection)
+    // this.createLineSVG(htmlMeshCollection)
     // updatables.push(this.showLineHTML.bind(this))
   }
   play(actionName: string, play: boolean) {
@@ -285,14 +288,13 @@ class App {
     turbineLabel.visible = show
   }
   // showLineHTML() {
-    
 
   //   // '#line1', '#line3', '#line4'
-   
+
   // }
 
   createLineSVG(targets: HtmlMeshCollection[]) {
-    document.querySelector('#svgContainer')?.remove()
+    // document.querySelector('#svgContainer')?.remove()
     const scale =
       window.innerWidth / window.innerHeight < 1920 / 1080
         ? window.innerWidth / 1920
@@ -311,6 +313,7 @@ class App {
       // const mesh = new Mesh(geometry, material)
       // scene.add(mesh)
       const element = document.querySelector(item.target)!
+      console.log('createLineSVG>>>>>>>', item, element)
       if (!element) return
       const targetRect = element.getBoundingClientRect()
       const svgLine = document.createElementNS(svgNS, 'path')
