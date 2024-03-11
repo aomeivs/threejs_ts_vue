@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-08 17:52:44
+ * @LastEditTime: 2024-03-11 09:25:43
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -297,12 +297,12 @@ class App {
       },
 
       {
-        target: '#line2',
-        meshName: '支架盖1'
+        target: '#XHN5263',
+        meshName: '支架盖015'
       },
       {
-        target: '#line3',
-        meshName: '支架盖024'
+        target: '#XHN5264',
+        meshName: '支架盖033'
       }
     ])
   }

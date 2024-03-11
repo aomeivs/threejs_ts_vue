@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-08 18:01:27
+ * @LastEditTime: 2024-03-11 09:31:22
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/HomeView.vue
@@ -121,41 +121,24 @@ const initScrollData = () => {
         <div class="board-container">
           <div class="webgl-view">
             <div class="tips-top">
-              <tips-board id="XHN5261" class="item item-1"></tips-board>
-              <tips-board id="XHN5262" class="item item-2"></tips-board>
-
-              <!-- <div class="item item-2" id="XHN5262">
-                <div class="line"><div class="icon"></div></div>
-                <div class="device">
-                  <div class="name">支架盖045</div>
-                  <div class="code">XHN5262</div>
-                </div>
-                <div class="state">
-                  <div class="icon"></div>
-                </div>
-              </div> -->
+              <tips-board id="XHN5261" class="item item-1">
+                <div class="name">支架盖042</div>
+                <div class="code">XHN5261</div>
+              </tips-board>
+              <tips-board id="XHN5262" class="item item-2">
+                <div class="name">支架盖045</div>
+                <div class="code">XHN5262</div>
+              </tips-board>
             </div>
             <div class="tips-bottom">
-              <div class="item item-1" id="line3">
-                <div class="line"><div class="icon"></div></div>
-                <div class="device">
-                  <div class="name">水份烘干</div>
-                  <div class="code">XHN5263</div>
-                </div>
-                <div class="state">
-                  <div class="icon"></div>
-                </div>
-              </div>
-              <div class="item item-2" id="line2">
-                <div class="line"><div class="icon"></div></div>
-                <div class="device">
-                  <div class="name">水份烘干2</div>
-                  <div class="code">XHN5263</div>
-                </div>
-                <div class="state">
-                  <div class="icon"></div>
-                </div>
-              </div>
+              <tips-board id="XHN5263" class="item item-1">
+                <div class="name">支架盖015</div>
+                <div class="code">XHN5263</div>
+              </tips-board>
+              <tips-board id="XHN5264" class="item item-2">
+                <div class="name">支架盖033</div>
+                <div class="code">XHN5264</div>
+              </tips-board>
             </div>
             <!-- webgl-container -->
             <div class="webgl-container" id="webgl-container"></div>

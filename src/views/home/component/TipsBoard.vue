@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-08 17:30:37
- * @LastEditTime: 2024-03-08 18:01:23
+ * @LastEditTime: 2024-03-11 09:31:40
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/TipsBoard.vue
@@ -11,8 +11,10 @@
   <div :class="className" :id="id">
     <div class="line"><div class="icon"></div></div>
     <div class="device">
-      <div class="name">支架盖042</div>
-      <div class="code">XHN5261</div>
+      <slot name="default">
+        <div class="name">支架盖042</div>
+        <div class="code">XHN5261</div>
+      </slot>
     </div>
     <div class="state">
       <div class="icon"></div>
