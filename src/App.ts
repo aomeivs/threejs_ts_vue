@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-12 12:34:47
+ * @LastEditTime: 2024-03-12 15:31:05
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -44,6 +44,7 @@ export type Equipment = Partial<{
   userData: any
   date: any
 }>
+const isDEV = import.meta.env.VITE_HOST_DEBUG
 let camera: PerspectiveCamera
 let renderer: WebGLRenderer
 let cssRenderer: CSS2DRenderer
@@ -78,7 +79,7 @@ class App {
     // 控制GUI\STATS
     {
       stats = new Stats()
-      createGUI(this) //.hide()
+      isDEV === '1' && createGUI(this) //.hide()
     }
 
     // scene\camera\renderer\light\helper
@@ -93,14 +94,14 @@ class App {
       const axesHelper = new AxesHelper(5)
       const lightHelper: DirectionalLightHelper[] = []
       directionalLights.forEach((light, index) => {
-        if (index === 0) {
+        if (index === 0 && isDEV === '1') {
           const cameraHelper = new CameraHelper(light.shadow.camera)
           lightHelper.push(new DirectionalLightHelper(light, 0.2))
 
-          scene.add(cameraHelper)
+          scene.add(cameraHelper, axesHelper, ...lightHelper)
         }
       })
-      scene.add(ambientLight, ...directionalLights, axesHelper, ...lightHelper)
+      scene.add(ambientLight, ...directionalLights)
     }
     const viewHelper = new ViewHelper(camera, renderer.domElement)
     Object.assign(viewHelper, { tick: (delta: number) => viewHelper.update(delta) })
@@ -108,9 +109,9 @@ class App {
     // 看向风车位置
     // controls.target.set(0, 1.5, 0)
     // 最好视角
-    controls.target.set(1, -1, 1)
+    controls.target.set(0, 0, 0)
     controls.addEventListener('change', () => {
-      // console.log('change', camera.position, controls.target, camera.quaternion)
+      console.log('change', camera.position)
       count++
       if (count > 1) this.isOrbiting = true
     })
@@ -143,11 +144,12 @@ class App {
       // 模型同步缩放合适尺寸
       if (name == ModelName.FACTORY) {
         model.scale.multiplyScalar(0.03)
-        model.position.set(0, -1, 0)
+        model.position.set(-2, 0, -2)
         scene.add(model)
         // factory 材质设置
         this.initFactory()
       } else {
+        // 发电机模型
         model.scale.multiplyScalar(0.001)
         scene.add(model)
         // equipment 材质设置以及部件存储
@@ -162,7 +164,6 @@ class App {
      * 加载箭头
      */
     this.createArrow()
-    // emit('threeInitialized')
   }
   async createArrow() {
     const pointName = ['支架盖045', '支架盖042', '支架盖039', '支架盖024']
@@ -288,6 +289,7 @@ class App {
       if (!element) return
       const targetRect = element.getBoundingClientRect()
       const svgLine = document.createElementNS(svgNS, 'path')
+      if (!svgLine) return
       svgLine.setAttribute('class', 'pathshadow')
       svgLine.setAttribute('stroke', 'rgb(0, 148, 253)')
       svgLine.setAttribute('stroke-width', '2.5')

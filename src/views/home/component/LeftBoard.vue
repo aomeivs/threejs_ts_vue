@@ -1,4 +1,4 @@
-<!--
+<!-- 输送线速度、工艺温度、设备报警信息
  * @Author: zhou lei
  * @Date: 2024-03-12 13:04:14
  * @LastEditTime: 2024-03-12 13:18:59
@@ -9,26 +9,13 @@
 -->
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-
+import { useHome } from '@/use/useHome'
+const { initScrollData } = useHome()
 const list = ref<any>([])
+
 onMounted(() => {
-  initScrollData()
+  list.value = initScrollData()
 })
-const initScrollData = () => {
-  list.value = []
-  for (let key = 0; key < 10; key++) {
-    list.value.push({
-      id: Date.now(),
-      title:
-        'Vue3.0 无缝滚动组件展示数据第1条无缝滚动组件展示数据第1条无缝滚动组件展示数据第1条'.substr(
-          Math.floor(Math.random() * 12),
-          Math.floor(Math.random() * 30)
-        ),
-      date: '2024-01-01 12:12:00',
-      state: '已处理'
-    })
-  }
-}
 </script>
 <template>
   <div class="board-left">

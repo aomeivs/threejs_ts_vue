@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-30 15:59:40
- * @LastEditTime: 2024-03-08 13:19:44
+ * @LastEditTime: 2024-03-12 15:30:45
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/models/gltf/animal.ts
@@ -42,20 +42,21 @@ const model: ModelEntity = {}
 const loadAnimals = async (loadManager?: LoadingManager): Promise<ModelEntity> => {
   const loader = new GLTFLoader(loadManager)
   loader.setMeshoptDecoder(MeshoptDecoder)
-  const [animalData, equipmentData, factoryData] = await Promise.all([
-    loader.loadAsync(turbine),
-    loader.loadAsync(equipment),
-    loader.loadAsync(factory)
-  ])
-  const turbineModel = setupModel(animalData, 'Anim_0')
-  turbineModel.model.position.set(0, -1, 0)
-  const equipmentModel = { model: equipmentData.scene }
-  equipmentModel.model.position.set(0, -1, 0)
+  // const [animalData, equipmentData, factoryData] = await Promise.all([
+  //   loader.loadAsync(turbine),
+  //   loader.loadAsync(equipment),
+  //   loader.loadAsync(factory)
+  // ])
+  const [factoryData] = await Promise.all([loader.loadAsync(factory)])
+  // const turbineModel = setupModel(animalData, 'Anim_0')
+  // turbineModel.model.position.set(0, -1, 0)
+  // const equipmentModel = { model: equipmentData.scene }
+  // equipmentModel.model.position.set(0, -1, 0)
   const factoryModel = { model: factoryData.scene }
-  factoryModel.model.position.set(0, 1, 0)
+  factoryModel.model.position.set(0, 0, 0)
 
-  model['turbine'] = turbineModel
-  model['equipment'] = equipmentModel
+  // model['turbine'] = turbineModel
+  // model['equipment'] = equipmentModel
   model['factory'] = factoryModel
   return model
 }

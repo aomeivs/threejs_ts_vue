@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 13:48:38
- * @LastEditTime: 2024-03-12 13:54:19
+ * @LastEditTime: 2024-03-12 14:16:56
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/use/useHome.ts
@@ -35,6 +35,7 @@ export const useHome = () => {
   const speedtwovalue = ref(0)
   const speedthreevalue = ref(0)
   const speedfourvalue = ref(0)
+
   const equipmentwarning = async () => {
     const result = await getequipmentwarning()
     //debugger;
@@ -90,5 +91,24 @@ export const useHome = () => {
       console.log('......speedthree', speedthree.value[0].equipmentValue)
     }
   }
-  return { formattedDateTime, equipmentStatus }
+
+  //报警信息接口
+  const initScrollData = () => {
+    const list = []
+    for (let key = 0; key < 10; key++) {
+      list.push({
+        id: Date.now(),
+        title:
+          'Vue3.0 无缝滚动组件展示数据第1条无缝滚动组件展示数据第1条无缝滚动组件展示数据第1条'.substr(
+            Math.floor(Math.random() * 12),
+            Math.floor(Math.random() * 30)
+          ),
+        date: '2024-01-01 12:12:00',
+        state: '已处理'
+      })
+    }
+    return list
+  }
+
+  return { formattedDateTime, equipmentStatus, initScrollData }
 }
