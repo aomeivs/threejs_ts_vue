@@ -1,5 +1,14 @@
 <!--
  * @Author: zhou lei
+ * @Date: 2024-03-12 09:20:35
+ * @LastEditTime: 2024-03-12 15:51:44
+ * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @Description: Description
+ * @FilePath: /vue3_ts_three/src/views/home/component/TipBoard.vue
+ * 联系方式:910592680@qq.com
+-->
+<!-- tipBoard
+ * @Author: zhou lei
  * @Date: 2024-03-11 11:16:21
  * @LastEditTime: 2024-03-12 12:32:56
  * @LastEditors: zhoulei zhoulei@kehaida.com
@@ -26,7 +35,7 @@ defineExpose({ init })
       :key="item.target"
       :id="item.target"
       class="item"
-      :name="item.meshName"
+      :name="item.alias"
       :style="{ left: 220 * index + 'px' }"
     >
     </tip-item>
@@ -37,7 +46,7 @@ defineExpose({ init })
       :key="item.target"
       :id="item.target"
       class="item"
-      :name="item.meshName"
+      :name="item.alias"
       :style="{ left: 220 * index + 'px' }"
     >
     </tip-item>

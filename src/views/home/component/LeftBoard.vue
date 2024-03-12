@@ -8,13 +8,18 @@
  * 联系方式:910592680@qq.com
 -->
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useHome } from '@/use/useHome'
 const { initScrollData } = useHome()
 const list = ref<any>([])
-
+const interval = setInterval(() => {
+  list.value = initScrollData()
+}, 5000)
 onMounted(() => {
   list.value = initScrollData()
+})
+onUnmounted(() => {
+  clearInterval(interval)
 })
 </script>
 <template>

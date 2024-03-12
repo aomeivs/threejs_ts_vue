@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-12 15:31:05
+ * @LastEditTime: 2024-03-12 15:50:41
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -41,6 +41,7 @@ import useEffectHooks, { type OutlineEffectType } from './components/effect/outl
 
 export type Equipment = Partial<{
   name: string
+  alias: string
   userData: any
   date: any
 }>
@@ -59,7 +60,12 @@ let h = 0
 const equipmentMaterialMap = new Map()
 const show = ref(false)
 const equipment = ref<Equipment>({})
-export type HtmlMeshCollection = { target: string; meshName: string; position: string }
+export type HtmlMeshCollection = {
+  target: string
+  meshName: string
+  alias: string
+  position: string
+}
 //  声明一个 EnumerationModelType
 enum ModelName {
   FACTORY = 'factory', // 工厂模型
