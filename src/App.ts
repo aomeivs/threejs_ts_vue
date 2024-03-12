@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-11 12:50:44
+ * @LastEditTime: 2024-03-12 12:34:47
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -11,7 +11,7 @@ import { createCSS2Renderer, createRenderer } from './components/helpers/rendere
 import { createScene } from './components/helpers/scene'
 import { creatControls } from './components/helpers/controls'
 import { createLights } from './components/helpers/lights'
-import { Resizer, updatables } from './components/helpers/Resizer'
+import { Resizer } from './components/helpers/Resizer'
 import {
   type AnimationAction,
   type PerspectiveCamera,
@@ -26,7 +26,6 @@ import {
   Vector3,
   CameraHelper
 } from 'three'
-// import { createCube } from './components/models/cube'
 import { Loop } from './components/helpers/Loop'
 import { loadAnimals, loadArrow, loadBackground } from './components/models/gltf/animal'
 import { loadingManager } from './components/helpers/loadingManager'
@@ -36,13 +35,9 @@ import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 import type { ModelEntity } from '@/components/models/gltf/animal'
 import { createGUI } from './components/helpers/gui'
-import { ref, defineEmits, VueElement, nextTick } from 'vue'
+import { ref } from 'vue'
 import { ViewHelper } from 'three/examples/jsm/Addons.js'
 import useEffectHooks, { type OutlineEffectType } from './components/effect/outline'
-import { htmlMeshCollection } from './views/home/data'
-import TipsBoard from './views/home/component/TipsBoard.vue'
-
-// components
 
 export type Equipment = Partial<{
   name: string
@@ -63,24 +58,13 @@ let h = 0
 const equipmentMaterialMap = new Map()
 const show = ref(false)
 const equipment = ref<Equipment>({})
-const tipBoardRef = ref()
 export type HtmlMeshCollection = { target: string; meshName: string; position: string }
 //  声明一个 EnumerationModelType
 enum ModelName {
-  /**
-   * 工厂模型
-   */
-  FACTORY = 'factory',
-  /**
-   * 风车
-   */
-  TURBINE = 'turbine',
-  /**
-   * 设备
-   */
-  EQUIPMENT = 'equipment'
+  FACTORY = 'factory', // 工厂模型
+  TURBINE = 'turbine', // 风车
+  EQUIPMENT = 'equipment' // 设备
 }
-const emit = defineEmits(['threeInitialized'])
 class App {
   actions: { [key: string]: AnimationAction }
   model: ModelEntity
@@ -172,8 +156,8 @@ class App {
         this.initTurbine()
       }
     })
-    this.createTurbineLabel('#css2object')
-    this.onPointerClick(ModelName.FACTORY)
+    // this.createTurbineLabel('#css2object')
+
     /**
      * 加载箭头
      */
@@ -264,8 +248,6 @@ class App {
   // }
   start() {
     loop.start()
-    //sthis.createLineSVG(htmlMeshCollection)
-     //updatables.push(this.showLineHTML.bind(this))
   }
   play(actionName: string, play: boolean) {
     const action = this.actions[actionName]
@@ -287,14 +269,9 @@ class App {
   showTurbineLabel(show: boolean) {
     turbineLabel.visible = show
   }
-  // showLineHTML() {
-
-  //   // '#line1', '#line3', '#line4'
-
-  // }
 
   createLineSVG(targets: HtmlMeshCollection[]) {
-    // document.querySelector('#svgContainer')?.remove()
+    document.querySelector('#svgContainer')?.remove()
     const scale =
       window.innerWidth / window.innerHeight < 1920 / 1080
         ? window.innerWidth / 1920
@@ -305,17 +282,9 @@ class App {
     svgContainer.setAttribute('id', 'svgContainer')
     svgContainer.setAttribute('width', '100%')
     svgContainer.setAttribute('height', '100%')
-console.log('scene',scene);
-console.log('this.model',this.model[ModelName.FACTORY].model)
     targets.forEach((item: HtmlMeshCollection) => {
       const mesh = scene.getObjectByName(item.meshName) as Mesh
-      // const geometry = new BoxGeometry()
-      // const material = new MeshBasicMaterial({ color: 0x00ff00 })
-      // const mesh = new Mesh(geometry, material)
-      // scene.add(mesh)
-      nextTick(() => {
-      const element = document.querySelector('#'+item.target)!
-      console.log('createLineSVG>>>>>>>', item, element)
+      const element = document.querySelector('#' + item.target)!
       if (!element) return
       const targetRect = element.getBoundingClientRect()
       const svgLine = document.createElementNS(svgNS, 'path')
@@ -348,13 +317,12 @@ console.log('this.model',this.model[ModelName.FACTORY].model)
             const midX = (screenX + targetX) / 2
             const midY = (screenY + targetY) / 2
             //  L ${midX} ${midY}
-             //const path = `M ${screenX} ${screenY} L ${targetX} ${midY} L ${targetX} ${targetY}`
+            //const path = `M ${screenX} ${screenY} L ${targetX} ${midY} L ${targetX} ${targetY}`
             const path = `M ${screenX} ${screenY} L ${midX} ${midY}  L ${targetX} ${midY} L ${targetX} ${targetY}`
 
             svgLine.setAttribute('d', path)
           }
         })
-      })
       loop.updatables.push(mesh)
     })
     // this.container.appendChild()
@@ -456,6 +424,7 @@ console.log('this.model',this.model[ModelName.FACTORY].model)
       console.log('label.element.addEventListener("click')
     })
     scene.add(turbineLabel)
+    this.onPointerClick(ModelName.FACTORY)
   }
 }
 export { App, show, equipment }

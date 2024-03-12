@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-11 12:43:18
+ * @LastEditTime: 2024-03-12 12:33:50
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/HomeView.vue
@@ -11,16 +11,29 @@
 import { onMounted, ref } from 'vue'
 import { App, show, equipment } from '@/App'
 import TipBoard from '@/views/home/component/TipBoard.vue'
+import CssBoard from '@/views/home/component/CssBoard.vue'
+
 import { getequipmentwarning, getequipmentStatus } from '@/api/factory'
 let app: App
+
+export interface TipBoardHTMLElement extends HTMLElement {
+  init: (app:App) => void
+}
+export interface CssBoardHTMLElement extends HTMLElement {
+  init: (app:App) => void
+}
+const tipBoardRef = ref<TipBoardHTMLElement | null>(null)
+const cssBorderRef = ref<CssBoardHTMLElement | null>(null)
+
 const main = async () => {
   const container = document.getElementById('webgl-container')
-  // const css2container = document.getElementById('css2object')
   app = new App(container!)
   await app.init()
   app.start()
+  tipBoardRef.value!.init(app)
+  cssBorderRef.value!.init(app)
 }
-onMounted(async () => {
+onMounted(() => {
   initScrollData()
   main()
 })
@@ -42,19 +55,19 @@ const initScrollData = () => {
 }
 
 // Get the individual date and time components
-const currentDate = new Date();
-const year = currentDate.getFullYear();
-const month = String(currentDate.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so we add 1
-const day = String(currentDate.getDate()).padStart(2, '0');
-const hours = String(currentDate.getHours()).padStart(2, '0');
-const minutes = String(currentDate.getMinutes()).padStart(2, '0');
+const currentDate = new Date()
+const year = currentDate.getFullYear()
+const month = String(currentDate.getMonth() + 1).padStart(2, '0') // Months are zero-based, so we add 1
+const day = String(currentDate.getDate()).padStart(2, '0')
+const hours = String(currentDate.getHours()).padStart(2, '0')
+const minutes = String(currentDate.getMinutes()).padStart(2, '0')
 
 // Format the date and time in the desired format
-const formattedDateTime = `${year}.${month}.${day} ${hours}:${minutes}`;
+const formattedDateTime = `${year}.${month}.${day} ${hours}:${minutes}`
 
 //请求数据
-const inThoseDays: number = ref(0)
-const theSameMonth: number = ref(0)
+const inThoseDays = ref<number>(0)
+const theSameMonth = ref<number>(0)
 const tableData = ref([])
 const originalArray = ref([])
 const extractedArray = ref([])
@@ -65,7 +78,7 @@ const speedfour = ref([])
 const speedonevalue = ref(0)
 const speedtwovalue = ref(0)
 const speedthreevalue = ref(0)
-const speedfourvalue = ref(0);
+const speedfourvalue = ref(0)
 const equipmentwarning = async () => {
   const result = await getequipmentwarning()
   //debugger;
@@ -74,17 +87,17 @@ const equipmentwarning = async () => {
   const inThoseDaysvalue = result?.inThoseDays
   const theSameMonthvalue = result?.theSameMonth
   if (data) {
-    tableData.value = data;
-    tableData.value.forEach(item => {
-    // Create a new Date object from the createTime string
-    const date = new Date(item.createTime);
-    
-    // Format the date and time to "YYYY-MM-DD HH:MM:SS" format
-    const formattedDateTime = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`;
-    
-    // Update the createTime property in the item with the formatted date and time
-    item.createTime = formattedDateTime;
-});
+    tableData.value = data
+    tableData.value.forEach((item) => {
+      // Create a new Date object from the createTime string
+      const date = new Date(item.createTime)
+
+      // Format the date and time to "YYYY-MM-DD HH:MM:SS" format
+      const formattedDateTime = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`
+
+      // Update the createTime property in the item with the formatted date and time
+      item.createTime = formattedDateTime
+    })
   }
   if (inThoseDaysvalue) {
     inThoseDays.value = inThoseDaysvalue
@@ -104,11 +117,11 @@ const equipmentStatus = async () => {
     speedtwo.value = data.filter((item) => item.equipmentCode === 'L4XSD')
     speedone.value = 12
     speedthree.value = data.filter((item) => item.equipmentCode === 'TC1FFSD')
-    speedfour.value = data.filter((item) => item.equipmentCode === 'TC2FFSD');
-    speedonevalue.value = 12/13*100;
-    speedtwovalue.value = parseFloat(speedtwo.value[0].equipmentValue)/13*100;
-    speedthreevalue.value = parseFloat(speedthree.value[0].equipmentValue)/13*100;
-    speedfourvalue.value = parseFloat(speedfour.value[0].equipmentValue)/13*100;
+    speedfour.value = data.filter((item) => item.equipmentCode === 'TC2FFSD')
+    speedonevalue.value = (12 / 13) * 100
+    speedtwovalue.value = (parseFloat(speedtwo.value[0].equipmentValue) / 13) * 100
+    speedthreevalue.value = (parseFloat(speedthree.value[0].equipmentValue) / 13) * 100
+    speedfourvalue.value = (parseFloat(speedfour.value[0].equipmentValue) / 13) * 100
     console.log('......speedthree', speedthree.value[0].equipmentValue)
   }
 }
@@ -120,7 +133,7 @@ const equipmentStatus = async () => {
     <div class="bg-border">
       <div class="header">
         <div class="title">科维智能电控可视化</div>
-        <div class="time">{{formattedDateTime}}</div>
+        <div class="time">{{ formattedDateTime }}</div>
       </div>
       <div class="board">
         <div class="board-left">
@@ -196,36 +209,6 @@ const equipmentStatus = async () => {
         <div class="board-container">
           <div class="webgl-view">
             <tip-board ref="tipBoardRef" :app="app"></tip-board>
-            <!-- <div class="tips-top">
-              <tips-board id="XHN5261" class="item item-1" name="支架盖042"> </tips-board>
-              <tips-board id="XHN5262" class="item item-2" name="支架盖045"> </tips-board>
-              <tips-board id="XHN5262" class="item item-2" name="支架盖045"> </tips-board>
-            </div>
-            <div class="tips-bottom">
-              <tips-board id="XHN5263" class="item item-1" name="支架盖015"> </tips-board>
-              <tips-board id="XHN5264" class="item item-2" name="支架盖033"> </tips-board>
-              <tips-board
-                id="XHN5266"
-                class="item"
-                name="支架盖024"
-                :style="{ left: 220 * 2 + 'px' }"
-              >
-              </tips-board>
-              <tips-board
-                id="XHN5267"
-                class="item"
-                name="支架盖033"
-                :style="{ left: 220 * 3 + 'px' }"
-              >
-              </tips-board>
-              <tips-board
-                id="XHN5265"
-                class="item"
-                name="支架盖012"
-                :style="{ left: 220 * 4 + 'px' }"
-              >
-              </tips-board>
-            </div> -->
             <!-- webgl-container -->
             <div class="webgl-container" id="webgl-container"></div>
           </div>
@@ -243,16 +226,7 @@ const equipmentStatus = async () => {
       </div>
     </div>
   </div>
-  <div class="css2object" id="css2object" v-show="show">
-    <div>
-      <div>设备名:{{ equipment.name }}</div>
-      <div>编号{{ equipment.userData }}</div>
-      <div>温度</div>
-      <div>状态{{}}</div>
-      <div>运行时间{{ equipment.date }}</div>
-    </div>
-    <div class="triangle"></div>
-  </div>
+  <css-board ref="cssBorderRef" :app="app" :equipment="equipment" v-show="show"></css-board>
 </template>
 <style lang="scss" scoped>
 @import './HomeView.scss';

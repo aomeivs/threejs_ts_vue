@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-06 15:01:10
+ * @LastEditTime: 2024-03-12 10:22:38
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/main.ts
@@ -23,6 +23,6 @@ const app = createApp(App)
 app.use(createPinia())
 app.use(router)
 app.use(ElementPlus)
-app.use(DataVVue3)
+app.use(DataVVue3) //测试使用
 app.use(vue3SeamlessScroll)
 app.mount('#app')
