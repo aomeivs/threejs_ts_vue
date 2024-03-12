@@ -191,6 +191,23 @@
           height: 600px;
           margin-top: 40px;
           position: relative;
+          .camera {
+            position: absolute;
+            right: 0;
+            z-index: 1;
+            cursor: pointer;
+            & > div {
+              pointer-events:fill;
+              width: 64px;
+              border: 1px solid #00000033;
+              text-align: center;
+              background-color: #00b1ff33;
+              &:hover {
+                transition: 0.2s;
+                background: #00b1ffdd;
+              }
+            }
+          }
           .webgl-container {
             width: 1340px;
             height: 600px;

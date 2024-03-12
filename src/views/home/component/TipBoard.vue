@@ -1,12 +1,3 @@
-<!--
- * @Author: zhou lei
- * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-12 15:51:44
- * @LastEditors: zhoulei zhoulei@kehaida.com
- * @Description: Description
- * @FilePath: /vue3_ts_three/src/views/home/component/TipBoard.vue
- * 联系方式:910592680@qq.com
--->
 <!-- tipBoard
  * @Author: zhou lei
  * @Date: 2024-03-11 11:16:21
@@ -20,18 +11,24 @@
 import TipItem from './TipItem.vue'
 import { getTipsBoard, htmlMeshCollection } from '../data'
 import { App } from '@/App'
-import { defineExpose } from 'vue'
+import { defineExpose, computed } from 'vue'
 
 const init = (app: App) => {
   app.createLineSVG(htmlMeshCollection)
 }
+const getTipsBoardTop = computed(() => {
+  return getTipsBoard(`top`)
+})
+const getTipsBoardBottom = computed(() => {
+  return getTipsBoard(`bottom`)
+})
 defineExpose({ init })
 </script>
 
 <template>
   <div class="tips-top">
     <tip-item
-      v-for="(item, index) in getTipsBoard(`top`)"
+      v-for="(item, index) in getTipsBoardTop"
       :key="item.target"
       :id="item.target"
       class="item"
@@ -42,7 +39,7 @@ defineExpose({ init })
   </div>
   <div class="tips-bottom">
     <tip-item
-      v-for="(item, index) in getTipsBoard(`bottom`)"
+      v-for="(item, index) in getTipsBoardBottom"
       :key="item.target"
       :id="item.target"
       class="item"

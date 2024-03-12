@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-12 15:50:41
+ * @LastEditTime: 2024-03-12 17:17:02
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -31,7 +31,7 @@ import { loadAnimals, loadArrow, loadBackground } from './components/models/gltf
 import { loadingManager } from './components/helpers/loadingManager'
 // 调试工具
 import Stats from 'three/examples/jsm/libs/stats.module.js'
-
+import * as TWEEN from '@tweenjs/tween.js'
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 import type { ModelEntity } from '@/components/models/gltf/animal'
 import { createGUI } from './components/helpers/gui'
@@ -125,6 +125,7 @@ class App {
     container.appendChild(renderer.domElement)
     container.appendChild(stats.dom)
     loop = new Loop(camera, scene, renderer, cssRenderer, stats, viewHelper)
+
     outline = useEffectHooks(renderer, scene, camera).outlineEffect([])
     //this.outline([])
     // loop.updatables.push(controls)
@@ -137,6 +138,7 @@ class App {
     }
   }
   async init() {
+    loop.updatables.push(TWEEN)
     await loadBackground(scene)
     // const { scene: animalScene, action } = await loadAnimals(loadingManager)
     this.model = await loadAnimals(loadingManager)
@@ -435,4 +437,4 @@ class App {
     this.onPointerClick(ModelName.FACTORY)
   }
 }
-export { App, show, equipment }
+export { App, show, equipment, camera, TWEEN }

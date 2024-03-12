@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 17:26:42
- * @LastEditTime: 2024-03-08 16:23:44
+ * @LastEditTime: 2024-03-12 17:16:49
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/Loop.ts
  * 联系方式:910592680@qq.com
@@ -52,7 +52,11 @@ class Loop {
   tick() {
     const delta = clock.getDelta()
     for (const object of this.updatables) {
-      object && object.tick && object.tick(delta)
+      if (object.update) {
+        object.update()
+      } else {
+        object && object.tick && object.tick(delta)
+      }
     }
   }
 }

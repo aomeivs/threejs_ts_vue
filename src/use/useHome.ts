@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 13:48:38
- * @LastEditTime: 2024-03-12 14:16:56
+ * @LastEditTime: 2024-03-12 17:39:28
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/use/useHome.ts
@@ -9,6 +9,7 @@
  */
 import { getequipmentStatus, getequipmentwarning } from '@/api/factory'
 import { ref } from 'vue'
+import { TWEEN,camera } from '@/App'
 export const useHome = () => {
   // Get the individual date and time components
   const currentDate = new Date()
@@ -109,6 +110,26 @@ export const useHome = () => {
     }
     return list
   }
+  const rotatCamera = (type: number) => {
+    const initialPosition = {
+      x: camera.position.x,
+      y: camera.position.y,
+      z: camera.position.z
+    }
 
-  return { formattedDateTime, equipmentStatus, initScrollData }
+    const targetPosition: any = {
+      1: { x: 0, y: 13, z: 9 },
+      2: { x: 0, y: 18, z: 0 },
+      3: { x: -10, y: 10, z: 10 }
+    }
+
+    new TWEEN.Tween(initialPosition)
+      .to(targetPosition[type], 800)
+      .onUpdate((obj) => {
+        camera.position.set(obj.x, obj.y, obj.z)
+      })
+      .start()
+  }
+
+  return { formattedDateTime, equipmentStatus, initScrollData, rotatCamera }
 }
