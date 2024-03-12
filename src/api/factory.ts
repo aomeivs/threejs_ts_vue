@@ -6,12 +6,12 @@ export const deviceList = () => {
 }
 enum Api {
   equipmentStatus = '/api/wcs/ReceiveProdPlan/equipmentStatus',
-  equipmentwarning = '/api/wcs/ReceiveProdPlan/equipmentwarning',
+  equipmentwarning = '/api/wcs/ReceiveProdPlan/equipmentwarning'
 }
 
-export const getequipmentStatus = (data:{}) => {
-  return defHttp.post({url:'/api/wcs/ReceiveProdPlan/equipmentStatus'},data)
+export const getequipmentStatus = (data?: {}) => {
+  return defHttp.post({ url: '/api/wcs/ReceiveProdPlan/equipmentStatus' }, data)
 }
-export const getequipmentwarning = (data:{}) => {
-  return defHttp.post({url:'/api/wcs/ReceiveProdPlan/equipmentwarning'},data)
+export const getequipmentwarning = (data?: {}) => {
+  return defHttp.post({ url: '/api/wcs/ReceiveProdPlan/equipmentwarning' }, data)
 }

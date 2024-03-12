@@ -1,9 +1,22 @@
+/*
+ * @Author: zhou lei
+ * @Date: 2024-01-29 10:38:55
+ * @LastEditTime: 2024-03-12 13:07:55
+ * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @Description: Description
+ * @FilePath: /vue3_ts_three/.eslintrc.cjs
+ * 联系方式:910592680@qq.com
+ */
 /* eslint-env node */
 require('@rushstack/eslint-patch/modern-module-resolution')
 
 module.exports = {
   root: true,
-  'extends': [
+  rules: {
+    // 关闭名称校验
+    // "vue/multi-word-component-names": "off",
+  },
+  extends: [
     'plugin:vue/vue3-essential',
     'eslint:recommended',
     '@vue/eslint-config-typescript',

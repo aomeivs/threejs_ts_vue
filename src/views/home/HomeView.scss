@@ -10,35 +10,37 @@
     width: 1890px;
     height: 1072px;
     background-size: contain;
-    .title {
-      font-weight: 500;
-      font-size: 38px;
-      color: #f3f7ff;
-      line-height: 53px;
-      letter-spacing: 1px;
-      text-shadow: 0px 2px 17px rgba(255, 255, 255, 0.25);
-      text-align: center;
-      font-style: normal;
-      text-align: center;
-      margin-top: 5px;
-    }
-    .time {
-      position: absolute;
-      height: 28px;
-      font-weight: 500;
-      font-size: 20px;
-      color: #ffffff;
-      line-height: 28px;
-      text-align: center;
-      font-style: normal;
-      right: 64px;
-      top: 12px;
-      text-align: right;
+    :deep(.header) {
+      .title {
+        font-weight: 500;
+        font-size: 38px;
+        color: #f3f7ff;
+        line-height: 53px;
+        letter-spacing: 1px;
+        text-shadow: 0px 2px 17px rgba(255, 255, 255, 0.25);
+        text-align: center;
+        font-style: normal;
+        text-align: center;
+        margin-top: 5px;
+      }
+      .time {
+        position: absolute;
+        height: 28px;
+        font-weight: 500;
+        font-size: 20px;
+        color: #ffffff;
+        line-height: 28px;
+        text-align: center;
+        font-style: normal;
+        right: 64px;
+        top: 12px;
+        text-align: right;
+      }
     }
 
     .board {
       display: flex;
-      .board-left {
+      :deep(.board-left) {
         margin-left: 45px;
         width: 420px;
         .board-item {
@@ -261,7 +263,7 @@
             }
           }
         }
-        .device-status {
+        :deep(.device-status) {
           width: 1284px;
           .board-item {
             &-title {

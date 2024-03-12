@@ -1,7 +1,16 @@
 <!--
  * @Author: zhou lei
+ * @Date: 2024-03-12 09:20:35
+ * @LastEditTime: 2024-03-12 14:01:51
+ * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @Description: Description
+ * @FilePath: /vue3_ts_three/src/views/home/HomeView.vue
+ * 联系方式:910592680@qq.com
+-->
+<!--
+ * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-12 12:33:50
+ * @LastEditTime: 2024-03-12 13:35:09
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/HomeView.vue
@@ -9,224 +18,46 @@
 -->
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
-import { App, show, equipment } from '@/App'
 import TipBoard from '@/views/home/component/TipBoard.vue'
 import CssBoard from '@/views/home/component/CssBoard.vue'
+import LeftBoard from './component/LeftBoard.vue'
+import BottomBoard from './component/BottomBoard.vue'
+import headerBoard from './component/headerBoard.vue'
+import { App, show, equipment } from '@/App'
 
-import { getequipmentwarning, getequipmentStatus } from '@/api/factory'
-let app: App
-
-export interface TipBoardHTMLElement extends HTMLElement {
-  init: (app:App) => void
-}
-export interface CssBoardHTMLElement extends HTMLElement {
-  init: (app:App) => void
-}
-const tipBoardRef = ref<TipBoardHTMLElement | null>(null)
-const cssBorderRef = ref<CssBoardHTMLElement | null>(null)
+const tipBoardRef = ref<InstanceType<typeof TipBoard> | null>(null)
+const cssBorderRef = ref<InstanceType<typeof CssBoard> | null>(null)
 
 const main = async () => {
   const container = document.getElementById('webgl-container')
-  app = new App(container!)
-  await app.init()
-  app.start()
-  tipBoardRef.value!.init(app)
-  cssBorderRef.value!.init(app)
+  const app = new App(container!) // 场景初始化
+  await app.init() // 加载初始化
+  app.start() // 循环渲染
+  tipBoardRef.value!.init(app) // 初始化设备连线板
+  cssBorderRef.value!.init(app) // 初始化点击提示板
 }
 onMounted(() => {
-  initScrollData()
   main()
 })
-const list = ref<any>([])
-const initScrollData = () => {
-  list.value = []
-  for (let key = 0; key < 10; key++) {
-    list.value.push({
-      id: Date.now(),
-      title:
-        'Vue3.0 无缝滚动组件展示数据第1条无缝滚动组件展示数据第1条无缝滚动组件展示数据第1条'.substr(
-          Math.floor(Math.random() * 12),
-          Math.floor(Math.random() * 30)
-        ),
-      date: '2024-01-01 12:12:00',
-      state: '已处理'
-    })
-  }
-}
-
-// Get the individual date and time components
-const currentDate = new Date()
-const year = currentDate.getFullYear()
-const month = String(currentDate.getMonth() + 1).padStart(2, '0') // Months are zero-based, so we add 1
-const day = String(currentDate.getDate()).padStart(2, '0')
-const hours = String(currentDate.getHours()).padStart(2, '0')
-const minutes = String(currentDate.getMinutes()).padStart(2, '0')
-
-// Format the date and time in the desired format
-const formattedDateTime = `${year}.${month}.${day} ${hours}:${minutes}`
-
-//请求数据
-const inThoseDays = ref<number>(0)
-const theSameMonth = ref<number>(0)
-const tableData = ref([])
-const originalArray = ref([])
-const extractedArray = ref([])
-const speedone = ref(0)
-const speedtwo = ref([])
-const speedthree = ref([])
-const speedfour = ref([])
-const speedonevalue = ref(0)
-const speedtwovalue = ref(0)
-const speedthreevalue = ref(0)
-const speedfourvalue = ref(0)
-const equipmentwarning = async () => {
-  const result = await getequipmentwarning()
-  //debugger;
-  console.log('数据', result?.inThoseDays)
-  const data = result?.getequipmentWarningRTs
-  const inThoseDaysvalue = result?.inThoseDays
-  const theSameMonthvalue = result?.theSameMonth
-  if (data) {
-    tableData.value = data
-    tableData.value.forEach((item) => {
-      // Create a new Date object from the createTime string
-      const date = new Date(item.createTime)
-
-      // Format the date and time to "YYYY-MM-DD HH:MM:SS" format
-      const formattedDateTime = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')} ${String(date.getHours()).padStart(2, '0')}:${String(date.getMinutes()).padStart(2, '0')}:${String(date.getSeconds()).padStart(2, '0')}`
-
-      // Update the createTime property in the item with the formatted date and time
-      item.createTime = formattedDateTime
-    })
-  }
-  if (inThoseDaysvalue) {
-    inThoseDays.value = inThoseDaysvalue
-  }
-  if (theSameMonthvalue) {
-    theSameMonth.value = theSameMonthvalue
-  }
-}
-const equipmentStatus = async () => {
-  const result = await getequipmentStatus()
-  const data = result?.getequipmentStatusRTs
-  let bianmacode = ['ZTZSW', 'SFHGLW', 'YTZSW', 'GHL2SW', 'GHL1SW']
-  let bianmacode2 = ['ZTZSW', 'SFHGLW', 'YTZSW', 'GHL2SW', 'GHL1SW', 'TC2FFSD', 'L4XSD', 'TC1FFSD']
-  if (data) {
-    extractedArray.value = data.filter((item) => bianmacode.includes(item.equipmentCode))
-    originalArray.value = data.filter((item) => !bianmacode2.includes(item.equipmentCode))
-    speedtwo.value = data.filter((item) => item.equipmentCode === 'L4XSD')
-    speedone.value = 12
-    speedthree.value = data.filter((item) => item.equipmentCode === 'TC1FFSD')
-    speedfour.value = data.filter((item) => item.equipmentCode === 'TC2FFSD')
-    speedonevalue.value = (12 / 13) * 100
-    speedtwovalue.value = (parseFloat(speedtwo.value[0].equipmentValue) / 13) * 100
-    speedthreevalue.value = (parseFloat(speedthree.value[0].equipmentValue) / 13) * 100
-    speedfourvalue.value = (parseFloat(speedfour.value[0].equipmentValue) / 13) * 100
-    console.log('......speedthree', speedthree.value[0].equipmentValue)
-  }
-}
-// equipmentwarning()
-// equipmentStatus()
 </script>
 <template>
   <div class="bg">
     <div class="bg-border">
-      <div class="header">
-        <div class="title">科维智能电控可视化</div>
-        <div class="time">{{ formattedDateTime }}</div>
-      </div>
+      <header-board></header-board>
       <div class="board">
-        <div class="board-left">
-          <div class="board-item">
-            <div class="board-item-title">输送线速度</div>
-            <div class="board-item-value speed" style="height: 310px">
-              <!-- speed -->
-              <div v-for="n in 4" :key="n" class="item">
-                <div class="no">
-                  <div class="icon">{{ n }}</div>
-                </div>
-                <div class="line-container">
-                  <div class="labels">
-                    <div class="name">循环风机{{ n }}</div>
-                    <div class="value">32432</div>
-                    <div class="unit">辆/时</div>
-                  </div>
-                  <div class="progress-bar">
-                    <el-progress
-                      color="#3E90F8"
-                      :percentage="50"
-                      :striped="true"
-                      :striped-flow="true"
-                      >{{
-                    }}</el-progress>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="board-item">
-            <div class="board-item-title">工艺温度</div>
-            <div class="board-item-value temperature" style="height: 200px">
-              <!-- 温度 -->
-              <div v-for="n in 6" :key="n" class="item">
-                <div>循环风机</div>
-                <div>20.0°C</div>
-              </div>
-            </div>
-          </div>
-          <div class="board-item">
-            <div class="board-item-title">设备报警信息</div>
-            <div class="device-total">
-              <div class="total-item">
-                <div class="txt">本月报警数量</div>
-                <div class="num">10</div>
-              </div>
-              <div class="total-item">
-                <div class="txt">全年报警数量</div>
-                <div class="num">10</div>
-              </div>
-            </div>
-            <div class="board-item-value" style="height: 200px">
-              <div class="table-head">
-                <div>报警内容</div>
-                <div>报警时间</div>
-                <div>状态</div>
-                <div>操作</div>
-              </div>
-              <vue3-seamless-scroll v-if="list" :list="list" :step="0.4" class="scroll">
-                <div class="item" v-for="(item, index) in list" :key="index">
-                  <div>{{ item.title }}</div>
-                  <div>{{ item.date }}</div>
-                  <div>{{ item.state }}</div>
-                  <div @click="console.log(item.id)">
-                    <span class="btn">查看</span>
-                  </div>
-                </div>
-              </vue3-seamless-scroll>
-            </div>
-          </div>
-        </div>
+        <left-board></left-board>
         <div class="board-container">
           <div class="webgl-view">
-            <tip-board ref="tipBoardRef" :app="app"></tip-board>
+            <tip-board ref="tipBoardRef"></tip-board>
             <!-- webgl-container -->
             <div class="webgl-container" id="webgl-container"></div>
           </div>
-
-          <div class="board-item device-status">
-            <div class="board-item-title">设备状态</div>
-            <div class="board-item-value">
-              <div v-for="n in 52" :key="n" class="device-status-item">
-                <div class="icon" :class="{ online: n % 2 }"></div>
-                <div class="name">循环风机</div>
-              </div>
-            </div>
-          </div>
+          <bottom-board></bottom-board>
         </div>
       </div>
     </div>
   </div>
-  <css-board ref="cssBorderRef" :app="app" :equipment="equipment" v-show="show"></css-board>
+  <css-board ref="cssBorderRef" :equipment="equipment" v-show="show"></css-board>
 </template>
 <style lang="scss" scoped>
 @import './HomeView.scss';
