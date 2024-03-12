@@ -42,7 +42,7 @@ const props = defineProps({
   }
 })
 const init = () => {
-  props.app?.createLineSVG(htmlMeshCollection)
+  props.app?.createLineSVG(htmlMeshCollection);
 }
 // watch(
 //   () => props.app,
@@ -51,6 +51,7 @@ const init = () => {
 //   }
 // )
 onMounted(() => {
+  
   setTimeout(() => {
     init()
   }, 1000)

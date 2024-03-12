@@ -30,7 +30,7 @@ export default ({ command, mode }: { command: string; mode: any }) => {
       // 反向代理设置
       proxy: {
         '/api': {
-          target: env.VITE_HOST_URL,
+          target: env.VITE_HOST_URL,//'http://192.168.0.7:5001'
           changeOrigin: true,
           ws: true,
           rewrite: (path) => path.replace(new RegExp(`^/api`), '')

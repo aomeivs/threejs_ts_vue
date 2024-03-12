@@ -12,38 +12,38 @@ import { computed } from 'vue'
 
 export const htmlMeshCollection: HtmlMeshCollection[] = [
   {
-    target: '#XHN5261',
-    meshName: '支架盖042',
+    target: 'XHN5261',
+    meshName: '抛丸除尘',
     position: 'top'
   },
   {
-    target: '#XHN5262',
-    meshName: '支架盖045',
+    target: 'XHN5262',
+    meshName: '粉末固化炉',
     position: 'top'
   },
 
   {
-    target: '#XHN5263',
-    meshName: '支架盖015',
+    target: 'XHN5263',
+    meshName: '自动喷房',
     position: 'bottom'
   },
   {
-    target: '#XHN5264',
-    meshName: '支架盖033',
+    target: 'XHN5264',
+    meshName: '烘干机',
     position: 'bottom'
   },
   {
-    target: '#XHN5265',
-    meshName: '支架盖012',
+    target: 'XHN5265',
+    meshName: '吹水机',
     position: 'bottom'
   },
   {
-    target: '#XHN5266',
-    meshName: '支架盖024',
+    target: 'XHN5266',
+    meshName: '冷却机',
     position: 'bottom'
   },
   {
-    target: '#XHN5267',
+    target: 'XHN5267',
     meshName: '支架盖033',
     position: 'bottom'
   }

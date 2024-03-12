@@ -36,7 +36,7 @@ import Stats from 'three/examples/jsm/libs/stats.module.js'
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 import type { ModelEntity } from '@/components/models/gltf/animal'
 import { createGUI } from './components/helpers/gui'
-import { ref, defineEmits, VueElement } from 'vue'
+import { ref, defineEmits, VueElement, nextTick } from 'vue'
 import { ViewHelper } from 'three/examples/jsm/Addons.js'
 import useEffectHooks, { type OutlineEffectType } from './components/effect/outline'
 import { htmlMeshCollection } from './views/home/data'
@@ -264,8 +264,8 @@ class App {
   // }
   start() {
     loop.start()
-    // this.createLineSVG(htmlMeshCollection)
-    // updatables.push(this.showLineHTML.bind(this))
+    //sthis.createLineSVG(htmlMeshCollection)
+     //updatables.push(this.showLineHTML.bind(this))
   }
   play(actionName: string, play: boolean) {
     const action = this.actions[actionName]
@@ -305,14 +305,16 @@ class App {
     svgContainer.setAttribute('id', 'svgContainer')
     svgContainer.setAttribute('width', '100%')
     svgContainer.setAttribute('height', '100%')
-
+console.log('scene',scene);
+console.log('this.model',this.model[ModelName.FACTORY].model)
     targets.forEach((item: HtmlMeshCollection) => {
       const mesh = scene.getObjectByName(item.meshName) as Mesh
       // const geometry = new BoxGeometry()
       // const material = new MeshBasicMaterial({ color: 0x00ff00 })
       // const mesh = new Mesh(geometry, material)
       // scene.add(mesh)
-      const element = document.querySelector(item.target)!
+      nextTick(() => {
+      const element = document.querySelector('#'+item.target)!
       console.log('createLineSVG>>>>>>>', item, element)
       if (!element) return
       const targetRect = element.getBoundingClientRect()
@@ -346,12 +348,13 @@ class App {
             const midX = (screenX + targetX) / 2
             const midY = (screenY + targetY) / 2
             //  L ${midX} ${midY}
-            // const path = `M ${screenX} ${screenY} L ${targetX} ${targetY}`
+             //const path = `M ${screenX} ${screenY} L ${targetX} ${midY} L ${targetX} ${targetY}`
             const path = `M ${screenX} ${screenY} L ${midX} ${midY}  L ${targetX} ${midY} L ${targetX} ${targetY}`
 
             svgLine.setAttribute('d', path)
           }
         })
+      })
       loop.updatables.push(mesh)
     })
     // this.container.appendChild()
