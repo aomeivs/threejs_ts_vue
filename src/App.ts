@@ -1,17 +1,26 @@
 /*
  * @Author: zhou lei
- * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-12 17:17:02
+ * @Date: 2024-03-12 09:20:35
+ * @LastEditTime: 2024-03-13 15:28:22
+ * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
  */
-import { createCamera } from './components/helpers/camera'
-import { createCSS2Renderer, createRenderer } from './components/helpers/renderer'
-import { createScene } from './components/helpers/scene'
-import { creatControls } from './components/helpers/controls'
-import { createLights } from './components/helpers/lights'
-import { Resizer } from './components/helpers/Resizer'
+/*
+ * @Author: zhou lei
+ * @Date: 2024-01-29 10:51:21
+ * @LastEditTime: 2024-03-13 15:04:49
+ * @Description: Description
+ * @FilePath: /vue3_ts_three/src/App.ts
+ * 联系方式:910592680@qq.com
+ */
+import { createCamera } from '@/components/helpers/camera'
+import { createCSS2Renderer, createRenderer } from '@/components/helpers/renderer'
+import { createScene } from '@/components/helpers/scene'
+import { creatControls } from '@/components/helpers/controls'
+import { createLights } from '@/components/helpers/lights'
+import { Resizer } from '@/components/helpers/Resizer'
 import {
   type AnimationAction,
   type PerspectiveCamera,
@@ -26,18 +35,18 @@ import {
   Vector3,
   CameraHelper
 } from 'three'
-import { Loop } from './components/helpers/Loop'
-import { loadAnimals, loadArrow, loadBackground } from './components/models/gltf/animal'
-import { loadingManager } from './components/helpers/loadingManager'
+import { Loop } from '@/components/helpers/Loop'
+import { loadAnimals, loadArrow, loadBackground } from '@/components/models/gltf/animal'
+import { loadingManager } from '@/components/helpers/loadingManager'
 // 调试工具
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import * as TWEEN from '@tweenjs/tween.js'
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
 import type { ModelEntity } from '@/components/models/gltf/animal'
-import { createGUI } from './components/helpers/gui'
+import { createGUI } from '@/components/helpers/gui'
 import { ref } from 'vue'
 import { ViewHelper } from 'three/examples/jsm/Addons.js'
-import useEffectHooks, { type OutlineEffectType } from './components/effect/outline'
+import useEffectHooks, { type OutlineEffectType } from '@/components/effect/outline'
 
 export type Equipment = Partial<{
   name: string
@@ -376,16 +385,7 @@ class App {
       const selectMesh = intersects[0].object as Mesh
       if (selectMesh?.isMesh) {
         const equipmentMaterial = equipmentMaterialMap.get(selectMesh.name)
-
-        // deviceList().then((res) => {
-        //   Object.assign(selectMesh, {
-        //     userData: res
-        //   })
-        //   equipment.value = selectMesh
-        // })
         equipment.value = selectMesh
-
-        // currentEquipment.value.name = selectMesh.name
         if (equipmentMaterial) {
           this.model[name].model.traverse((child: any) => {
             if (child.isMesh) {

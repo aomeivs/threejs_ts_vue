@@ -1,16 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 10:58:02
- * @LastEditTime: 2024-03-12 15:50:51
- * @LastEditors: zhoulei zhoulei@kehaida.com
- * @Description: Description
- * @FilePath: /vue3_ts_three/src/views/home/component/CssBoard.vue
- * 联系方式:910592680@qq.com
--->
-<!-- css2object
- * @Author: zhou lei
- * @Date: 2024-03-12 10:58:02
- * @LastEditTime: 2024-03-12 12:22:42
+ * @LastEditTime: 2024-03-13 15:30:06
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/CssBoard.vue

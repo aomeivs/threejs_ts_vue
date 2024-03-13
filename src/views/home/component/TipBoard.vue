@@ -12,7 +12,6 @@ import TipItem from './TipItem.vue'
 import { getTipsBoard, htmlMeshCollection } from '../data'
 import { App } from '@/App'
 import { defineExpose, computed } from 'vue'
-
 const init = (app: App) => {
   app.createLineSVG(htmlMeshCollection)
 }

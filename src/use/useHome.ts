@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 13:48:38
- * @LastEditTime: 2024-03-12 17:39:28
+ * @LastEditTime: 2024-03-13 15:17:07
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/use/useHome.ts
@@ -93,7 +93,10 @@ export const useHome = () => {
     }
   }
 
-  //报警信息接口
+  /**
+   * 报警信息数据处理
+   * @returns 
+   */
   const initScrollData = () => {
     const list = []
     for (let key = 0; key < 10; key++) {
@@ -110,6 +113,10 @@ export const useHome = () => {
     }
     return list
   }
+  /**
+   * 视角控制
+   * @param type 
+   */
   const rotatCamera = (type: number) => {
     const initialPosition = {
       x: camera.position.x,
