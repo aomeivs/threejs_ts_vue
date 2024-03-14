@@ -1,16 +1,15 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 10:58:02
- * @LastEditTime: 2024-03-13 15:30:06
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditTime: 2024-03-14 13:32:42
+ * @LastEditors: zhou lei
  * @Description: Description
- * @FilePath: /vue3_ts_three/src/views/home/component/CssBoard.vue
+ * @FilePath: /threejs_ts_vue/src/views/home/component/CssBoard.vue
  * 联系方式:910592680@qq.com
 -->
 
 <script setup lang="ts">
 import type { App, Equipment } from '@/App'
-import { defineProps } from 'vue'
 interface MyComponentProps {
   equipment: Equipment
 }

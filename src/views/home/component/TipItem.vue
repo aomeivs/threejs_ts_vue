@@ -1,10 +1,10 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-08 17:30:37
- * @LastEditTime: 2024-03-12 10:25:33
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditTime: 2024-03-14 13:41:27
+ * @LastEditors: zhou lei
  * @Description: Description
- * @FilePath: /vue3_ts_three/src/views/home/component/TipItem.vue
+ * @FilePath: /threejs_ts_vue/src/views/home/component/TipItem.vue
  * 联系方式:910592680@qq.com
 -->
 <template>
@@ -22,7 +22,6 @@
   </div>
 </template>
 <script setup lang="ts">
-import { defineProps } from 'vue'
 // class 和 id都是从父组件获得的
 const props = defineProps(['className', 'id', 'name'])
 const { className, id } = props
