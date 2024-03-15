@@ -1,16 +1,8 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-15 16:44:33
+ * @LastEditTime: 2024-03-15 17:59:12
  * @LastEditors: zhoulei zhoulei@kehaida.com
- * @Description: Description
- * @FilePath: /vue3_ts_three/src/App.ts
- * 联系方式:910592680@qq.com
- */
-/*
- * @Author: zhou lei
- * @Date: 2024-01-29 10:51:21
- * @LastEditTime: 2024-03-13 15:04:49
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  * 联系方式:910592680@qq.com
@@ -49,6 +41,7 @@ import { createGUI } from '@/components/helpers/gui'
 import { ref } from 'vue'
 import { ViewHelper } from 'three/examples/jsm/Addons.js'
 import useEffectHooks, { type OutlineEffectType } from '@/components/effect/outline'
+import { htmlMeshCollection } from './views/home/data'
 
 export type Equipment = Partial<{
   name: string
@@ -64,6 +57,7 @@ let scene: Scene
 let loop: Loop
 let stats: Stats
 let turbineLabel: any
+const turbineLabels = []
 let outline: OutlineEffectType
 let count = 0
 let w = 0
@@ -182,7 +176,7 @@ class App {
       }
     })
     // this.createTurbineLabel('#css2object')
-
+    this.createLabels()
     /**
      * 加载箭头
      */
@@ -407,7 +401,7 @@ class App {
       if (intersects.length <= 0) {
         return false
       }
-
+      console.log('[当前点击的部件]:', intersects)
       // const selectObject = intersects[0].object as Mesh
       const selectObject = (intersects[0].object as SelectObject).ancestors
       if (selectObject) {
@@ -428,7 +422,6 @@ class App {
             })
           }
 
-          console.log('[当前点击的部件]:', intersects)
           this.updateLabal(intersects[0])
         }
       } else {
@@ -440,9 +433,10 @@ class App {
   clearSelect(selectObject: any) {
     outline.outlinePass.selectedObjects = []
     turbineLabel.visible = false
-    selectObject.children.forEach((mesh: any) => {
-      mesh.material.emissive.setHex(mesh.currentHex)
-    })
+    selectObject &&
+      selectObject.children.forEach((mesh: any) => {
+        mesh.material.emissive.setHex(mesh.currentHex)
+      })
   }
   updateLabal(intersect: any) {
     turbineLabel.visible = !show.value
@@ -466,6 +460,25 @@ class App {
     })
     scene.add(turbineLabel)
     this.onPointerClick(ModelName.FACTORY)
+  }
+  createLabels() {
+    htmlMeshCollection.forEach((obj) => {
+      const mesh = scene.getObjectByName(obj.meshName)
+      if (!mesh) return
+      const dom: HTMLElement = document.querySelector(`#css2object-${obj.target}`)!
+      if (!dom) return
+      const csslabel = new CSS2DObject(dom)
+      csslabel.name = obj.meshName
+
+      // 把mesh局部坐标转换到世界坐标
+      const worldPosition = new Vector3()
+      mesh.getWorldPosition(worldPosition)
+      csslabel.position.set(worldPosition.x, worldPosition.y, worldPosition.z)
+      csslabel.scale.set(0.003, 0.003, 0.003)
+      csslabel.visible = true
+      turbineLabels.push(csslabel)
+      scene.add(csslabel)
+    })
   }
 }
 export { App, show, equipment, camera, TWEEN }

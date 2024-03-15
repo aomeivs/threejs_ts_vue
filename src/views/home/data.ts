@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-11 09:46:03
- * @LastEditTime: 2024-03-15 15:52:52
+ * @LastEditTime: 2024-03-15 17:30:44
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/data.ts
@@ -17,7 +17,7 @@ export const htmlMeshCollection: HtmlMeshCollection[] = [
   },
   {
     target: 'XHN5262',
-    meshName: '支架盖045',
+    meshName: '支架盖2_39',
     alias: '粉末固化炉',
     position: 'top'
   },
