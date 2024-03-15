@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-15 17:59:12
+ * @LastEditTime: 2024-03-15 18:02:03
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -175,7 +175,7 @@ class App {
         this.initTurbine()
       }
     })
-    // this.createTurbineLabel('#css2object')
+    // 两种标签显示方式，一种一进入就显示，一种不显示
     this.createLabels()
     /**
      * 加载箭头
