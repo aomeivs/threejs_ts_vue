@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-13 15:28:22
+ * @LastEditTime: 2024-03-15 16:44:33
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -33,7 +33,9 @@ import {
   Mesh,
   MeshStandardMaterial,
   Vector3,
-  CameraHelper
+  CameraHelper,
+  Object3D,
+  Box3
 } from 'three'
 import { Loop } from '@/components/helpers/Loop'
 import { loadAnimals, loadArrow, loadBackground } from '@/components/models/gltf/animal'
@@ -74,6 +76,9 @@ export type HtmlMeshCollection = {
   meshName: string
   alias: string
   position: string
+}
+export interface SelectObject extends Object3D {
+  ancestors: Object3D
 }
 //  声明一个 EnumerationModelType
 enum ModelName {
@@ -126,7 +131,7 @@ class App {
     // 最好视角
     controls.target.set(0, 0, 0)
     controls.addEventListener('change', () => {
-      console.log('change', camera.position)
+      // console.log('change', camera.position)
       count++
       if (count > 1) this.isOrbiting = true
     })
@@ -162,9 +167,10 @@ class App {
       if (name == ModelName.FACTORY) {
         model.scale.multiplyScalar(0.03)
         model.position.set(-2, 0, -2)
-        scene.add(model)
+        this.setModelAncestors(['DD_PENGFANG1'], model)
         // factory 材质设置
         this.initFactory()
+        scene.add(model)
       } else {
         // 发电机模型
         model.scale.multiplyScalar(0.001)
@@ -183,10 +189,13 @@ class App {
     this.createArrow()
   }
   async createArrow() {
-    const pointName = ['支架盖045', '支架盖042', '支架盖039', '支架盖024']
+    const pointName = ['支架盖1_20', '支架盖042', '支架盖039', '支架盖024']
     const positions = pointName.map((name) => {
       const worldPosition = new Vector3()
       const mesh = scene.getObjectByName(name)!
+      if (!mesh) {
+        return worldPosition
+      }
       mesh.getWorldPosition(worldPosition)
       // mesh.visible = false
       return worldPosition
@@ -256,11 +265,22 @@ class App {
         meshChild.receiveShadow = true
         newMaterial.envMapIntensity = 0.3
         meshChild.material = newMaterial
-        equipmentMaterialMap.set(meshChild.name, meshChild) // Map 存储各个部件
       }
     })
   }
 
+  setModelAncestors(groupsName: string[], model: Object3D) {
+    groupsName.forEach((groupName) => {
+      const selecmodel = model.getObjectByName(groupName)!
+      equipmentMaterialMap.set(groupName, selecmodel)
+      selecmodel.traverse((child) => {
+        ;(child as Mesh).isMesh &&
+          Object.assign(child, {
+            ancestors: selecmodel
+          })
+      })
+    })
+  }
   // render() {
   //   renderer.render(scene, camera)
   // }
@@ -318,6 +338,11 @@ class App {
             // Convert Mesh position to screen coordinates
             const meshPosition = new Vector3()
             meshPosition.setFromMatrixPosition(mesh.matrixWorld)
+            // 获取网格的高度
+            const bbox = new Box3().setFromObject(mesh)
+            const meshHeight = bbox.max.y - bbox.min.y
+            // 将网格位置向上调整其高度的一半
+            meshPosition.y = meshHeight
             const screenPosition = meshPosition.project(camera)
             const screenX =
               ((screenPosition.x + 1) * w) / 2 + this.container.getBoundingClientRect().left / scale
@@ -382,37 +407,43 @@ class App {
       if (intersects.length <= 0) {
         return false
       }
-      const selectMesh = intersects[0].object as Mesh
-      if (selectMesh?.isMesh) {
-        const equipmentMaterial = equipmentMaterialMap.get(selectMesh.name)
-        equipment.value = selectMesh
-        if (equipmentMaterial) {
-          this.model[name].model.traverse((child: any) => {
-            if (child.isMesh) {
-              if (equipmentMaterial.name !== child.name) {
-                child.material.emissive.setHex(child.currentHex)
-              } else {
-                outline.outlinePass.selectedObjects = [child]
-                if (equipmentMaterial.material.emissive.getHex() == equipmentMaterial.currentHex) {
-                  // equipmentMaterial.material.emissive.setHex(1)
-                  equipmentMaterial.material.emissive.setHex(0x00ff00)
-                  show.value = false
-                } else {
-                  equipmentMaterial.material.emissive.setHex(equipmentMaterial.currentHex)
-                  outline.outlinePass.selectedObjects = []
-                  show.value = true
-                }
-              }
-            }
-          })
-          console.log('[当前点击的部件]:', intersects)
 
+      // const selectObject = intersects[0].object as Mesh
+      const selectObject = (intersects[0].object as SelectObject).ancestors
+      if (selectObject) {
+        const equipmentMaterial = equipmentMaterialMap.get(selectObject.name)
+        if (equipmentMaterial) {
+          if (
+            equipment.value.name === selectObject.name &&
+            outline.outlinePass.selectedObjects.length > 0
+          ) {
+            this.clearSelect(selectObject)
+            return
+          } else {
+            equipment.value = selectObject
+            outline.outlinePass.selectedObjects = [equipmentMaterial]
+            equipmentMaterial.children.forEach((child: any) => {
+              child.material.emissive.setHex(0x00ff00)
+              child.material.emissiveIntensity = 0.5
+            })
+          }
+
+          console.log('[当前点击的部件]:', intersects)
           this.updateLabal(intersects[0])
         }
+      } else {
+        this.clearSelect(equipmentMaterialMap.get(equipment.value.name))
       }
     })
   }
 
+  clearSelect(selectObject: any) {
+    outline.outlinePass.selectedObjects = []
+    turbineLabel.visible = false
+    selectObject.children.forEach((mesh: any) => {
+      mesh.material.emissive.setHex(mesh.currentHex)
+    })
+  }
   updateLabal(intersect: any) {
     turbineLabel.visible = !show.value
     const point = intersect.point

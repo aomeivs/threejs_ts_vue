@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-11 09:46:03
- * @LastEditTime: 2024-03-12 15:47:48
+ * @LastEditTime: 2024-03-15 15:52:52
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/data.ts
@@ -11,7 +11,7 @@ import type { HtmlMeshCollection } from '@/App'
 export const htmlMeshCollection: HtmlMeshCollection[] = [
   {
     target: 'XHN5261',
-    meshName: '支架盖042',
+    meshName: 'DD_PENGFANG1',
     alias: '抛丸除尘',
     position: 'top'
   },

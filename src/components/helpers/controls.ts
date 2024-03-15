@@ -21,7 +21,7 @@ const creatControls = (camera: PerspectiveCamera, canvas: HTMLElement) => {
   }
   cameraControls.maxPolarAngle = Math.PI / 2
   // 缩放范围
-  cameraControls.minDistance = cameraControls.getDistance() / 2
+  cameraControls.minDistance = cameraControls.getDistance() / 1.2
   cameraControls.maxDistance = cameraControls.getDistance() * 1.2
 
   cameraControls.tick = () => {
