@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-15 18:02:03
+ * @LastEditTime: 2024-03-18 10:54:11
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -183,7 +183,8 @@ class App {
     this.createArrow()
   }
   async createArrow() {
-    const pointName = ['支架盖1_20', '支架盖042', '支架盖039', '支架盖024']
+    const pointName = Array.from(Array(15).keys(), (num) => 'DD_JT' + +(num + 1))
+    console.log(scene.getObjectByName('DD_JT1'))
     const positions = pointName.map((name) => {
       const worldPosition = new Vector3()
       const mesh = scene.getObjectByName(name)!
@@ -404,6 +405,7 @@ class App {
       console.log('[当前点击的部件]:', intersects)
       // const selectObject = intersects[0].object as Mesh
       const selectObject = (intersects[0].object as SelectObject).ancestors
+
       if (selectObject) {
         const equipmentMaterial = equipmentMaterialMap.get(selectObject.name)
         if (equipmentMaterial) {
@@ -416,9 +418,11 @@ class App {
           } else {
             equipment.value = selectObject
             outline.outlinePass.selectedObjects = [equipmentMaterial]
-            equipmentMaterial.children.forEach((child: any) => {
-              child.material.emissive.setHex(0x00ff00)
-              child.material.emissiveIntensity = 0.5
+            equipmentMaterial.traverse((child: any) => {
+              if (child.isMesh) {
+                child.material.emissive.setHex(0x00ff00)
+                child.material.emissiveIntensity = 0.5
+              }
             })
           }
 
@@ -434,8 +438,10 @@ class App {
     outline.outlinePass.selectedObjects = []
     turbineLabel.visible = false
     selectObject &&
-      selectObject.children.forEach((mesh: any) => {
-        mesh.material.emissive.setHex(mesh.currentHex)
+      selectObject.traverse((child: any) => {
+        if (child.isMesh) {
+          child.material.emissive.setHex(child.currentHex)
+        }
       })
   }
   updateLabal(intersect: any) {

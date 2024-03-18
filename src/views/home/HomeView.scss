@@ -334,6 +334,7 @@
   box-shadow: 0 0 8px #00b1ff;
   padding: 8px;
   list-style: none;
+  white-space: nowrap;
   .deg {
     width: 8px;
     height: 8px;
@@ -366,4 +367,11 @@
     border-bottom-color: #ff0; /* 下边框显示为黑色 */
     border-left-color: transparent; /* 左边框不显示 */
   }
+}
+:deep(.css2object2) {
+  height: 70px;
+  margin-top: -35px;
+  width: 200px;
+  margin-left: 100px;
+  background: rgb(0, 144, 222);
 }

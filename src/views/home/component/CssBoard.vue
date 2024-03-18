@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 10:58:02
- * @LastEditTime: 2024-03-15 18:05:21
+ * @LastEditTime: 2024-03-18 10:30:06
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/CssBoard.vue
@@ -9,7 +9,7 @@
 -->
 
 <script setup lang="ts">
-import type { App, Equipment } from '@/App'
+import type { App, Equipment, HtmlMeshCollection } from '@/App'
 import { ref } from 'vue'
 import { htmlMeshCollection } from '../data'
 interface MyComponentProps {
@@ -19,7 +19,7 @@ const { equipment } = defineProps<MyComponentProps>()
 const init = (app: App) => {
   app.createTurbineLabel('#css2object')
 }
-const list = ref<any>([])
+const list = ref<HtmlMeshCollection[]>([])
 list.value = htmlMeshCollection
 defineExpose({ init })
 </script>
@@ -36,17 +36,14 @@ defineExpose({ init })
   </div>
   <div
     v-for="(item, index) in list"
-    :key="index"
-    class="css2object"
+    :key="'css2object_' + index"
+    class="css2object css2object2"
     :id="'css2object-' + item.target"
     style="display: none"
   >
     <div>
-      <div>设备名:{{ equipment.name }}</div>
-      <div>编号{{ equipment.userData }}</div>
-      <div>温度</div>
-      <div>状态{{}}</div>
-      <div>运行时间{{ equipment.date }}</div>
+      <div>设备名:{{ item.alias }}</div>
+      <div>编号:{{ item.meshName }}</div>
     </div>
     <div class="triangle"></div>
   </div>
