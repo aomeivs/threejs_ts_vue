@@ -42,8 +42,7 @@ defineExpose({ init })
     style="display: none"
   >
     <div>
-      <div>设备名:{{ item.alias }}</div>
-      <div>编号:{{ item.meshName }}</div>
+      <div>{{ item.alias }}</div>
     </div>
     <div class="triangle"></div>
   </div>

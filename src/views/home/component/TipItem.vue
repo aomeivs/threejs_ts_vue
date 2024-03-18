@@ -1,10 +1,10 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-08 17:30:37
- * @LastEditTime: 2024-03-14 13:41:27
- * @LastEditors: zhou lei
+ * @LastEditTime: 2024-03-18 13:17:25
+ * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
- * @FilePath: /threejs_ts_vue/src/views/home/component/TipItem.vue
+ * @FilePath: /vue3_ts_three/src/views/home/component/TipItem.vue
  * 联系方式:910592680@qq.com
 -->
 <template>

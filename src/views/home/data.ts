@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-11 09:46:03
- * @LastEditTime: 2024-03-18 10:15:22
+ * @LastEditTime: 2024-03-18 13:42:06
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/data.ts
@@ -33,7 +33,7 @@ export const htmlMeshCollection: HtmlMeshCollection[] = [
   },
   // bottom
   {
-    target: 'XHN5263',
+    target: 'DD_PENGFANG1',
     meshName: 'DD_PENGFANG1',
     alias: '大旋风自动喷房A',
     position: 'bottom'

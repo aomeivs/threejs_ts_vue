@@ -197,7 +197,7 @@
             z-index: 1;
             cursor: pointer;
             & > div {
-              pointer-events:fill;
+              pointer-events: fill;
               width: 64px;
               border: 1px solid #00000033;
               text-align: center;
@@ -224,6 +224,7 @@
               display: flex;
               justify-content: space-between;
               align-items: center;
+
               .line {
                 .icon {
                   width: 2px;
@@ -251,6 +252,20 @@
                   line-height: 17px;
                 }
               }
+              @keyframes fadeinout {
+                0% {
+                  background: rgba(39, 255, 187, 0.3);
+                  box-shadow: 0px 0 0 8px rgba(39, 255, 187, 0.1);
+                }
+                50% {
+                  background: rgba(39, 255, 187, 0.6);
+                  box-shadow: 0px 0 0 8px rgba(39, 255, 187, 0.3);
+                }
+                100% {
+                  background: rgba(39, 255, 187, 0.3);
+                  box-shadow: 0px 0 0 8px rgba(39, 255, 187, 0.1);
+                }
+              }
               .state {
                 width: 32px;
                 height: 32px;
@@ -262,11 +277,15 @@
                   background: rgba(39, 255, 187);
                   box-shadow: 0px 0 0 8px rgba(39, 255, 187, 0.3);
                   border-radius: 50%;
+                  animation: fadeinout 0.8s infinite ease-in-out;
+                  transform: scale(.7);
                 }
               }
             }
           }
           .tips-top {
+            position: absolute;
+            top: 0;
             .item-2 {
               left: 200px;
             }
@@ -278,6 +297,11 @@
                 left: 200px;
               }
             }
+          }
+          .circle-animate {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
           }
         }
         :deep(.device-status) {
@@ -369,8 +393,8 @@
   }
 }
 :deep(.css2object2) {
-  height: 70px;
-  margin-top: -35px;
+  height: 40px;
+  margin-top: -20px;
   width: 200px;
   margin-left: 100px;
   background: rgb(0, 144, 222);

@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-18 10:54:11
+ * @LastEditTime: 2024-03-18 13:54:40
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -161,7 +161,10 @@ class App {
       if (name == ModelName.FACTORY) {
         model.scale.multiplyScalar(0.03)
         model.position.set(-2, 0, -2)
-        this.setModelAncestors(['DD_PENGFANG1'], model)
+        this.setModelAncestors(
+          htmlMeshCollection.map((mesh) => mesh.meshName),
+          model
+        )
         // factory 材质设置
         this.initFactory()
         scene.add(model)
@@ -175,7 +178,7 @@ class App {
         this.initTurbine()
       }
     })
-    // 两种标签显示方式，一种一进入就显示，一种不显示
+    // 一种一进入就显示设备标签
     this.createLabels()
     /**
      * 加载箭头
@@ -183,8 +186,7 @@ class App {
     this.createArrow()
   }
   async createArrow() {
-    const pointName = Array.from(Array(15).keys(), (num) => 'DD_JT' + +(num + 1))
-    console.log(scene.getObjectByName('DD_JT1'))
+    const pointName = Array.from(Array(3).keys(), (num) => 'DD_JT' + +(num + 1))
     const positions = pointName.map((name) => {
       const worldPosition = new Vector3()
       const mesh = scene.getObjectByName(name)!
@@ -405,31 +407,8 @@ class App {
       console.log('[当前点击的部件]:', intersects)
       // const selectObject = intersects[0].object as Mesh
       const selectObject = (intersects[0].object as SelectObject).ancestors
-
-      if (selectObject) {
-        const equipmentMaterial = equipmentMaterialMap.get(selectObject.name)
-        if (equipmentMaterial) {
-          if (
-            equipment.value.name === selectObject.name &&
-            outline.outlinePass.selectedObjects.length > 0
-          ) {
-            this.clearSelect(selectObject)
-            return
-          } else {
-            equipment.value = selectObject
-            outline.outlinePass.selectedObjects = [equipmentMaterial]
-            equipmentMaterial.traverse((child: any) => {
-              if (child.isMesh) {
-                child.material.emissive.setHex(0x00ff00)
-                child.material.emissiveIntensity = 0.5
-              }
-            })
-          }
-
-          this.updateLabal(intersects[0])
-        }
-      } else {
-        this.clearSelect(equipmentMaterialMap.get(equipment.value.name))
+      if (this.setSelectMap(selectObject)) {
+        this.updateLabal(intersects[0])
       }
     })
   }
@@ -443,6 +422,38 @@ class App {
           child.material.emissive.setHex(child.currentHex)
         }
       })
+  }
+  setSelectMap(selectObject: Object3D): boolean {
+    if (selectObject) {
+      const equipmentMaterial = equipmentMaterialMap.get(selectObject.name)
+
+      if (equipmentMaterial) {
+        this.createLineSVG(htmlMeshCollection.filter((mesh) => selectObject.name === mesh.meshName))
+        if (
+          equipment.value.name === selectObject.name &&
+          outline.outlinePass.selectedObjects.length > 0
+        ) {
+          this.clearSelect(selectObject)
+          this.createLineSVG([])
+          return false
+        } else {
+          this.clearSelect(equipmentMaterialMap.get(equipment.value.name))
+          equipment.value = selectObject
+          outline.outlinePass.selectedObjects = [equipmentMaterial]
+          equipmentMaterial.traverse((child: any) => {
+            if (child.isMesh) {
+              child.material.emissive.setHex(0x00ff00)
+              child.material.emissiveIntensity = 0.5
+            }
+          })
+        }
+      }
+      return true
+    } else {
+      this.clearSelect(equipmentMaterialMap.get(equipment.value.name))
+      this.createLineSVG([])
+      return false
+    }
   }
   updateLabal(intersect: any) {
     turbineLabel.visible = !show.value
@@ -487,4 +498,4 @@ class App {
     })
   }
 }
-export { App, show, equipment, camera, TWEEN }
+export { App, show, equipment, camera, scene, TWEEN }

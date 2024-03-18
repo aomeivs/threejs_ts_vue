@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-12 17:50:11
+ * @LastEditTime: 2024-03-18 11:41:25
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/HomeView.vue
@@ -48,10 +48,10 @@ onMounted(() => {
         <left-board></left-board>
         <div class="board-container">
           <div class="webgl-view">
-            <tip-board ref="tipBoardRef"></tip-board>
             <view-board></view-board>
             <!-- webgl-container -->
             <div class="webgl-container" id="webgl-container"></div>
+            <tip-board ref="tipBoardRef"></tip-board>
           </div>
           <bottom-board></bottom-board>
         </div>

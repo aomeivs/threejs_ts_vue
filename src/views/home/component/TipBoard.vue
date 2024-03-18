@@ -1,19 +1,27 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-14 13:27:40
- * @LastEditTime: 2024-03-14 13:31:57
- * @LastEditors: zhou lei
+ * @LastEditTime: 2024-03-18 13:39:34
+ * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
- * @FilePath: /threejs_ts_vue/src/views/home/component/TipBoard.vue
+ * @FilePath: /vue3_ts_three/src/views/home/component/TipBoard.vue
  * 联系方式:910592680@qq.com 科海达信息技术有限公司
 -->
 <script setup lang="ts">
 import TipItem from './TipItem.vue'
 import { getTipsBoard, htmlMeshCollection } from '../data'
-import { App } from '@/App'
+import { App, scene } from '@/App'
 import { computed } from 'vue'
+let self: App
 const init = (app: App) => {
-  app.createLineSVG(htmlMeshCollection)
+  // app.createLineSVG(htmlMeshCollection)
+  self = app
+}
+const linkHtmMesh = (elementId: string) => {
+  console.log('elementId>>>>>', elementId)
+  // self.createLineSVG(htmlMeshCollection.filter((child) => child.target === elementId))
+  const selectObject = scene.getObjectByName(elementId)
+  selectObject && self.setSelectMap(selectObject)
 }
 const getTipsBoardTop = computed(() => {
   return getTipsBoard(`top`)
@@ -33,6 +41,7 @@ defineExpose({ init })
       class="item"
       :name="item.alias"
       :style="{ left: 220 * index + 'px' }"
+      @click="linkHtmMesh(item.target)"
     >
     </tip-item>
   </div>
@@ -44,7 +53,9 @@ defineExpose({ init })
       class="item"
       :name="item.alias"
       :style="{ left: 220 * index + 'px' }"
+      @click="linkHtmMesh(item.target)"
     >
     </tip-item>
   </div>
+  <!-- <div id="circlePoint" class="circle-animate animate__animated animate__flash animate__slow animate__infinite"></div> -->
 </template>
