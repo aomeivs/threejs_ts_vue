@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-18 14:51:50
+ * @LastEditTime: 2024-03-18 15:31:35
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -340,15 +340,18 @@ class App {
       mesh &&
         Object.assign(mesh, {
           tick: () => {
-            // Convert Mesh position to screen coordinates
-            const meshPosition = new Vector3()
-            meshPosition.setFromMatrixPosition(mesh.matrixWorld)
+            // 把mesh局部坐标转换到世界坐标
+            const worldPosition = new Vector3()
+            mesh.getWorldPosition(worldPosition)
+            // 矩阵获取的是局部坐标（过时的方法）
+            // const meshPosition = new Vector3()
+            // meshPosition.setFromMatrixPosition(mesh.matrixWorld)
             // 获取网格的高度
             const bbox = new Box3().setFromObject(mesh)
             const meshHeight = bbox.max.y - bbox.min.y
-            // 将网格位置向上调整其高度的一半
-            meshPosition.y = meshHeight
-            const screenPosition = meshPosition.project(camera)
+            // // 将网格位置向上调整其高度的一半
+            worldPosition.y = meshHeight / 2 + worldPosition.y
+            const screenPosition = worldPosition.project(camera)
             const screenX =
               ((screenPosition.x + 1) * w) / 2 + this.container.getBoundingClientRect().left / scale
             const screenY =

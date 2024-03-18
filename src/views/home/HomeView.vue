@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-18 14:30:51
+ * @LastEditTime: 2024-03-18 15:28:45
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/HomeView.vue
@@ -65,6 +65,6 @@ onMounted(() => {
 </style>
 <style>
 .pathshadow {
-  opacity: 0.5;
+  opacity: 1;
 }
 </style>

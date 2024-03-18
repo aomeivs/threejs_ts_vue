@@ -244,4 +244,3 @@ const play = async () => {
   transition: 0.3s;
 }
 </style>
-../App.js../App.js
