@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-18 13:54:40
+ * @LastEditTime: 2024-03-18 14:51:50
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -150,6 +150,15 @@ class App {
     await loadBackground(scene)
     // const { scene: animalScene, action } = await loadAnimals(loadingManager)
     this.model = await loadAnimals(loadingManager)
+    this.setLoadModel()
+    // 一种一进入就显示设备标签
+    this.createLabels()
+    /**
+     * 加载箭头
+     */
+    this.createArrow()
+  }
+  setLoadModel() {
     Object.entries(this.model).forEach((data) => {
       const { model, action } = data[1]
       const name = data[0]
@@ -178,15 +187,9 @@ class App {
         this.initTurbine()
       }
     })
-    // 一种一进入就显示设备标签
-    this.createLabels()
-    /**
-     * 加载箭头
-     */
-    this.createArrow()
   }
   async createArrow() {
-    const pointName = Array.from(Array(3).keys(), (num) => 'DD_JT' + +(num + 1))
+    const pointName = Array.from(Array(15).keys(), (num) => 'DD_JT' + +(num + 1))
     const positions = pointName.map((name) => {
       const worldPosition = new Vector3()
       const mesh = scene.getObjectByName(name)!
@@ -201,9 +204,14 @@ class App {
       const pos = positions[i].toArray()
       pos[1] = pos[1] + 0.2
       const { arrow, texture } = await loadArrow(pos)
-      arrow.name = 'arrow'
+      arrow.name = 'C_DD_JT' + +(i + 1)
       arrow.scale.multiplyScalar(0.3)
-      arrow.rotation.set(0, Math.PI, 0)
+      if ([4, 5, 13, 14, 15].includes(i + 1)) {
+        arrow.rotation.set(Math.PI / 2, 0, 0)
+      } else {
+        arrow.rotation.set(Math.PI / 2, Math.PI, 0)
+      }
+
       arrow.material.emissive.setHex(0x00ff00)
       loop.updatables.push(texture)
       scene.add(arrow)

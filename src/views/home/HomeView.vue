@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-18 11:41:25
+ * @LastEditTime: 2024-03-18 14:30:51
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/HomeView.vue
@@ -58,7 +58,7 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <css-board ref="cssBorderRef" :equipment="equipment" v-show="show"></css-board>
+  <css-board ref="cssBorderRef" :equipment="equipment" :show="show"></css-board>
 </template>
 <style lang="scss" scoped>
 @import './HomeView.scss';

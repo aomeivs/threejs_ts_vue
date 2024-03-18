@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-14 13:27:40
- * @LastEditTime: 2024-03-18 13:39:34
+ * @LastEditTime: 2024-03-18 14:39:58
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/TipBoard.vue
@@ -9,7 +9,7 @@
 -->
 <script setup lang="ts">
 import TipItem from './TipItem.vue'
-import { getTipsBoard, htmlMeshCollection } from '../data'
+import { getTipsBoard} from '../data'
 import { App, scene } from '@/App'
 import { computed } from 'vue'
 let self: App
@@ -18,8 +18,6 @@ const init = (app: App) => {
   self = app
 }
 const linkHtmMesh = (elementId: string) => {
-  console.log('elementId>>>>>', elementId)
-  // self.createLineSVG(htmlMeshCollection.filter((child) => child.target === elementId))
   const selectObject = scene.getObjectByName(elementId)
   selectObject && self.setSelectMap(selectObject)
 }
@@ -41,7 +39,7 @@ defineExpose({ init })
       class="item"
       :name="item.alias"
       :style="{ left: 220 * index + 'px' }"
-      @click="linkHtmMesh(item.target)"
+      @click.stop="linkHtmMesh(item.target)"
     >
     </tip-item>
   </div>
@@ -53,9 +51,8 @@ defineExpose({ init })
       class="item"
       :name="item.alias"
       :style="{ left: 220 * index + 'px' }"
-      @click="linkHtmMesh(item.target)"
+      @click.stop="linkHtmMesh(item.target)"
     >
     </tip-item>
   </div>
-  <!-- <div id="circlePoint" class="circle-animate animate__animated animate__flash animate__slow animate__infinite"></div> -->
 </template>

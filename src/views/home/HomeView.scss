@@ -217,6 +217,7 @@
           .tips-bottom {
             .item {
               position: absolute;
+              cursor: pointer;
               width: 180px;
               height: 83px;
               background: rgba(0, 0, 0, 0.2);
@@ -278,7 +279,7 @@
                   box-shadow: 0px 0 0 8px rgba(39, 255, 187, 0.3);
                   border-radius: 50%;
                   animation: fadeinout 0.8s infinite ease-in-out;
-                  transform: scale(.7);
+                  transform: scale(0.7);
                 }
               }
             }
@@ -359,6 +360,7 @@
   padding: 8px;
   list-style: none;
   white-space: nowrap;
+  text-shadow: 1px 1px 2px #000;
   .deg {
     width: 8px;
     height: 8px;
@@ -393,9 +395,16 @@
   }
 }
 :deep(.css2object2) {
-  height: 40px;
-  margin-top: -20px;
-  width: 200px;
-  margin-left: 100px;
-  background: rgb(0, 144, 222);
+  height: auto;
+  margin-top: -30px;
+  width: auto;
+  margin-left: auto;
+  background: rgba(0, 144, 222, 0.8);
+  border-radius: 8px;
+  box-shadow: none;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #000;
+  .triangle {
+    display: none;
+  }
 }

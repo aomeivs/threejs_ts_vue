@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 10:58:02
- * @LastEditTime: 2024-03-18 10:30:06
+ * @LastEditTime: 2024-03-18 14:30:49
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/CssBoard.vue
@@ -14,8 +14,9 @@ import { ref } from 'vue'
 import { htmlMeshCollection } from '../data'
 interface MyComponentProps {
   equipment: Equipment
+  show: boolean
 }
-const { equipment } = defineProps<MyComponentProps>()
+const { equipment, show } = defineProps<MyComponentProps>()
 const init = (app: App) => {
   app.createTurbineLabel('#css2object')
 }
@@ -24,7 +25,7 @@ list.value = htmlMeshCollection
 defineExpose({ init })
 </script>
 <template>
-  <div class="css2object" id="css2object" style="display: none">
+  <div class="css2object" id="css2object" v-show="show">
     <div>
       <div>设备名:{{ equipment.name }}</div>
       <div>编号{{ equipment.userData }}</div>

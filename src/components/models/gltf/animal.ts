@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-30 15:59:40
- * @LastEditTime: 2024-03-12 15:30:45
+ * @LastEditTime: 2024-03-18 14:45:14
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/models/gltf/animal.ts
@@ -93,7 +93,7 @@ const loadArrow = async (position?: [x: number, y: number, z: number]) => {
   const texture = await new TextureLoader().loadAsync(arrowImg)
   // const material = new SpriteMaterial({ map: texture, color: 0xffff00 })
   // const arrow = new Sprite(material)
-  const geometry = new PlaneGeometry(1, 1)
+  const geometry = new PlaneGeometry(3, 1)
   const material = new MeshStandardMaterial({
     map: texture,
     transparent: true, // 开启透明
