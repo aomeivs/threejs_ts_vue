@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-18 15:31:35
+ * @LastEditTime: 2024-03-18 16:34:46
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -42,6 +42,7 @@ import { ref } from 'vue'
 import { ViewHelper } from 'three/examples/jsm/Addons.js'
 import useEffectHooks, { type OutlineEffectType } from '@/components/effect/outline'
 import { htmlMeshCollection } from './views/home/data'
+import { Easing } from '@tweenjs/tween.js'
 
 export type Equipment = Partial<{
   name: string
@@ -418,6 +419,7 @@ class App {
       console.log('[当前点击的部件]:', intersects)
       // const selectObject = intersects[0].object as Mesh
       const selectObject = (intersects[0].object as SelectObject).ancestors
+      // 高亮选择部件
       if (this.setSelectMap(selectObject)) {
         this.updateLabal(intersects[0])
       }
@@ -451,10 +453,12 @@ class App {
           this.clearSelect(equipmentMaterialMap.get(equipment.value.name))
           equipment.value = selectObject
           outline.outlinePass.selectedObjects = [equipmentMaterial]
+          TWEEN.removeAll()
           equipmentMaterial.traverse((child: any) => {
             if (child.isMesh) {
-              child.material.emissive.setHex(0x00ff00)
               child.material.emissiveIntensity = 0.5
+              child.material.emissive.setHex(0x00ff00)
+              this.selectAnimate(child)
             }
           })
         }
@@ -465,6 +469,25 @@ class App {
       this.createLineSVG([])
       return false
     }
+  }
+  selectAnimate(child: any) {
+    new TWEEN.Tween({ intensity: 0.5 })
+      .to({ intensity: 0.2 }, 500)
+      .onUpdate((obj) => {
+        child.material.emissiveIntensity = obj.intensity
+      })
+      .start()
+      .onComplete(() => {
+        new TWEEN.Tween({ intensity: 0.2 })
+          .to({ intensity: 0.5 }, 500)
+          .onUpdate((obj) => {
+            child.material.emissiveIntensity = obj.intensity
+          })
+          .start()
+          .onComplete(() => {
+            this.selectAnimate(child)
+          })
+      })
   }
   updateLabal(intersect: any) {
     turbineLabel.visible = !show.value
