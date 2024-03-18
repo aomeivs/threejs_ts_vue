@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-18 16:34:46
+ * @LastEditTime: 2024-03-18 16:50:54
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -473,21 +473,13 @@ class App {
   selectAnimate(child: any) {
     new TWEEN.Tween({ intensity: 0.5 })
       .to({ intensity: 0.2 }, 500)
+      .repeat(10)
+      .yoyo(true)
       .onUpdate((obj) => {
         child.material.emissiveIntensity = obj.intensity
       })
+      .repeatDelay(100)
       .start()
-      .onComplete(() => {
-        new TWEEN.Tween({ intensity: 0.2 })
-          .to({ intensity: 0.5 }, 500)
-          .onUpdate((obj) => {
-            child.material.emissiveIntensity = obj.intensity
-          })
-          .start()
-          .onComplete(() => {
-            this.selectAnimate(child)
-          })
-      })
   }
   updateLabal(intersect: any) {
     turbineLabel.visible = !show.value
