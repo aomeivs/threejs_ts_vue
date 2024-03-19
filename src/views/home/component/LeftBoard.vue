@@ -18,8 +18,8 @@ const {
   equipmentTemperatureList
 } = useHome()
 onMounted(() => {
-  getEquipmentwarning()
-  getEquipmentStatus()
+  // getEquipmentwarning()
+  // getEquipmentStatus()
 })
 onUnmounted(() => {})
 </script>
@@ -38,12 +38,12 @@ onUnmounted(() => {})
               <div class="labels">
                 <div class="name">{{ n.equipmentName }}</div>
                 <div class="value">{{ n.equipmentValue }}</div>
-                <div class="unit">辆/时</div>
+                <div class="unit">米/分</div>
               </div>
               <div class="progress-bar">
                 <el-progress
                   color="#3E90F8"
-                  :percentage="50"
+                  :percentage=n.speedprecent
                   :striped="true"
                   :striped-flow="true"
                   >{{

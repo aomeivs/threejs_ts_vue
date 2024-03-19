@@ -25,7 +25,7 @@ const creatControls = (camera: PerspectiveCamera, canvas: HTMLElement) => {
   cameraControls.maxDistance = cameraControls.getDistance() * 1.2
 
   cameraControls.tick = () => {
-    cameraControls.update()
+    cameraControls.update()//更新控制器。必须在摄像机的变换发生任何手动改变后调用
   }
   return cameraControls
 }

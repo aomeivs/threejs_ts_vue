@@ -13,54 +13,63 @@ export const htmlMeshCollection: HtmlMeshCollection[] = [
     target: 'DD_SHANGJIAN',
     meshName: 'DD_SHANGJIAN',
     alias: '上件点',
-    position: 'top'
+    position: 'top',
+    state: 0
   },
   {
     target: 'DD_SHUIFENHONGGAN',
     meshName: 'DD_SHUIFENHONGGAN',
     alias: '水份烘干',
-    position: 'top'
+    position: 'top',
+    state: 0
   },{
     target: 'DD_PAOWANJI',
     meshName: 'DD_PAOWANJI',
     alias: '抛丸机',
-    position: 'top'
+    position: 'top',
+    state: 1
   },{
     target: 'DD_PENGLINJI',
     meshName: 'DD_PENGLINJI',
     alias: '喷淋前处理',
-    position: 'top'
+    position: 'top',
+    state: 1
   },
   // bottom
   {
     target: 'DD_PENGFANG1',
     meshName: 'DD_PENGFANG1',
     alias: '大旋风自动喷房A',
-    position: 'bottom'
+    position: 'bottom',
+    state: 1
   },
   {
     target: 'DD_PENGFANG2',
     meshName: 'DD_PENGFANG2',
     alias: '大旋风自动喷房B',
-    position: 'bottom'
+    position: 'bottom',
+    state: 1
   },
   {
     target: 'DD_XIAJIAN',
     meshName: 'DD_XIAJIAN',
     alias: '下件点',
-    position: 'bottom'
+    position: 'bottom',
+    state: 1
   },
   {
     target: 'DD_FENMOGUHUALV',
     meshName: 'DD_FENMOGUHUALV',
     alias: '粉末固化炉',
-    position: 'bottom'
+    position: 'bottom',
+    state: 1
   },
   {
     target: 'DD_CHUIFENGJI',
     meshName: 'DD_CHUIFENGJI',
     alias: '强冷吹风机',
-    position: 'bottom'
+    position: 'bottom',
+    state: 1
   }
 ]
 

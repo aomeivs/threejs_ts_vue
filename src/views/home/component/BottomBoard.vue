@@ -9,7 +9,26 @@
 -->
 <script setup lang="ts">
 import { useHome } from '@/use/useHome'
-const { equipmentStatusList } = useHome()
+const { equipmentStatusList, getEquipmentStatus } = useHome()
+// const fetchData = async () => {
+//   try {
+//     const { statusdata } = await getEquipmentStatus();
+//     console.log('statusdata:', statusdata);
+//   } catch (error) {
+//     console.error('Error fetching data:', error);
+//   }
+// };
+
+// // 首次获取数据
+// fetchData();
+
+// // 每5秒获取一次数据
+// const interval = setInterval(fetchData, 5000);
+
+// // 在组件销毁时清除定时器，避免内存泄漏
+// onUnmounted(() => {
+//   clearInterval(interval);
+// });
 </script>
 <template>
   <div class="board-item device-status">

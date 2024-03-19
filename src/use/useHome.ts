@@ -11,6 +11,7 @@ import { getequipmentStatus, getequipmentwarning } from '@/api/factory'
 import { ref } from 'vue'
 import { TWEEN, camera, controls } from '@/App'
 import type { EquipmentWarning, GetequipmentStatusRT } from '@/types/api'
+import dayjs from 'dayjs';
 
 export const useHome = () => {
   // 设备速度列表
@@ -22,6 +23,10 @@ export const useHome = () => {
   // 设备报警
   const equipmentWarning = ref<EquipmentWarning>()
 
+  const precent = (params:string) =>{
+    return parseFloat(params)/13*100
+
+  }
   /**
    *
    * 报警信息获取
@@ -29,15 +34,37 @@ export const useHome = () => {
   const getEquipmentwarning = async () => {
     const result = await getequipmentwarning()
     if (result.code) {
-      equipmentWarning.value = result
+      equipmentWarning.value = result;
+      equipmentWarning.value.getequipmentWarningRTs.forEach(item =>{
+        item.createTime = dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss');
+      })
     }
+    return {equipmentWarning:equipmentWarning.value}
   }
   const getEquipmentStatus = async () => {
     const result = await getequipmentStatus()
     const data = result.getequipmentStatusRTs
-    const speedIDs = ['ZTZSW', 'SFHGLW', 'YTZSW', 'GHL2SW', 'GHL1SW']
-    const temperatureIDs = ['TC2FFSD', 'L4XSD', 'TC1FFSD']
-    equipmentSpeedList.value = data.filter((item) => speedIDs.includes(item.equipmentCode))
+    const temperatureIDs = ['ZTZSW', 'SFHGLW', 'YTZSW', 'GHL2SW', 'GHL1SW']
+    const speedIDs = ['TC2FFSD', 'L4XSD', 'TC1FFSD']
+    const oldspeedlist  = data.filter((item) => speedIDs.includes(item.equipmentCode))
+    equipmentSpeedList.value = [{
+      equipmentName: 'L1-L3线速度',
+      equipmentValue: '12',
+      equipmentCode: 'xxx',
+      speedprecent: precent('12')
+    }]
+    oldspeedlist.forEach((item)=>{
+      if(item.equipmentCode == 'L4XSD'){
+        equipmentSpeedList.value.push({...item,speedprecent:precent(item.equipmentValue)})
+      }else if(item.equipmentCode == 'TC1FFSD'){
+        equipmentSpeedList.value.push({...item,speedprecent:precent(item.equipmentValue)})
+      }else if(item.equipmentCode == 'TC2FFSD'){
+        equipmentSpeedList.value.push({...item,speedprecent:precent(item.equipmentValue)})
+      }  
+    })
+    
+    
+
     equipmentTemperatureList.value = data.filter((item) =>
       temperatureIDs.includes(item.equipmentCode)
     )
@@ -58,6 +85,7 @@ export const useHome = () => {
     //   speedthreevalue.value = (parseFloat(speedthree.value[0].equipmentValue) / 13) * 100
     //   speedfourvalue.value = (parseFloat(speedfour.value[0].equipmentValue) / 13) * 100
     // }
+    return {equipmentSpeedList:equipmentSpeedList.value, equipmentTemperatureList:equipmentTemperatureList.value, equipmentStatusList:equipmentStatusList.value}
   }
 
   /**
@@ -99,7 +127,7 @@ export const useHome = () => {
 
     new TWEEN.Tween(initialPosition)
       .to(targetPosition[type], 800)
-      .onUpdate((obj) => {
+      .onUpdate((obj:any) => {
         camera.position.set(obj.x, obj.y, obj.z)
         controls.target.set(0, 0, 0)
       })

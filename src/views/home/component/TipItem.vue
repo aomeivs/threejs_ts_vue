@@ -16,13 +16,14 @@
         <div class="code">{{ id }}</div>
       </slot>
     </div>
-    <div class="state">
-      <div class="icon"></div>
+    <div  class="state">
+      <div v-if="state==0" class="icon"></div>
+      <div v-else class="icon1"></div>
     </div>
   </div>
 </template>
 <script setup lang="ts">
 // class 和 id都是从父组件获得的
-const props = defineProps(['className', 'id', 'name'])
-const { className, id } = props
+const props = defineProps(['className', 'id', 'name', 'state'])
+const { className, id, state } = props
 </script>

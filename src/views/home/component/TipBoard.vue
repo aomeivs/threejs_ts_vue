@@ -54,6 +54,7 @@ defineExpose({ init })
       :id="item.target"
       class="item"
       :name="item.alias"
+      :state="item.state"
       :style="{ left: 220 * index + 'px' }"
       @click.stop="linkHtmMesh(item.target)"
     >
@@ -66,6 +67,7 @@ defineExpose({ init })
       :id="item.target"
       class="item"
       :name="item.alias"
+      :state="item.state"
       :style="{ left: 220 * index + 'px' }"
       @click.stop="linkHtmMesh(item.target)"
     >

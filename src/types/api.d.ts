@@ -25,6 +25,7 @@ export interface GetequipmentStatusRT {
   equipmentName: string
   equipmentValue: string
   equipmentCode: string
+  speedprecent?: Number
 }
 
 export interface EquipmentStatusRT {

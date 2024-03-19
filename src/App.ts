@@ -72,6 +72,7 @@ export type HtmlMeshCollection = {
   meshName: string
   alias: string
   position: string
+  state: Number
 }
 export interface SelectObject extends Object3D {
   ancestors: Object3D
@@ -94,33 +95,33 @@ class App {
     this.isOrbiting = false
     // 控制GUI\STATS
     {
-      stats = new Stats()
+      stats = new Stats()//一个仪表板，用于显示每秒帧数，监视性能
       isDEV === '1' && createGUI(this) //.hide()
     }
 
     // scene\camera\renderer\light\helper
     w = (container && container.clientWidth) || window.innerWidth
     h = (container && container.clientHeight) || window.innerHeight
-    scene = createScene()
-    camera = createCamera(container)
-    renderer = createRenderer()
-    cssRenderer = createCSS2Renderer()
+    scene = createScene() //创建场景const scene = new THREE.Scene();
+    camera = createCamera(container) //常见相机const camera = new PerspectiveCamera(fov : Number, aspect : Number, near : Number, far : Number)
+    renderer = createRenderer() //创建渲染器
+    cssRenderer = createCSS2Renderer() //创建2d渲染器
     {
-      const { ambientLight, directionalLights } = createLights()
-      const axesHelper = new AxesHelper(5)
-      const lightHelper: DirectionalLightHelper[] = []
+      const { ambientLight, directionalLights } = createLights()//灯光
+      const axesHelper = new AxesHelper(5) //坐标轴
+      const lightHelper: DirectionalLightHelper[] = [] //平行光
       directionalLights.forEach((light, index) => {
         if (index === 0 && isDEV === '1') {
-          const cameraHelper = new CameraHelper(light.shadow.camera)
+          const cameraHelper = new CameraHelper(light.shadow.camera)//模拟相机
           lightHelper.push(new DirectionalLightHelper(light, 0.2))
 
-          scene.add(cameraHelper, axesHelper, ...lightHelper)
+          scene.add(cameraHelper, axesHelper, ...lightHelper)//将上述辅助，邓光添加到场景
         }
       })
       scene.add(ambientLight, ...directionalLights)
     }
-    const viewHelper = new ViewHelper(camera, renderer.domElement)
-    Object.assign(viewHelper, { tick: (delta: number) => viewHelper.update(delta) })
+    const viewHelper = new ViewHelper(camera, renderer.domElement)//右下角坐标系
+    Object.assign(viewHelper, { tick: (delta: number) => viewHelper.update(delta) })//给viewHelper添加一个tick方法：viewHelper.update()
     controls = creatControls(camera, cssRenderer.domElement)
     // 看向风车位置
     // controls.target.set(0, 1.5, 0)
@@ -129,7 +130,7 @@ class App {
     controls.addEventListener('change', () => {
       // console.log('change', camera.position)
       count++
-      if (count > 1) this.isOrbiting = true
+      if (count > 1) this.isOrbiting = true //监听相机改变，打印相机位置
     })
     container.appendChild(cssRenderer.domElement)
     container.appendChild(renderer.domElement)
@@ -144,7 +145,7 @@ class App {
 
     // 响应式renderer
     {
-      new Resizer(container, camera, renderer, cssRenderer, outline.compose)
+      new Resizer(container, camera, renderer, cssRenderer, outline.compose)//刚加载设置大小，以及监控浏览器窗口变化大小变化
     }
   }
   async init() {
@@ -156,15 +157,16 @@ class App {
     // 一种一进入就显示设备标签
     this.createLabels()
     /**
-     * 加载箭头
+     * 加载箭头,模型路线上的动画箭头
      */
     this.createArrow()
   }
   setLoadModel() {
     Object.entries(this.model).forEach((data) => {
+      console.log('weishadata[1]',data)
       const { model, action } = data[1]
       const name = data[0]
-      if (action) {
+      if (action) {  //没执行这一步，这个action是什么作用
         this.actions[action.name!] = action
         loop.updatables.push(model)
       }
@@ -275,7 +277,7 @@ class App {
       }
     })
   }
-
+//不明白这个方法是什么作用
   setModelAncestors(groupsName: string[], model: Object3D) {
     groupsName.forEach((groupName) => {
       const selecmodel = model.getObjectByName(groupName)!
@@ -323,6 +325,7 @@ class App {
     svgContainer.setAttribute('id', 'svgContainer')
     svgContainer.setAttribute('width', '100%')
     svgContainer.setAttribute('height', '100%')
+    console.log('wodeshuju',this.model);
     targets.forEach((item: HtmlMeshCollection) => {
       const mesh = scene.getObjectByName(item.meshName) as Mesh
       const element: HTMLElement = document.querySelector('#' + item.target)!
@@ -371,10 +374,14 @@ class App {
   stop() {
     loop.stop()
   }
+  /**
+   * 
+   * @param name 监听鼠标
+   */
   onPointerClick(name: string) {
     // 监听mouseup事件
     document.addEventListener('click', async (event: MouseEvent) => {
-      if (this.isOrbiting) {
+      if (this.isOrbiting) { ///1.处理区分是：鼠标点击事件/还是鼠标移动改变相机
         this.isOrbiting = false
         return
       }
@@ -410,11 +417,14 @@ class App {
       const selectObject = (intersects[0].object as SelectObject).ancestors
       // 高亮选择部件
       if (this.setSelectMap(selectObject)) {
-        this.updateLabal(intersects[0])
+        this.updateLabal(intersects[0]) //更新标注
       }
     })
   }
-
+  /**
+   * 隐藏弹框，恢复部件颜色
+   * @param selectObject 
+   */
   clearSelect(selectObject: any) {
     outline.outlinePass.selectedObjects = []
     turbineLabel.visible = false
@@ -425,10 +435,18 @@ class App {
         }
       })
   }
-
-  // 设置选择映射（selectObject：Object3D）：boolean
+  
+  /**
+   * 如果模型上存在点击的部件，执行createLineSVG绘制连线，通过equipment变量和outline.outlinePass.selectedObjects控制是否重复点击相同部件，重复点击，调用clearSelect将上一次部件恢复
+   * equipment：上次记录；selectObject：选择；
+   * clearSelect()：弹框隐藏，部件颜色恢复
+   * createLineSVG([])：画线清除
+   * selectAnimate()：部件闪烁
+   * @param selectObject 
+   * @returns boolean
+   */
   setSelectMap(selectObject: Object3D): boolean {
-    // 如果选择对象存在
+    console.log('selectObject',selectObject)
     if (selectObject) {
       // 从equipmentMaterialMap中获取selectObject的材质
       const equipmentMaterial = equipmentMaterialMap.get(selectObject.name)
@@ -436,7 +454,7 @@ class App {
       // 如果获取到材质
       if (equipmentMaterial) {
         // 创建线SVG，并过滤出selectObject的meshName
-        this.createLineSVG(htmlMeshCollection.filter((mesh) => selectObject.name === mesh.meshName))
+        this.createLineSVG(htmlMeshCollection.filter((mesh) => selectObject.name === mesh.meshName))//通过匹配过滤只绘制一条线
         // 如果equipment的name等于selectObject的name，且outlinePass的selectedObjects长度大于0
         if (
           equipment.value.name === selectObject.name &&
@@ -464,7 +482,7 @@ class App {
               child.material.emissiveIntensity = 0.5
               // 设置emissive的值为0x00ff00
               child.material.emissive.setHex(0x00ff00)
-              // 调用selectAnimate函数
+              // 调用selectAnimate函数，闪烁动画
               this.selectAnimate(child)
             }
           })
@@ -479,6 +497,10 @@ class App {
       return false
     }
   }
+  /**
+   * 部件闪烁动画
+   * @param child 
+   */
   selectAnimate(child: any) {
     new TWEEN.Tween({ intensity: 0.5 })
       .to({ intensity: 0.2 }, 500)
@@ -490,11 +512,19 @@ class App {
       .repeatDelay(100)
       .start()
   }
+  /**
+   * 弹框更新
+   * @param intersect 
+   */
   updateLabal(intersect: any) {
     turbineLabel.visible = !show.value
     const point = intersect.point
     turbineLabel.position.set(point.x, point.y, point.z)
   }
+  /**
+   * 效果：点击弹窗标注；creat=》添加场景=》监听鼠标事件onPointerClick()
+   * @param target 
+   */
   createTurbineLabel(target: string) {
     const dom: HTMLElement = document.querySelector(target)!
     // dom.style.background = 'rgba(100,100,0,0.5)'
@@ -513,6 +543,9 @@ class App {
     scene.add(turbineLabel)
     this.onPointerClick(ModelName.FACTORY)
   }
+  /**
+   * 效果：模型上初始化显示的标注；html元素=》网格模型对象=》定位=》添加到场景
+   */
   createLabels() {
     htmlMeshCollection.forEach((obj) => {
       const mesh = scene.getObjectByName(obj.meshName)
@@ -528,7 +561,7 @@ class App {
       csslabel.position.set(worldPosition.x, worldPosition.y, worldPosition.z)
       csslabel.scale.set(0.003, 0.003, 0.003)
       csslabel.visible = true
-      turbineLabels.push(csslabel)
+      turbineLabels.push(csslabel)///这一句是什么作用
       scene.add(csslabel)
     })
   }
