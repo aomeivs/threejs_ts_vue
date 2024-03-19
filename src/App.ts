@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-19 12:36:50
+ * @LastEditTime: 2024-03-19 12:53:03
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -364,7 +364,7 @@ class App {
             // const targetX =
             //   (targetRect.left + targetRect.right + targetRect.width - iconPosition) / 2
             // const targetY = (targetRect.top + targetRect.bottom) / 2
-            const targetX = element.offsetLeft+element.clientWidth;
+            const targetX = element.offsetLeft+element.clientWidth-element.children[2].getBoundingClientRect().width/2;
             const targetY = element.offsetTop+element.clientHeight/2;
             const midX = (screenX + targetX) / 2
             const midY = (screenY + targetY) / 2
