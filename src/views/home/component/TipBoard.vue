@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-14 13:27:40
- * @LastEditTime: 2024-03-19 13:59:23
+ * @LastEditTime: 2024-03-19 14:22:33
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/TipBoard.vue
@@ -29,8 +29,11 @@ const linkHtmMesh = (elementId: string) => {
     const pos = new Vector3()
     selectObject.getWorldPosition(pos) //获取三维场景中某个对象世界坐标
     // 相机飞行到的位置和观察目标拉开一定的距离
-    const endPos = pos.clone().addScalar(2)
-    self.createCameraTween(endPos, pos)
+    const endPos = pos.clone().addScalar(0.1)
+    // new Vector3(0, 13, 9) 固定点镜头
+    // 固定点和endpos相加后得到的镜头
+    // new Vector3(0, 13, 9).add(endPos)
+    self.createCameraTween(new Vector3(0, 13, 9).add(endPos), pos)
   }
 }
 const getTipsBoardTop = computed(() => {

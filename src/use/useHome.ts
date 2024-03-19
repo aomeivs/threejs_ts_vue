@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 13:48:38
- * @LastEditTime: 2024-03-19 14:00:52
+ * @LastEditTime: 2024-03-19 14:09:56
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/use/useHome.ts
@@ -136,6 +136,7 @@ export const useHome = () => {
         camera.position.set(obj.x, obj.y, obj.z)
         controls.target.set(0, 0, 0)
       })
+      .easing(TWEEN.Easing.Sinusoidal.InOut)
       .start()
   }
 

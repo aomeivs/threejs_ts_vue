@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-19 13:55:45
+ * @LastEditTime: 2024-03-19 14:09:28
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -556,6 +556,7 @@ class App {
         camera.position.set(obj.x, obj.y, obj.z)
         controls.target.set(obj.tx, obj.ty, obj.tz)
       })
+      .easing(TWEEN.Easing.Sinusoidal.InOut)
       .start()
   }
 }
