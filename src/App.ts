@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-19 11:32:10
+ * @LastEditTime: 2024-03-19 12:36:50
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -327,7 +327,7 @@ class App {
     svgContainer.setAttribute('height', '100%')
     targets.forEach((item: HtmlMeshCollection) => {
       const mesh = scene.getObjectByName(item.meshName) as Mesh
-      const element = document.querySelector('#' + item.target)!
+      const element:HTMLElement = document.querySelector('#' + item.target)!
       if (!element) return
       const targetRect = element.getBoundingClientRect()
       const svgLine = document.createElementNS(svgNS, 'path')
@@ -350,22 +350,22 @@ class App {
             const bbox = new Box3().setFromObject(mesh)
             const meshHeight = bbox.max.y - bbox.min.y
             // // 将网格位置向上调整其高度的一半
-            worldPosition.y = meshHeight / 2 + worldPosition.y
+            worldPosition.y = meshHeight / 4 + worldPosition.y
             const screenPosition = worldPosition.project(camera)
-            const screenX =
-              ((screenPosition.x + 1) * w) / 2 + this.container.getBoundingClientRect().left / scale
-            const screenY =
-              ((-screenPosition.y + 1) * h) / 2 + this.container.getBoundingClientRect().top / scale
-            // Get HTML element position
-            const iconPosition =
-              element.children[2].getBoundingClientRect().width +
-              (element.getBoundingClientRect().right -
-                element.children[2].getBoundingClientRect().left) /
-                2
-            const targetX =
-              (targetRect.left + targetRect.right + targetRect.width - iconPosition) / 2 / scale
-            const targetY = (targetRect.top + targetRect.bottom) / 2 / scale
+            // const screenX =
+            //   ((screenPosition.x + 1) * w) / 2 + this.container.getBoundingClientRect().left / scale
+            // const screenY =
+            //   ((-screenPosition.y + 1) * h) / 2 + this.container.getBoundingClientRect().top / scale
 
+            const screenX = ((screenPosition.x + 1) * this.container.clientWidth) / 2
+            const screenY = ((-screenPosition.y + 1) * this.container.clientHeight) / 2
+            // Get HTML element position
+            // const iconPosition =element.offsetWidth - element.children[2].offsetLeft+element.children[2].offsetWidth/2
+            // const targetX =
+            //   (targetRect.left + targetRect.right + targetRect.width - iconPosition) / 2
+            // const targetY = (targetRect.top + targetRect.bottom) / 2
+            const targetX = element.offsetLeft+element.clientWidth;
+            const targetY = element.offsetTop+element.clientHeight/2;
             const midX = (screenX + targetX) / 2
             const midY = (screenY + targetY) / 2
             //  L ${midX} ${midY}
@@ -377,8 +377,8 @@ class App {
         })
       loop.updatables.push(mesh)
     })
-    // this.container.appendChild()
-    document.body.appendChild(svgContainer)
+    this.container.appendChild(svgContainer)
+    // document.body.appendChild(svgContainer)
   }
   stop() {
     loop.stop()
@@ -409,8 +409,8 @@ class App {
       //     2) /
       //     scale +
       //   1
-      mouse.x = ((event.offsetX / this.container.clientWidth) * 2)  - 1
-      mouse.y = (-(event.offsetY / this.container.clientHeight) * 2)  + 1
+      mouse.x = (event.offsetX / this.container.clientWidth) * 2 - 1
+      mouse.y = -(event.offsetY / this.container.clientHeight) * 2 + 1
       const raycaster = new Raycaster()
       raycaster.setFromCamera(mouse, camera)
       const intersects = raycaster.intersectObjects(this.model[name].model.children, true)
