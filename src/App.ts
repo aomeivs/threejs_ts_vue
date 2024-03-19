@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-19 14:09:28
+ * @LastEditTime: 2024-03-19 14:30:50
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -42,6 +42,7 @@ import { ref } from 'vue'
 import { ViewHelper } from 'three/examples/jsm/Addons.js'
 import useEffectHooks, { type OutlineEffectType } from '@/components/effect/outline'
 import { htmlMeshCollection } from './views/home/data'
+import { ElDialog, ElMessageBox } from 'element-plus'
 
 export type Equipment = Partial<{
   name: string
@@ -520,7 +521,7 @@ class App {
       if (!dom) return
       const csslabel = new CSS2DObject(dom)
       csslabel.name = obj.meshName
-
+      dom.addEventListener('pointerdown', () => {})
       // 把mesh局部坐标转换到世界坐标
       const worldPosition = new Vector3()
       mesh.getWorldPosition(worldPosition)

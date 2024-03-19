@@ -1,4 +1,13 @@
-import type { Equipment } from '@/App'
+/*
+ * @Author: zhou lei
+ * @Date: 2024-03-12 09:20:35
+ * @LastEditTime: 2024-03-19 16:22:07
+ * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @Description: Description
+ * @FilePath: /vue3_ts_three/src/api/factory.ts
+ * 联系方式:910592680@qq.com
+ */
+import type { EquipmentStatusRT, EquipmentWarning } from '@/types/api'
 import { defHttp } from '@/utils/http/axios'
 //import http from '@/utils/http/axios/index'
 
@@ -9,17 +18,10 @@ enum Api {
   equipmentStatus = '/api/wcs/ReceiveProdPlan/equipmentStatus',
   equipmentwarning = '/api/wcs/ReceiveProdPlan/equipmentwarning'
 }
-type EquipmentInfo = {
-  inThoseDays: any
-  getequipmentWarningRTs: Info[]
-  theSameMonth: any
-}
-export type Info = {
-  createTime: any
-}
+
 export const getequipmentStatus = (data?: {}) => {
-  return defHttp.post({ url: '/api/wcs/ReceiveProdPlan/equipmentStatus' }, data)
+  return defHttp.post<EquipmentStatusRT>({ url: Api.equipmentStatus }, data)
 }
-export const getequipmentwarning = (data?: {}): Promise<EquipmentInfo> => {
-  return defHttp.post<EquipmentInfo>({ url: '/api/wcs/ReceiveProdPlan/equipmentwarning' }, data)
+export const getequipmentwarning = (data?: {}) => {
+  return defHttp.post<EquipmentWarning>({ url: Api.equipmentwarning }, data)
 }
