@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-14 13:27:40
- * @LastEditTime: 2024-03-18 14:39:58
+ * @LastEditTime: 2024-03-19 13:59:23
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/TipBoard.vue
@@ -9,17 +9,29 @@
 -->
 <script setup lang="ts">
 import TipItem from './TipItem.vue'
-import { getTipsBoard} from '../data'
+import { getTipsBoard, htmlMeshCollection } from '../data'
 import { App, scene } from '@/App'
 import { computed } from 'vue'
+import { Vector3 } from 'three'
 let self: App
 const init = (app: App) => {
-  // app.createLineSVG(htmlMeshCollection)
   self = app
+  self.createLineSVG(htmlMeshCollection)
+  setTimeout(() => {
+    self.createLineSVG([])
+  }, 5000)
 }
 const linkHtmMesh = (elementId: string) => {
   const selectObject = scene.getObjectByName(elementId)
-  selectObject && self.setSelectMap(selectObject)
+
+  if (selectObject) {
+    self.setSelectMap(selectObject)
+    const pos = new Vector3()
+    selectObject.getWorldPosition(pos) //获取三维场景中某个对象世界坐标
+    // 相机飞行到的位置和观察目标拉开一定的距离
+    const endPos = pos.clone().addScalar(2)
+    self.createCameraTween(endPos, pos)
+  }
 }
 const getTipsBoardTop = computed(() => {
   return getTipsBoard(`top`)
@@ -27,6 +39,7 @@ const getTipsBoardTop = computed(() => {
 const getTipsBoardBottom = computed(() => {
   return getTipsBoard(`bottom`)
 })
+
 defineExpose({ init })
 </script>
 

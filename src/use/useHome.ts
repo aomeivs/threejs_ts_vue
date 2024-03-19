@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 13:48:38
- * @LastEditTime: 2024-03-18 17:27:06
+ * @LastEditTime: 2024-03-19 14:00:52
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/use/useHome.ts
@@ -9,7 +9,7 @@
  */
 import { getequipmentStatus, getequipmentwarning, type Info } from '@/api/factory'
 import { ref } from 'vue'
-import { TWEEN, camera } from '@/App'
+import { TWEEN, camera, controls } from '@/App'
 export const useHome = () => {
   // Get the individual date and time components
   const currentDate = new Date()
@@ -134,6 +134,7 @@ export const useHome = () => {
       .to(targetPosition[type], 800)
       .onUpdate((obj) => {
         camera.position.set(obj.x, obj.y, obj.z)
+        controls.target.set(0, 0, 0)
       })
       .start()
   }

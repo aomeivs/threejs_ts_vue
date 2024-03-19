@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-19 12:53:03
+ * @LastEditTime: 2024-03-19 13:55:45
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -10,7 +10,7 @@
 import { createCamera } from '@/components/helpers/camera'
 import { createCSS2Renderer, createRenderer } from '@/components/helpers/renderer'
 import { createScene } from '@/components/helpers/scene'
-import { creatControls } from '@/components/helpers/controls'
+import { creatControls, type ExtendedOrbitControls } from '@/components/helpers/controls'
 import { createLights } from '@/components/helpers/lights'
 import { Resizer } from '@/components/helpers/Resizer'
 import {
@@ -51,6 +51,7 @@ export type Equipment = Partial<{
 }>
 const isDEV = import.meta.env.VITE_HOST_DEBUG
 let camera: PerspectiveCamera
+let controls: ExtendedOrbitControls
 let renderer: WebGLRenderer
 let cssRenderer: CSS2DRenderer
 let scene: Scene
@@ -119,7 +120,7 @@ class App {
     }
     const viewHelper = new ViewHelper(camera, renderer.domElement)
     Object.assign(viewHelper, { tick: (delta: number) => viewHelper.update(delta) })
-    const controls = creatControls(camera, cssRenderer.domElement)
+    controls = creatControls(camera, cssRenderer.domElement)
     // 看向风车位置
     // controls.target.set(0, 1.5, 0)
     // 最好视角
@@ -315,10 +316,6 @@ class App {
 
   createLineSVG(targets: HtmlMeshCollection[]) {
     document.querySelector('#svgContainer')?.remove()
-    const scale =
-      window.innerWidth / window.innerHeight < 1920 / 1080
-        ? window.innerWidth / 1920
-        : window.innerHeight / 1080
     // Create SVG line
     const svgNS = 'http://www.w3.org/2000/svg'
     const svgContainer = document.createElementNS(svgNS, 'svg')
@@ -327,9 +324,8 @@ class App {
     svgContainer.setAttribute('height', '100%')
     targets.forEach((item: HtmlMeshCollection) => {
       const mesh = scene.getObjectByName(item.meshName) as Mesh
-      const element:HTMLElement = document.querySelector('#' + item.target)!
+      const element: HTMLElement = document.querySelector('#' + item.target)!
       if (!element) return
-      const targetRect = element.getBoundingClientRect()
       const svgLine = document.createElementNS(svgNS, 'path')
       if (!svgLine) return
       svgLine.setAttribute('class', 'pathshadow')
@@ -337,6 +333,7 @@ class App {
       svgLine.setAttribute('stroke-width', '2.5')
       svgLine.setAttribute('fill', 'none')
       svgContainer.appendChild(svgLine)
+
       mesh &&
         Object.assign(mesh, {
           tick: () => {
@@ -352,33 +349,23 @@ class App {
             // // 将网格位置向上调整其高度的一半
             worldPosition.y = meshHeight / 4 + worldPosition.y
             const screenPosition = worldPosition.project(camera)
-            // const screenX =
-            //   ((screenPosition.x + 1) * w) / 2 + this.container.getBoundingClientRect().left / scale
-            // const screenY =
-            //   ((-screenPosition.y + 1) * h) / 2 + this.container.getBoundingClientRect().top / scale
-
             const screenX = ((screenPosition.x + 1) * this.container.clientWidth) / 2
             const screenY = ((-screenPosition.y + 1) * this.container.clientHeight) / 2
-            // Get HTML element position
-            // const iconPosition =element.offsetWidth - element.children[2].offsetLeft+element.children[2].offsetWidth/2
-            // const targetX =
-            //   (targetRect.left + targetRect.right + targetRect.width - iconPosition) / 2
-            // const targetY = (targetRect.top + targetRect.bottom) / 2
-            const targetX = element.offsetLeft+element.clientWidth-element.children[2].getBoundingClientRect().width/2;
-            const targetY = element.offsetTop+element.clientHeight/2;
+            const targetX =
+              element.offsetLeft +
+              element.clientWidth -
+              element.children[2].getBoundingClientRect().width / 2
+            const targetY = element.offsetTop + element.clientHeight / 2
             const midX = (screenX + targetX) / 2
             const midY = (screenY + targetY) / 2
             //  L ${midX} ${midY}
-            //const path = `M ${screenX} ${screenY} L ${targetX} ${midY} L ${targetX} ${targetY}`
             const path = `M ${screenX} ${screenY} L ${midX} ${midY}  L ${targetX} ${midY} L ${targetX} ${targetY}`
-
             svgLine.setAttribute('d', path)
           }
         })
       loop.updatables.push(mesh)
     })
     this.container.appendChild(svgContainer)
-    // document.body.appendChild(svgContainer)
   }
   stop() {
     loop.stop()
@@ -544,5 +531,32 @@ class App {
       scene.add(csslabel)
     })
   }
+
+  createCameraTween(pos: Vector3, target: Vector3 = controls.target) {
+    new TWEEN.Tween({
+      x: camera.position.x,
+      y: camera.position.y,
+      z: camera.position.z,
+      tx: controls.target.x,
+      ty: controls.target.y,
+      tz: controls.target.z
+    })
+      .to(
+        {
+          x: pos.x,
+          y: pos.y,
+          z: pos.z,
+          tx: target.x,
+          ty: target.y,
+          tz: target.z
+        },
+        800
+      )
+      .onUpdate((obj) => {
+        camera.position.set(obj.x, obj.y, obj.z)
+        controls.target.set(obj.tx, obj.ty, obj.tz)
+      })
+      .start()
+  }
 }
-export { App, show, equipment, camera, scene, TWEEN }
+export { App, show, equipment, camera, controls, scene, TWEEN }
