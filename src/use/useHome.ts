@@ -39,7 +39,7 @@ export const useHome = () => {
         item.createTime = dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss');
       })
     }
-    return {equipmentWarning:equipmentWarning.value}
+    
   }
   const getEquipmentStatus = async () => {
     const result = await getequipmentStatus()
@@ -85,7 +85,6 @@ export const useHome = () => {
     //   speedthreevalue.value = (parseFloat(speedthree.value[0].equipmentValue) / 13) * 100
     //   speedfourvalue.value = (parseFloat(speedfour.value[0].equipmentValue) / 13) * 100
     // }
-    return {equipmentSpeedList:equipmentSpeedList.value, equipmentTemperatureList:equipmentTemperatureList.value, equipmentStatusList:equipmentStatusList.value}
   }
 
   /**
