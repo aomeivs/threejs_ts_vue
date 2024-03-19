@@ -1,15 +1,15 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 13:48:38
- * @LastEditTime: 2024-03-13 15:17:07
+ * @LastEditTime: 2024-03-18 17:27:06
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/use/useHome.ts
  * 联系方式:910592680@qq.com
  */
-import { getequipmentStatus, getequipmentwarning } from '@/api/factory'
+import { getequipmentStatus, getequipmentwarning, type Info } from '@/api/factory'
 import { ref } from 'vue'
-import { TWEEN,camera } from '@/App'
+import { TWEEN, camera } from '@/App'
 export const useHome = () => {
   // Get the individual date and time components
   const currentDate = new Date()
@@ -25,7 +25,7 @@ export const useHome = () => {
   //请求数据
   const inThoseDays = ref<number>(0)
   const theSameMonth = ref<number>(0)
-  const tableData = ref([])
+  const tableData = ref<Info[]>([])
   const originalArray = ref([])
   const extractedArray = ref([])
   const speedone = ref(0)
@@ -67,8 +67,8 @@ export const useHome = () => {
   const equipmentStatus = async () => {
     const result = await getequipmentStatus()
     const data = result?.getequipmentStatusRTs
-    let bianmacode = ['ZTZSW', 'SFHGLW', 'YTZSW', 'GHL2SW', 'GHL1SW']
-    let bianmacode2 = [
+    const bianmacode = ['ZTZSW', 'SFHGLW', 'YTZSW', 'GHL2SW', 'GHL1SW']
+    const bianmacode2 = [
       'ZTZSW',
       'SFHGLW',
       'YTZSW',
@@ -95,7 +95,7 @@ export const useHome = () => {
 
   /**
    * 报警信息数据处理
-   * @returns 
+   * @returns
    */
   const initScrollData = () => {
     const list = []
@@ -115,7 +115,7 @@ export const useHome = () => {
   }
   /**
    * 视角控制
-   * @param type 
+   * @param type
    */
   const rotatCamera = (type: number) => {
     const initialPosition = {
@@ -138,5 +138,5 @@ export const useHome = () => {
       .start()
   }
 
-  return { formattedDateTime, equipmentStatus, initScrollData, rotatCamera }
+  return { equipmentStatus, initScrollData, rotatCamera }
 }

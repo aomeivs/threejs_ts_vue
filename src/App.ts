@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-18 16:50:54
+ * @LastEditTime: 2024-03-19 11:32:10
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -42,7 +42,6 @@ import { ref } from 'vue'
 import { ViewHelper } from 'three/examples/jsm/Addons.js'
 import useEffectHooks, { type OutlineEffectType } from '@/components/effect/outline'
 import { htmlMeshCollection } from './views/home/data'
-import { Easing } from '@tweenjs/tween.js'
 
 export type Equipment = Partial<{
   name: string
@@ -392,24 +391,26 @@ class App {
         return
       }
       const mouse = new Vector2()
-      const scale =
-        window.innerWidth / window.innerHeight < 1920 / 1080
-          ? window.innerWidth / 1920
-          : window.innerHeight / 1080
-      mouse.x =
-        (((event.clientX - this.container.getBoundingClientRect().left) /
-          this.container.clientWidth) *
-          2) /
-          scale -
-        1
-      mouse.y =
-        (-(
-          (event.clientY - this.container.getBoundingClientRect().top) /
-          this.container.clientHeight
-        ) *
-          2) /
-          scale +
-        1
+      // const scale =
+      //   window.innerWidth / window.innerHeight < 1920 / 1080
+      //     ? window.innerWidth / 1920
+      //     : window.innerHeight / 1080
+      // mouse.x =
+      //   (((event.clientX - this.container.getBoundingClientRect().left) /
+      //     this.container.clientWidth) *
+      //     2) /
+      //     scale -
+      //   1
+      // mouse.y =
+      //   (-(
+      //     (event.clientY - this.container.getBoundingClientRect().top) /
+      //     this.container.clientHeight
+      //   ) *
+      //     2) /
+      //     scale +
+      //   1
+      mouse.x = ((event.offsetX / this.container.clientWidth) * 2)  - 1
+      mouse.y = (-(event.offsetY / this.container.clientHeight) * 2)  + 1
       const raycaster = new Raycaster()
       raycaster.setFromCamera(mouse, camera)
       const intersects = raycaster.intersectObjects(this.model[name].model.children, true)
@@ -436,28 +437,46 @@ class App {
         }
       })
   }
+
+  // 设置选择映射（selectObject：Object3D）：boolean
   setSelectMap(selectObject: Object3D): boolean {
+    // 如果选择对象存在
     if (selectObject) {
+      // 从equipmentMaterialMap中获取selectObject的材质
       const equipmentMaterial = equipmentMaterialMap.get(selectObject.name)
 
+      // 如果获取到材质
       if (equipmentMaterial) {
+        // 创建线SVG，并过滤出selectObject的meshName
         this.createLineSVG(htmlMeshCollection.filter((mesh) => selectObject.name === mesh.meshName))
+        // 如果equipment的name等于selectObject的name，且outlinePass的selectedObjects长度大于0
         if (
           equipment.value.name === selectObject.name &&
           outline.outlinePass.selectedObjects.length > 0
         ) {
+          // 清除selectObject
           this.clearSelect(selectObject)
+          // 创建线SVG，并清空
           this.createLineSVG([])
           return false
         } else {
+          // 清除equipmentMaterialMap中的equipment的材质
           this.clearSelect(equipmentMaterialMap.get(equipment.value.name))
+          // 设置equipment的value为selectObject
           equipment.value = selectObject
+          // 设置outlinePass的selectedObjects为equipmentMaterial
           outline.outlinePass.selectedObjects = [equipmentMaterial]
+          // 移除所有TWEEN
           TWEEN.removeAll()
+          // 遍历equipmentMaterial的子节点
           equipmentMaterial.traverse((child: any) => {
+            // 如果子节点是Mesh
             if (child.isMesh) {
+              // 设置emissiveIntensity为0.5
               child.material.emissiveIntensity = 0.5
+              // 设置emissive的值为0x00ff00
               child.material.emissive.setHex(0x00ff00)
+              // 调用selectAnimate函数
               this.selectAnimate(child)
             }
           })
@@ -465,7 +484,9 @@ class App {
       }
       return true
     } else {
+      // 清除equipmentMaterialMap中的equipment的材质
       this.clearSelect(equipmentMaterialMap.get(equipment.value.name))
+      // 创建线SVG，并清空
       this.createLineSVG([])
       return false
     }

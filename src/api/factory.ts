@@ -1,3 +1,4 @@
+import type { Equipment } from '@/App'
 import { defHttp } from '@/utils/http/axios'
 //import http from '@/utils/http/axios/index'
 
@@ -8,10 +9,17 @@ enum Api {
   equipmentStatus = '/api/wcs/ReceiveProdPlan/equipmentStatus',
   equipmentwarning = '/api/wcs/ReceiveProdPlan/equipmentwarning'
 }
-
+type EquipmentInfo = {
+  inThoseDays: any
+  getequipmentWarningRTs: Info[]
+  theSameMonth: any
+}
+export type Info = {
+  createTime: any
+}
 export const getequipmentStatus = (data?: {}) => {
   return defHttp.post({ url: '/api/wcs/ReceiveProdPlan/equipmentStatus' }, data)
 }
-export const getequipmentwarning = (data?: {}) => {
-  return defHttp.post({ url: '/api/wcs/ReceiveProdPlan/equipmentwarning' }, data)
+export const getequipmentwarning = (data?: {}): Promise<EquipmentInfo> => {
+  return defHttp.post<EquipmentInfo>({ url: '/api/wcs/ReceiveProdPlan/equipmentwarning' }, data)
 }
