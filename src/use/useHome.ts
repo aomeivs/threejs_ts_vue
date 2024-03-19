@@ -1,21 +1,16 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 13:48:38
- * @LastEditTime: 2024-03-19 16:29:11
+ * @LastEditTime: 2024-03-19 16:42:23
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/use/useHome.ts
  * 联系方式:910592680@qq.com
  */
 import { getequipmentStatus, getequipmentwarning } from '@/api/factory'
-import { reactive, ref } from 'vue'
+import { ref } from 'vue'
 import { TWEEN, camera, controls } from '@/App'
-import type {
-  EquipmentStatusRT,
-  EquipmentWarning,
-  GetequipmentStatusRT,
-  GetequipmentWarningRT
-} from '@/types/api'
+import type { EquipmentWarning, GetequipmentStatusRT } from '@/types/api'
 
 export const useHome = () => {
   // 设备速度列表

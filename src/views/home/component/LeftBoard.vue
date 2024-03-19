@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 13:04:14
- * @LastEditTime: 2024-03-19 16:37:12
+ * @LastEditTime: 2024-03-19 16:42:49
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/LeftBoard.vue
@@ -19,6 +19,7 @@ const {
 } = useHome()
 onMounted(() => {
   getEquipmentwarning()
+  getEquipmentStatus()
 })
 onUnmounted(() => {})
 </script>
@@ -70,7 +71,7 @@ onUnmounted(() => {})
       <div class="device-total">
         <div class="total-item">
           <div class="txt">本月报警数量</div>
-          <div class="num">{{equipmentWarning?.inThoseDays}}</div>
+          <div class="num">{{ equipmentWarning?.inThoseDays }}</div>
         </div>
         <div class="total-item">
           <div class="txt">全年报警数量</div>
