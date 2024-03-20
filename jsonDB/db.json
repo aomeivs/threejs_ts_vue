@@ -4,5 +4,253 @@
       "id": "1",
       "title": "2222conveyorLineSpeed222"
     }
-  ]
+  ],
+  "waring": {
+    "getequipmentWarningRTs": [
+      {
+        "name": "设备1",
+        "faultName": "故障1",
+        "isDispose": "已处理",
+        "createTime": "2024-02-29T08:00:00Z"
+      },
+      {
+        "name": "设备2",
+        "faultName": "故障2",
+        "isDispose": "未处理",
+        "createTime": "2024-02-28T10:00:00Z"
+      },{
+        "name": "设备1",
+        "faultName": "故障1",
+        "isDispose": "已处理",
+        "createTime": "2024-02-29T08:00:00Z"
+      },
+      {
+        "name": "设备2",
+        "faultName": "故障2",
+        "isDispose": "未处理",
+        "createTime": "2024-02-28T10:00:00Z"
+      },{
+        "name": "设备1",
+        "faultName": "故障1",
+        "isDispose": "已处理",
+        "createTime": "2024-02-29T08:00:00Z"
+      },
+      {
+        "name": "设备2",
+        "faultName": "故障2",
+        "isDispose": "未处理",
+        "createTime": "2024-02-28T10:00:00Z"
+      }
+    ],
+    "theSameMonth": 10,
+    "inThoseDays": 5,
+    "code": 200,
+    "MESSAGE": "成功"
+  },
+  "status": {
+    "getequipmentStatusRTs": [
+      {
+        "equipmentName": "预脱脂加温启动",
+        "equipmentValue": "0",
+        "equipmentCode": "YTZJWQD"
+      },
+      {
+        "equipmentName": "预脱脂加温启动",
+        "equipmentValue": "0",
+        "equipmentCode": "YTZJWQD"
+      },
+      {
+        "equipmentName": "预脱脂加温启动",
+        "equipmentValue": "0",
+        "equipmentCode": "YTZJWQD"
+      },
+      {
+        "equipmentName": "预脱脂加温启动",
+        "equipmentValue": "0",
+        "equipmentCode": "YTZJWQD"
+      },
+      {
+        "equipmentName": "预脱脂加温启动",
+        "equipmentValue": "0",
+        "equipmentCode": "YTZJWQD"
+      },
+      {
+        "equipmentName": "水分烘干炉燃烧机运行",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX"
+      },
+      {
+        "equipmentName": "水分烘干炉燃烧机运行",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX"
+      },
+      {
+        "equipmentName": "水分烘干炉燃烧机运行",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX"
+      },
+      {
+        "equipmentName": "水分烘干炉燃烧机运行",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态2",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态3",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      },
+      {
+        "equipmentName": "测试状态",
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX001"
+      }
+    ],
+    "code": 200,
+    "MESSAGE": "成功"
+  }
 }

@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 13:04:14
- * @LastEditTime: 2024-03-19 16:42:49
+ * @LastEditTime: 2024-03-19 18:01:12
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/LeftBoard.vue
@@ -10,13 +10,13 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted } from 'vue'
 import { useHome } from '@/use/useHome'
+import { useHomeStore } from '@/stores/home';
 const {
   getEquipmentwarning,
   getEquipmentStatus,
   equipmentWarning,
-  equipmentSpeedList,
-  equipmentTemperatureList
 } = useHome()
+const homeStore = useHomeStore()
 onMounted(() => {
   // getEquipmentwarning()
   // getEquipmentStatus()
@@ -29,8 +29,8 @@ onUnmounted(() => {})
       <div class="board-item-title">输送线速度</div>
       <div class="board-item-value speed" style="height: 310px">
         <!-- speed -->
-        <template v-if="equipmentSpeedList.length > 0">
-          <div v-for="(n, index) in equipmentSpeedList" :key="n.equipmentCode" class="item">
+        <template v-if="homeStore.equipmentSpeedList.length > 0">
+          <div v-for="(n, index) in homeStore.equipmentSpeedList" :key="n.equipmentCode" class="item">
             <div class="no">
               <div class="icon">{{ index + 1 }}</div>
             </div>
@@ -58,8 +58,8 @@ onUnmounted(() => {})
       <div class="board-item-title">工艺温度</div>
       <div class="board-item-value temperature" style="height: 200px">
         <!-- 温度 -->
-        <template v-if="equipmentTemperatureList.length > 0">
-          <div v-for="n in equipmentTemperatureList" :key="n.equipmentCode" class="item">
+        <template v-if="homeStore.equipmentTemperatureList.length > 0">
+          <div v-for="n in homeStore.equipmentTemperatureList" :key="n.equipmentCode" class="item">
             <div>{{ n.equipmentName }}</div>
             <div>{{ n.equipmentValue }}°C</div>
           </div>
@@ -99,9 +99,9 @@ onUnmounted(() => {})
             <div>{{ item.name }}</div>
             <div>{{ item.createTime }}</div>
             <div>{{ item.isDispose }}</div>
-            <!-- <div @click="console.log(item.id)">
+            <div @click="console.log(item.name)">
               <span class="btn">查看</span>
-            </div> -->
+            </div>
           </div>
         </vue3-seamless-scroll>
       </div>

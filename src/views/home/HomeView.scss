@@ -103,6 +103,7 @@
               display: grid;
               grid-template-columns: 1fr 1fr;
               .item {
+                white-space: nowrap;
                 color: white;
                 display: flex;
                 width: 198px;
@@ -113,6 +114,9 @@
                 padding: 8px;
                 & > div {
                   flex: 1;
+                  &:last-child{
+                    text-align: right;
+                  }
                 }
               }
             }
@@ -327,10 +331,13 @@
               height: 297px;
               display: grid;
               grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-              grid-gap: 8px;
+              grid-gap: 26px;
+              align-items: flex-start;
+              align-content: flex-start;
               .device-status-item {
                 display: flex;
                 align-items: center;
+                white-space: nowrap;
                 .icon {
                   width: 12px;
                   height: 12px;
