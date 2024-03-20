@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 13:04:14
- * @LastEditTime: 2024-03-19 18:01:12
+ * @LastEditTime: 2024-03-20 10:21:47
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/LeftBoard.vue
@@ -18,8 +18,8 @@ const {
 } = useHome()
 const homeStore = useHomeStore()
 onMounted(() => {
-  // getEquipmentwarning()
-  // getEquipmentStatus()
+  getEquipmentwarning()
+  getEquipmentStatus()
 })
 onUnmounted(() => {})
 </script>
