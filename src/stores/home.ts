@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-19 17:53:32
+ * @LastEditTime: 2024-03-20 13:09:04
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/stores/home.ts
@@ -19,11 +19,13 @@ export const useHomeStore = defineStore('home', () => {
   const equipmentTemperatureList = ref<GetequipmentStatusRT[]>([])
   // 设备状态
   const equipmentStatusList = ref<GetequipmentStatusRT[]>([])
+  const equipmentList = ref<GetequipmentStatusRT[]>([])
   async function getEquipmentStatusDispach() {
     const result = await getequipmentStatus()
     const data = result.getequipmentStatusRTs
-    const speedIDs = ['SFHGLRSJYX']
-    const temperatureIDs = ['YTZJWQD']
+    const speedIDs = ['SFHGLRSJYX000']
+    const temperatureIDs = ['SFHGLRSJYX010']
+    equipmentList.value = data
     equipmentSpeedList.value = data.filter((item) => speedIDs.includes(item.equipmentCode))
     equipmentTemperatureList.value = data.filter((item) =>
       temperatureIDs.includes(item.equipmentCode)
@@ -35,12 +37,10 @@ export const useHomeStore = defineStore('home', () => {
   }
 
   return {
+    equipmentList,
     equipmentSpeedList,
     equipmentTemperatureList,
     equipmentStatusList,
     getEquipmentStatusDispach
   }
 })
-export default {
-  useHomeStore
-}

@@ -1,252 +1,142 @@
 {
-  "waring": {
-    "getequipmentWarningRTs": [
-      {
-        "name": "设备1",
-        "faultName": "故障1",
-        "isDispose": "已处理",
-        "createTime": "2024-02-29T08:00:00Z"
-      },
-      {
-        "name": "设备2",
-        "faultName": "故障2",
-        "isDispose": "未处理",
-        "createTime": "2024-02-28T10:00:00Z"
-      },
-      {
-        "name": "设备1",
-        "faultName": "故障1",
-        "isDispose": "已处理",
-        "createTime": "2024-02-29T08:00:00Z"
-      },
-      {
-        "name": "设备2",
-        "faultName": "故障2",
-        "isDispose": "未处理",
-        "createTime": "2024-02-28T10:00:00Z"
-      },
-      {
-        "name": "设备1",
-        "faultName": "故障1",
-        "isDispose": "已处理",
-        "createTime": "2024-02-29T08:00:00Z"
-      },
-      {
-        "name": "设备2",
-        "faultName": "故障2",
-        "isDispose": "未处理",
-        "createTime": "2024-02-28T10:00:00Z"
-      }
-    ],
-    "theSameMonth": 10,
-    "inThoseDays": 5,
-    "code": 200,
-    "MESSAGE": "成功"
-  },
   "status": {
+    "code": 200,
     "getequipmentStatusRTs": [
       {
-        "equipmentName": "预脱脂加温启动123",
-        "equipmentValue": "0",
-        "equipmentCode": "YTZJWQD"
-      },
-      {
+        "equipmentCode": "YTZJWQD1",
         "equipmentName": "预脱脂加温启动23",
-        "equipmentValue": "20",
-        "equipmentCode": "YTZJWQD"
+        "equipmentValue": "1"
       },
       {
+        "equipmentCode": "YTZJWQD2",
+        "equipmentName": "预脱脂加温启动23",
+        "equipmentValue": "1"
+      },
+      {
+        "equipmentCode": "YTZJWQD3",
         "equipmentName": "预脱脂加温启动",
-        "equipmentValue": "0",
-        "equipmentCode": "YTZJWQD"
+        "equipmentValue": "0"
       },
       {
+        "equipmentCode": "YTZJWQD4",
         "equipmentName": "预脱脂加温启动",
-        "equipmentValue": "0",
-        "equipmentCode": "YTZJWQD"
+        "equipmentValue": "0"
       },
       {
+        "equipmentCode": "YTZJWQD5",
         "equipmentName": "预脱脂加温启动",
-        "equipmentValue": "0",
-        "equipmentCode": "YTZJWQD"
+        "equipmentValue": "0"
       },
       {
+        "equipmentCode": "YTZJWQD6",
         "equipmentName": "水分烘干炉燃烧机运行",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX"
+        "equipmentValue": "10"
       },
       {
+        "equipmentCode": "YTZJWQD7",
         "equipmentName": "水分烘干炉燃烧机运行",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX"
+        "equipmentValue": "13"
       },
       {
+        "equipmentCode": "YTZJWQD8",
         "equipmentName": "水分烘干炉燃烧机运行",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX"
+        "equipmentValue": "1"
       },
       {
+        "equipmentCode": "YTZJWQD9",
         "equipmentName": "水分烘干炉燃烧机运行",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX"
+        "equipmentValue": "10"
       },
       {
+        "equipmentCode": "SFHGLRSJYX000",
         "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
+        "equipmentValue": "0"
       },
       {
-        "equipmentName": "测试状态2",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态3",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
+        "equipmentCode": "SFHGLRSJYX000",
         "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
+        "equipmentValue": "10"
       },
       {
+        "equipmentCode": "SFHGLRSJYX000",
         "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
+        "equipmentValue": "13"
       },
       {
+        "equipmentCode": "SFHGLRSJYX000",
         "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
+        "equipmentValue": "12"
       },
       {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
+        "equipmentCode": "SFHGLRSJYX010",
+        "equipmentName": "测试温度状态",
+        "equipmentValue": "0"
       },
       {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
+        "equipmentCode": "SFHGLRSJYX010",
+        "equipmentName": "测试温度状态",
+        "equipmentValue": "10"
       },
       {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
+        "equipmentCode": "SFHGLRSJYX010",
+        "equipmentName": "测试温度状态",
+        "equipmentValue": "20"
       },
       {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
+        "equipmentCode": "SFHGLRSJYX010",
+        "equipmentName": "测试温度状态",
+        "equipmentValue": "30"
       },
       {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
-      },
-      {
-        "equipmentName": "测试状态",
-        "equipmentValue": "1",
-        "equipmentCode": "SFHGLRSJYX001"
+        "equipmentCode": "SFHGLRSJYX010",
+        "equipmentName": "测试温度状态",
+        "equipmentValue": "30"
       }
     ],
-    "code": 200,
     "MESSAGE": "成功"
+  },
+  "waring": {
+    "code": 200,
+    "getequipmentWarningRTs": [
+      {
+        "createTime": "2024-02-29T08:00:00Z",
+        "faultName": "故障1",
+        "isDispose": "已处理",
+        "name": "设备1"
+      },
+      {
+        "createTime": "2024-02-28T10:00:00Z",
+        "faultName": "故障2",
+        "isDispose": "未处理",
+        "name": "设备2"
+      },
+      {
+        "createTime": "2024-02-29T08:00:00Z",
+        "faultName": "故障1",
+        "isDispose": "已处理",
+        "name": "设备1"
+      },
+      {
+        "createTime": "2024-02-28T10:00:00Z",
+        "faultName": "故障2",
+        "isDispose": "未处理",
+        "name": "设备2"
+      },
+      {
+        "createTime": "2024-02-29T08:00:00Z",
+        "faultName": "故障1",
+        "isDispose": "已处理",
+        "name": "设备1"
+      },
+      {
+        "createTime": "2024-02-28T10:00:00Z",
+        "faultName": "故障2",
+        "isDispose": "未处理",
+        "name": "设备2"
+      }
+    ],
+    "inThoseDays": 5,
+    "MESSAGE": "成功",
+    "theSameMonth": 10
   }
 }

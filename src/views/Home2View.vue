@@ -31,7 +31,7 @@ const play = async () => {
   <div class="wrapper" id="scene-container"></div>
   <div class="css2object" id="css2object" v-show="show">
     <div>
-      <div>设备名:{{ equipment.name }}</div>
+      <div>设备名:{{ equipment?.alias }}</div>
       <div>编号</div>
       <div>温度</div>
       <div>状态{{}}</div>

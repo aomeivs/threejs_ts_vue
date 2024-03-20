@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-19 14:30:50
+ * @LastEditTime: 2024-03-20 16:03:35
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -42,8 +42,11 @@ import { ref } from 'vue'
 import { ViewHelper } from 'three/examples/jsm/Addons.js'
 import useEffectHooks, { type OutlineEffectType } from '@/components/effect/outline'
 import { htmlMeshCollection } from './views/home/data'
-import { ElDialog, ElMessageBox } from 'element-plus'
-
+import type { GetequipmentStatusRT } from './types/api'
+import { useHomeStore } from './stores/home'
+import { storeToRefs } from 'pinia'
+import pinia from './stores'
+const { equipmentList } = storeToRefs(useHomeStore(pinia))
 export type Equipment = Partial<{
   name: string
   alias: string
@@ -62,12 +65,10 @@ let turbineLabel: any
 const turbineLabels = []
 let outline: OutlineEffectType
 let count = 0
-let w = 0
-let h = 0
 const equipmentMaterialMap = new Map()
 const show = ref(false)
-const equipment = ref<Equipment>({})
-export type HtmlMeshCollection = {
+const equipment = ref<HtmlMeshCollection>()
+export interface HtmlMeshCollection extends Partial<GetequipmentStatusRT> {
   target: string
   meshName: string
   alias: string
@@ -95,33 +96,32 @@ class App {
     this.isOrbiting = false
     // 控制GUI\STATS
     {
-      stats = new Stats()//一个仪表板，用于显示每秒帧数，监视性能
+      stats = new Stats() //一个仪表板，用于显示每秒帧数，监视性能
       isDEV === '1' && createGUI(this) //.hide()
     }
 
     // scene\camera\renderer\light\helper
-    w = (container && container.clientWidth) || window.innerWidth
-    h = (container && container.clientHeight) || window.innerHeight
+
     scene = createScene() //创建场景const scene = new THREE.Scene();
     camera = createCamera(container) //常见相机const camera = new PerspectiveCamera(fov : Number, aspect : Number, near : Number, far : Number)
     renderer = createRenderer() //创建渲染器
     cssRenderer = createCSS2Renderer() //创建2d渲染器
     {
-      const { ambientLight, directionalLights } = createLights()//灯光
+      const { ambientLight, directionalLights } = createLights() //灯光
       const axesHelper = new AxesHelper(5) //坐标轴
       const lightHelper: DirectionalLightHelper[] = [] //平行光
       directionalLights.forEach((light, index) => {
         if (index === 0 && isDEV === '1') {
-          const cameraHelper = new CameraHelper(light.shadow.camera)//模拟相机
+          const cameraHelper = new CameraHelper(light.shadow.camera) //模拟相机
           lightHelper.push(new DirectionalLightHelper(light, 0.2))
 
-          scene.add(cameraHelper, axesHelper, ...lightHelper)//将上述辅助，邓光添加到场景
+          scene.add(cameraHelper, axesHelper, ...lightHelper) //将上述辅助，邓光添加到场景
         }
       })
       scene.add(ambientLight, ...directionalLights)
     }
-    const viewHelper = new ViewHelper(camera, renderer.domElement)//右下角坐标系
-    Object.assign(viewHelper, { tick: (delta: number) => viewHelper.update(delta) })//给viewHelper添加一个tick方法：viewHelper.update()
+    const viewHelper = new ViewHelper(camera, renderer.domElement) //右下角坐标系
+    Object.assign(viewHelper, { tick: (delta: number) => viewHelper.update(delta) }) //给viewHelper添加一个tick方法：viewHelper.update()
     controls = creatControls(camera, cssRenderer.domElement)
     // 看向风车位置
     // controls.target.set(0, 1.5, 0)
@@ -145,7 +145,7 @@ class App {
 
     // 响应式renderer
     {
-      new Resizer(container, camera, renderer, cssRenderer, outline.compose)//刚加载设置大小，以及监控浏览器窗口变化大小变化
+      new Resizer(container, camera, renderer, cssRenderer, outline.compose) //刚加载设置大小，以及监控浏览器窗口变化大小变化
     }
   }
   async init() {
@@ -163,10 +163,10 @@ class App {
   }
   setLoadModel() {
     Object.entries(this.model).forEach((data) => {
-      console.log('weishadata[1]',data)
       const { model, action } = data[1]
       const name = data[0]
-      if (action) {  //没执行这一步，这个action是什么作用
+      if (action) {
+        //没执行这一步，这个action是什么作用
         this.actions[action.name!] = action
         loop.updatables.push(model)
       }
@@ -264,20 +264,21 @@ class App {
           newMaterial.roughness = 1
           newMaterial.metalness = 0
         } else if (meshChild.name.includes('地面')) {
-          newMaterial.roughness = 1
-          newMaterial.metalness = 0.1
+          newMaterial.roughness = 0
+          newMaterial.metalness = 0
         } else {
           newMaterial.roughness = 0.2
           newMaterial.metalness = 0.7
         }
+  
         meshChild.castShadow = true
         meshChild.receiveShadow = true
-        newMaterial.envMapIntensity = 0.3
+        newMaterial.envMapIntensity = 0.5
         meshChild.material = newMaterial
       }
     })
   }
-//不明白这个方法是什么作用
+  //不明白这个方法是什么作用
   setModelAncestors(groupsName: string[], model: Object3D) {
     groupsName.forEach((groupName) => {
       const selecmodel = model.getObjectByName(groupName)!
@@ -325,7 +326,6 @@ class App {
     svgContainer.setAttribute('id', 'svgContainer')
     svgContainer.setAttribute('width', '100%')
     svgContainer.setAttribute('height', '100%')
-    console.log('wodeshuju',this.model);
     targets.forEach((item: HtmlMeshCollection) => {
       const mesh = scene.getObjectByName(item.meshName) as Mesh
       const element: HTMLElement = document.querySelector('#' + item.target)!
@@ -375,35 +375,18 @@ class App {
     loop.stop()
   }
   /**
-   * 
+   *
    * @param name 监听鼠标
    */
   onPointerClick(name: string) {
     // 监听mouseup事件
     document.addEventListener('click', async (event: MouseEvent) => {
-      if (this.isOrbiting) { ///1.处理区分是：鼠标点击事件/还是鼠标移动改变相机
+      if (this.isOrbiting) {
+        ///1.处理区分是：鼠标点击事件/还是鼠标移动改变相机
         this.isOrbiting = false
         return
       }
       const mouse = new Vector2()
-      // const scale =
-      //   window.innerWidth / window.innerHeight < 1920 / 1080
-      //     ? window.innerWidth / 1920
-      //     : window.innerHeight / 1080
-      // mouse.x =
-      //   (((event.clientX - this.container.getBoundingClientRect().left) /
-      //     this.container.clientWidth) *
-      //     2) /
-      //     scale -
-      //   1
-      // mouse.y =
-      //   (-(
-      //     (event.clientY - this.container.getBoundingClientRect().top) /
-      //     this.container.clientHeight
-      //   ) *
-      //     2) /
-      //     scale +
-      //   1
       mouse.x = (event.offsetX / this.container.clientWidth) * 2 - 1
       mouse.y = -(event.offsetY / this.container.clientHeight) * 2 + 1
       const raycaster = new Raycaster()
@@ -423,7 +406,7 @@ class App {
   }
   /**
    * 隐藏弹框，恢复部件颜色
-   * @param selectObject 
+   * @param selectObject
    */
   clearSelect(selectObject: any) {
     outline.outlinePass.selectedObjects = []
@@ -435,18 +418,18 @@ class App {
         }
       })
   }
-  
+
   /**
    * 如果模型上存在点击的部件，执行createLineSVG绘制连线，通过equipment变量和outline.outlinePass.selectedObjects控制是否重复点击相同部件，重复点击，调用clearSelect将上一次部件恢复
    * equipment：上次记录；selectObject：选择；
    * clearSelect()：弹框隐藏，部件颜色恢复
    * createLineSVG([])：画线清除
    * selectAnimate()：部件闪烁
-   * @param selectObject 
+   * @param selectObject
    * @returns boolean
    */
   setSelectMap(selectObject: Object3D): boolean {
-    console.log('selectObject',selectObject)
+    console.log('selectObject', selectObject)
     if (selectObject) {
       // 从equipmentMaterialMap中获取selectObject的材质
       const equipmentMaterial = equipmentMaterialMap.get(selectObject.name)
@@ -454,10 +437,10 @@ class App {
       // 如果获取到材质
       if (equipmentMaterial) {
         // 创建线SVG，并过滤出selectObject的meshName
-        this.createLineSVG(htmlMeshCollection.filter((mesh) => selectObject.name === mesh.meshName))//通过匹配过滤只绘制一条线
+        this.createLineSVG(htmlMeshCollection.filter((mesh) => selectObject.name === mesh.meshName)) //通过匹配过滤只绘制一条线
         // 如果equipment的name等于selectObject的name，且outlinePass的selectedObjects长度大于0
         if (
-          equipment.value.name === selectObject.name &&
+          equipment.value?.meshName === selectObject.name &&
           outline.outlinePass.selectedObjects.length > 0
         ) {
           // 清除selectObject
@@ -467,9 +450,13 @@ class App {
           return false
         } else {
           // 清除equipmentMaterialMap中的equipment的材质
-          this.clearSelect(equipmentMaterialMap.get(equipment.value.name))
-          // 设置equipment的value为selectObject
-          equipment.value = selectObject
+          this.clearSelect(equipmentMaterialMap.get(equipment.value?.meshName))
+          const obj = htmlMeshCollection.find((html) => html.meshName === selectObject.name)
+          if (obj) {
+            const child = equipmentList.value.find((child) => child.equipmentCode == obj.target)
+            child && Object.assign(obj, child)
+          }
+          equipment.value = obj
           // 设置outlinePass的selectedObjects为equipmentMaterial
           outline.outlinePass.selectedObjects = [equipmentMaterial]
           // 移除所有TWEEN
@@ -491,7 +478,7 @@ class App {
       return true
     } else {
       // 清除equipmentMaterialMap中的equipment的材质
-      this.clearSelect(equipmentMaterialMap.get(equipment.value.name))
+      this.clearSelect(equipmentMaterialMap.get(equipment.value?.meshName))
       // 创建线SVG，并清空
       this.createLineSVG([])
       return false
@@ -499,7 +486,7 @@ class App {
   }
   /**
    * 部件闪烁动画
-   * @param child 
+   * @param child
    */
   selectAnimate(child: any) {
     new TWEEN.Tween({ intensity: 0.5 })
@@ -514,7 +501,7 @@ class App {
   }
   /**
    * 弹框更新
-   * @param intersect 
+   * @param intersect
    */
   updateLabal(intersect: any) {
     turbineLabel.visible = !show.value
@@ -523,7 +510,7 @@ class App {
   }
   /**
    * 效果：点击弹窗标注；creat=》添加场景=》监听鼠标事件onPointerClick()
-   * @param target 
+   * @param target
    */
   createTurbineLabel(target: string) {
     const dom: HTMLElement = document.querySelector(target)!
@@ -561,7 +548,7 @@ class App {
       csslabel.position.set(worldPosition.x, worldPosition.y, worldPosition.z)
       csslabel.scale.set(0.003, 0.003, 0.003)
       csslabel.visible = true
-      turbineLabels.push(csslabel)///这一句是什么作用
+      turbineLabels.push(csslabel) ///这一句是什么作用
       scene.add(csslabel)
     })
   }

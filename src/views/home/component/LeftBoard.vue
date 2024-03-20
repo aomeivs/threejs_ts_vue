@@ -1,22 +1,26 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 13:04:14
- * @LastEditTime: 2024-03-20 10:44:52
+ * @LastEditTime: 2024-03-20 14:13:53
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/LeftBoard.vue
  * 联系方式:910592680@qq.com
 -->
 <script setup lang="ts">
-import { onMounted, onUnmounted,computed } from 'vue'
+import { onMounted, onUnmounted } from 'vue'
 import { useHome } from '@/use/useHome'
-import { useHomeStore } from '@/stores/home';
-const {
-  getEquipmentwarning,
-  getEquipmentStatus,
-  equipmentWarning,
-} = useHome()
-const homeStore = useHomeStore()
+import { useHomeStore } from '@/stores/home'
+import { storeToRefs } from 'pinia'
+const { getEquipmentwarning, getEquipmentStatus, equipmentWarning } = useHome()
+const { equipmentSpeedList, equipmentTemperatureList } = storeToRefs(useHomeStore())
+const formatUnit = (value: string, type: string) => {
+  if (type === 'speed') {
+    return Math.ceil((+value / 13) * 100)
+  } else if (type === 'temperature') {
+    return `${value}°C`
+  }
+}
 onMounted(() => {
   getEquipmentwarning()
   getEquipmentStatus()
@@ -29,8 +33,8 @@ onUnmounted(() => {})
       <div class="board-item-title">输送线速度</div>
       <div class="board-item-value speed" style="height: 310px">
         <!-- speed -->
-        <template v-if="homeStore.equipmentSpeedList.length > 0">
-          <div v-for="(n, index) in homeStore.equipmentSpeedList" :key="n.equipmentCode" class="item">
+        <template v-if="equipmentSpeedList.length > 0">
+          <div v-for="(n, index) in equipmentSpeedList" :key="n.equipmentCode" class="item">
             <div class="no">
               <div class="icon">{{ index + 1 }}</div>
             </div>
@@ -43,11 +47,11 @@ onUnmounted(() => {})
               <div class="progress-bar">
                 <el-progress
                   color="#3E90F8"
-                  :percentage=n.speedprecent
+                  :percentage="formatUnit(n.equipmentValue, 'speed')"
                   :striped="true"
                   :striped-flow="true"
-                  >{{
-                }}</el-progress>
+                  >{{ formatUnit(n.equipmentValue, 'speed') + '%' }}</el-progress
+                >
               </div>
             </div>
           </div>
@@ -58,8 +62,8 @@ onUnmounted(() => {})
       <div class="board-item-title">工艺温度</div>
       <div class="board-item-value temperature" style="height: 200px">
         <!-- 温度 -->
-        <template v-if="homeStore.equipmentTemperatureList.length > 0">
-          <div v-for="n in homeStore.equipmentTemperatureList" :key="n.equipmentCode" class="item">
+        <template v-if="equipmentTemperatureList.length > 0">
+          <div v-for="n in equipmentTemperatureList" :key="n.equipmentCode" class="item">
             <div>{{ n.equipmentName }}</div>
             <div>{{ n.equipmentValue }}°C</div>
           </div>
@@ -88,7 +92,7 @@ onUnmounted(() => {})
         <vue3-seamless-scroll
           v-if="equipmentWarning"
           :list="equipmentWarning.getequipmentWarningRTs"
-          :step="0.4"
+          :step="0.6"
           class="scroll"
         >
           <div

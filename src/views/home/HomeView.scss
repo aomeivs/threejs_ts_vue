@@ -128,7 +128,7 @@
               padding-right: 0;
               & > div {
                 flex: 1 0 0;
-                &:nth-child(n + 2) {
+                &:nth-child(n + 3) {
                   flex: 0.5 0 0;
                   text-align: center;
                 }
@@ -147,7 +147,7 @@
                 background-color: #5773ff11;
               }
               & > div {
-                &:nth-child(n + 2) {
+                &:nth-child(n + 3) {
                   flex: 0.5 0 0;
                   text-align: center;
                   & > .btn {
@@ -222,7 +222,7 @@
             .item {
               position: absolute;
               cursor: pointer;
-              width: 180px;
+              width: 220px;
               height: 83px;
               background: rgba(0, 0, 0, 0.2);
               box-shadow: inset 0px 2px 40px 0px #2773ff66;
@@ -231,6 +231,7 @@
               align-items: center;
 
               .line {
+                width: 30px;
                 .icon {
                   width: 2px;
                   height: 34px;
@@ -238,6 +239,7 @@
                 }
               }
               .device {
+                flex:1;
                 .name {
                   white-space: nowrap;
                   width: 75px;
@@ -279,6 +281,8 @@
                   height: 16px;
                   border-radius: 50%;
                   animation: fadeinout 0.8s infinite ease-in-out;
+                  background: rgb(113, 113, 113);
+                  box-shadow: 0px 0 0 8px rgba(160, 160, 160, 0.3);
                   transform: scale(0.7);
                   &.normal {
                     background: rgba(39, 255, 187);
@@ -346,11 +350,23 @@
                   margin-right: 8px;
                   box-shadow: 0 0 0 4px #a4a9a67a;
                   transition: 0.2s;
-                }
-                .online {
-                  background: #00ffcc;
-                  box-shadow: 0 0 0 4px #9dfff47a;
-                  transition: 0.2s;
+                  transform: scale(0.7);
+                  animation: fadeinout 0.8s infinite ease-in-out;
+                  &.normal {
+                    background: rgba(39, 255, 187);
+                    box-shadow: 0px 0 0 8px rgba(39, 255, 187, 0.3);
+                    transition: 0.2s;
+                  }
+                  &.fault {
+                    background: rgb(225, 59, 9);
+                    box-shadow: 0px 0 0 8px rgba(245, 84, 30, 0.3);
+                    transition: 0.2s;
+                  }
+                  &.offLine {
+                    background: rgb(113, 113, 113);
+                    box-shadow: 0px 0 0 8px rgba(160, 160, 160, 0.3);
+                    transition: 0.2s;
+                  }
                 }
               }
             }

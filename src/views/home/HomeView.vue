@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-19 16:14:56
+ * @LastEditTime: 2024-03-20 16:09:08
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/HomeView.vue
@@ -25,7 +25,6 @@ import BottomBoard from './component/BottomBoard.vue'
 import headerBoard from './component/headerBoard.vue'
 import ViewBoard from './component/ViewBoard.vue'
 import { App, show, equipment } from '@/App'
-
 const tipBoardRef = ref<InstanceType<typeof TipBoard> | null>(null)
 const cssBorderRef = ref<InstanceType<typeof CssBoard> | null>(null)
 let app: App
@@ -59,7 +58,7 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <css-board ref="cssBorderRef" :equipment="equipment" :show="show"></css-board>
+  <css-board ref="cssBorderRef" :equipment="equipment!" :show="show"></css-board>
 </template>
 <style lang="scss" scoped>
 @import './HomeView.scss';

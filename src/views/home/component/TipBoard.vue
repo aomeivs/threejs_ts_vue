@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-14 13:27:40
- * @LastEditTime: 2024-03-19 14:22:33
+ * @LastEditTime: 2024-03-20 14:09:54
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/TipBoard.vue
@@ -9,10 +9,40 @@
 -->
 <script setup lang="ts">
 import TipItem from './TipItem.vue'
-import { getTipsBoard, htmlMeshCollection } from '../data'
-import { App, scene } from '@/App'
-import { computed } from 'vue'
+import { htmlMeshCollection } from '../data'
+import { App, scene, type HtmlMeshCollection } from '@/App'
+import { onMounted, ref, watch } from 'vue'
 import { Vector3 } from 'three'
+import { useHomeStore } from '@/stores/home'
+import { storeToRefs } from 'pinia'
+const { equipmentList } = storeToRefs(useHomeStore())
+const boardTopList = ref<HtmlMeshCollection[]>([])
+const boardBottomList = ref<HtmlMeshCollection[]>([])
+watch(equipmentList, () => {
+  boardTopList.value = htmlMeshCollection.filter((html) => {
+    const obj = equipmentList.value.find((child) => child.equipmentCode == html.target)
+    if (obj) {
+      Object.assign(html, obj)
+      if (html.position === 'top') {
+        return true
+      }
+    } else {
+      return false
+    }
+  })
+  boardBottomList.value = htmlMeshCollection.filter((html) => {
+    const obj = equipmentList.value.find((child) => child.equipmentCode == html.target)
+    if (obj) {
+      Object.assign(html, obj)
+      if (html.position === 'bottom') {
+        return true
+      }
+    } else {
+      return false
+    }
+  })
+})
+onMounted(() => {})
 let self: App
 const init = (app: App) => {
   self = app
@@ -36,12 +66,6 @@ const linkHtmMesh = (elementId: string) => {
     self.createCameraTween(new Vector3(0, 13, 9).add(endPos), pos)
   }
 }
-const getTipsBoardTop = computed(() => {
-  return getTipsBoard(`top`)
-})
-const getTipsBoardBottom = computed(() => {
-  return getTipsBoard(`bottom`)
-})
 
 defineExpose({ init })
 </script>
@@ -49,27 +73,27 @@ defineExpose({ init })
 <template>
   <div class="tips-top">
     <tip-item
-      v-for="(item, index) in getTipsBoardTop"
+      v-for="(item, index) in boardTopList"
       :key="item.target"
       :id="item.target"
       class="item"
       :name="item.alias"
-      :state="item.state"
-      :style="{ left: 220 * index + 'px' }"
-      @click.stop="linkHtmMesh(item.target)"
+      :state="item.equipmentValue"
+      :style="{ left: 260 * index + 'px' }"
+      @click.stop="linkHtmMesh(item.meshName)"
     >
     </tip-item>
   </div>
   <div class="tips-bottom">
     <tip-item
-      v-for="(item, index) in getTipsBoardBottom"
+      v-for="(item, index) in boardBottomList"
       :key="item.target"
       :id="item.target"
       class="item"
       :name="item.alias"
-      :state="item.state"
-      :style="{ left: 220 * index + 'px' }"
-      @click.stop="linkHtmMesh(item.target)"
+      :state="item.equipmentValue"
+      :style="{ left: 260 * index + 'px' }"
+      @click.stop="linkHtmMesh(item.meshName)"
     >
     </tip-item>
   </div>
