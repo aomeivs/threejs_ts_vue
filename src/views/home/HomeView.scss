@@ -4,6 +4,7 @@
   background: url('/images/bg-body.png') no-repeat 0 0 #051045;
   display: flex;
   position: relative;
+  color: white;
   .bg-border {
     flex: 1;
     background: url('/images/bg-body3.png') no-repeat center transparent;
@@ -27,13 +28,13 @@
         position: absolute;
         height: 28px;
         font-weight: 500;
-        font-size: 20px;
+        font-size: 24px;
         color: #ffffff;
         line-height: 28px;
         text-align: center;
         font-style: normal;
         right: 64px;
-        top: 12px;
+        top: 52px;
         text-align: right;
       }
     }

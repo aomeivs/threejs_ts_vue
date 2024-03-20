@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 13:48:38
- * @LastEditTime: 2024-03-20 10:18:59
+ * @LastEditTime: 2024-03-20 16:38:30
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/use/useHome.ts
@@ -11,10 +11,10 @@ import { getequipmentwarning } from '@/api/factory'
 import { ref } from 'vue'
 import { TWEEN, camera, controls } from '@/App'
 import type { EquipmentWarning, GetequipmentStatusRT } from '@/types/api'
-import dayjs from 'dayjs';
+import dayjs from 'dayjs'
 import { useHomeStore } from '@/stores/home'
-let intervalStatus: any
-
+const { getEquipmentStatusDispach } = useHomeStore()
+const intervalMap = new Map()
 export const useHome = () => {
   // 设备速度列表
   const equipmentSpeedList = ref<GetequipmentStatusRT[]>([])
@@ -24,12 +24,6 @@ export const useHome = () => {
   const equipmentStatusList = ref<GetequipmentStatusRT[]>([])
   // 设备报警
   const equipmentWarning = ref<EquipmentWarning>()
-
-  const precent = (params:string) =>{
-    return parseFloat(params)/13*100
-
-  }
-  const homeStore = useHomeStore()
   /**
    *
    * 报警信息获取
@@ -37,18 +31,23 @@ export const useHome = () => {
   const getEquipmentwarning = async () => {
     const result = await getequipmentwarning()
     if (result.code) {
-      equipmentWarning.value = result;
-      equipmentWarning.value.getequipmentWarningRTs.forEach(item =>{
-        item.createTime = dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss');
+      equipmentWarning.value = result
+      equipmentWarning.value.getequipmentWarningRTs.forEach((item) => {
+        item.createTime = dayjs(item.createTime).format('YYYY-MM-DD HH:mm:ss')
       })
     }
-    
   }
   const getEquipmentStatus = async () => {
-    homeStore.getEquipmentStatusDispach()
-    setInterval(() => {
-      homeStore.getEquipmentStatusDispach()
+    getEquipmentStatusDispach()
+    const interval = setInterval(() => {
+      getEquipmentStatusDispach()
     }, 1000)
+    intervalMap.set('getEquipmentStatus', interval)
+  }
+  const clearHomeInterval = () => {
+    intervalMap.forEach((item, key) => {
+      window.clearInterval(key)
+    })
   }
   /**
    * 视角控制
@@ -69,7 +68,7 @@ export const useHome = () => {
 
     new TWEEN.Tween(initialPosition)
       .to(targetPosition[type], 800)
-      .onUpdate((obj:any) => {
+      .onUpdate((obj: any) => {
         camera.position.set(obj.x, obj.y, obj.z)
         controls.target.set(0, 0, 0)
       })
@@ -78,6 +77,7 @@ export const useHome = () => {
   }
 
   return {
+    clearHomeInterval,
     getEquipmentStatus,
     rotatCamera,
     getEquipmentwarning,

@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 13:04:14
- * @LastEditTime: 2024-03-20 14:13:53
+ * @LastEditTime: 2024-03-20 16:38:50
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/LeftBoard.vue
@@ -12,7 +12,7 @@ import { onMounted, onUnmounted } from 'vue'
 import { useHome } from '@/use/useHome'
 import { useHomeStore } from '@/stores/home'
 import { storeToRefs } from 'pinia'
-const { getEquipmentwarning, getEquipmentStatus, equipmentWarning } = useHome()
+const { getEquipmentwarning, getEquipmentStatus, equipmentWarning,clearHomeInterval } = useHome()
 const { equipmentSpeedList, equipmentTemperatureList } = storeToRefs(useHomeStore())
 const formatUnit = (value: string, type: string) => {
   if (type === 'speed') {
@@ -25,7 +25,9 @@ onMounted(() => {
   getEquipmentwarning()
   getEquipmentStatus()
 })
-onUnmounted(() => {})
+onUnmounted(() => {
+  clearHomeInterval()
+})
 </script>
 <template>
   <div class="board-left">
