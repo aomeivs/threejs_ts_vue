@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-08 17:30:37
- * @LastEditTime: 2024-03-18 13:17:25
+ * @LastEditTime: 2024-03-20 10:34:05
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/TipItem.vue
@@ -16,9 +16,9 @@
         <div class="code">{{ id }}</div>
       </slot>
     </div>
-    <div  class="state">
-      <div v-if="state==0" class="icon"></div>
-      <div v-else class="icon1"></div>
+    <div class="state">
+      <!-- offLine fault -->
+      <div class="icon" :class="state===1 ? 'normal' : 'fault'"></div>
     </div>
   </div>
 </template>

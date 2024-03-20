@@ -1,14 +1,14 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 13:04:14
- * @LastEditTime: 2024-03-20 10:21:47
+ * @LastEditTime: 2024-03-20 10:44:52
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/LeftBoard.vue
  * 联系方式:910592680@qq.com
 -->
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { onMounted, onUnmounted,computed } from 'vue'
 import { useHome } from '@/use/useHome'
 import { useHomeStore } from '@/stores/home';
 const {
