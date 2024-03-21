@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-21 14:00:53
+ * @LastEditTime: 2024-03-21 16:30:47
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/stores/home.ts
@@ -88,7 +88,7 @@ export const useHomeStore = defineStore('home', () => {
       return item
     })
     boardTopList.value.map((item) => {
-      item.equipmentValue = Math.random()>0.5?'1':'0'
+      item.equipmentValue = Math.random()>0.1?'1':'0'
       return item
     })
     boardBottomList.value.map((item) => {
