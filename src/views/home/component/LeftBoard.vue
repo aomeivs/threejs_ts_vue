@@ -1,18 +1,24 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 13:04:14
- * @LastEditTime: 2024-03-20 16:38:50
+ * @LastEditTime: 2024-03-21 11:03:08
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/LeftBoard.vue
  * 联系方式:910592680@qq.com
 -->
 <script setup lang="ts">
-import { onMounted, onUnmounted } from 'vue'
+import { onBeforeUnmount, onMounted } from 'vue'
 import { useHome } from '@/use/useHome'
 import { useHomeStore } from '@/stores/home'
 import { storeToRefs } from 'pinia'
-const { getEquipmentwarning, getEquipmentStatus, equipmentWarning,clearHomeInterval } = useHome()
+const {
+  getEquipmentwarning,
+  getEquipmentStatus,
+  equipmentWarning,
+  clearHomeInterval,
+  createInterval
+} = useHome()
 const { equipmentSpeedList, equipmentTemperatureList } = storeToRefs(useHomeStore())
 const formatUnit = (value: string, type: string) => {
   if (type === 'speed') {
@@ -22,10 +28,10 @@ const formatUnit = (value: string, type: string) => {
   }
 }
 onMounted(() => {
-  getEquipmentwarning()
-  getEquipmentStatus()
+  createInterval(getEquipmentwarning)
+  createInterval(getEquipmentStatus)
 })
-onUnmounted(() => {
+onBeforeUnmount(() => {
   clearHomeInterval()
 })
 </script>

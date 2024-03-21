@@ -7,12 +7,18 @@ import type {
 } from 'axios'
 import type { RequestOptions, Result, UploadFileParams } from '#/axios'
 import type { CreateAxiosOptions } from './axiosTransform'
+import NProgress from 'nprogress'
+import { globalConfig } from '@/config/config'
+import 'nprogress/nprogress.css'
 import axios from 'axios'
 import qs from 'qs'
 import { AxiosCanceler } from './axiosCancel'
 import { isFunction } from '@/utils/is'
 import { cloneDeep } from 'lodash-es'
 import { ContentTypeEnum, RequestEnum } from '@/enums/httpEnum'
+NProgress.configure({
+  showSpinner: true
+})
 
 export * from './axiosTransform'
 
@@ -88,6 +94,11 @@ export class VAxios {
 
     // Request interceptor configuration processing
     this.axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+      if (config.url) {
+        if (!globalConfig.ignore.NProgress.some((e: string) => config.url?.includes(e))) {
+          NProgress.start()
+        }
+      }
       // If cancel repeat request is turned on, then cancel repeat request is prohibited
       const requestOptions =
         (config as unknown as any).requestOptions ?? this.options.requestOptions
@@ -112,6 +123,7 @@ export class VAxios {
       if (responseInterceptors && isFunction(responseInterceptors)) {
         res = responseInterceptors(res)
       }
+      NProgress.done()
       return res
     }, undefined)
 

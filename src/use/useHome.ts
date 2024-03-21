@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 13:48:38
- * @LastEditTime: 2024-03-20 16:38:30
+ * @LastEditTime: 2024-03-21 11:04:27
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/use/useHome.ts
@@ -24,6 +24,14 @@ export const useHome = () => {
   const equipmentStatusList = ref<GetequipmentStatusRT[]>([])
   // 设备报警
   const equipmentWarning = ref<EquipmentWarning>()
+
+  const createInterval = (fn: () => Promise<any>, time: number = 1000) => {
+    const interval = setInterval(async () => {
+      await fn()
+    }, time)
+    intervalMap.set(fn.name, interval)
+  }
+
   /**
    *
    * 报警信息获取
@@ -39,15 +47,17 @@ export const useHome = () => {
   }
   const getEquipmentStatus = async () => {
     getEquipmentStatusDispach()
-    const interval = setInterval(() => {
-      getEquipmentStatusDispach()
-    }, 1000)
-    intervalMap.set('getEquipmentStatus', interval)
   }
-  const clearHomeInterval = () => {
-    intervalMap.forEach((item, key) => {
-      window.clearInterval(key)
-    })
+  const clearHomeInterval = (name?: string) => {
+    if (name) {
+      clearInterval(intervalMap.get(name))
+      intervalMap.delete(name)
+    } else {
+      intervalMap.forEach((item, key) => {
+        clearInterval(item)
+        intervalMap.delete(key)
+      })
+    }
   }
   /**
    * 视角控制
@@ -79,8 +89,9 @@ export const useHome = () => {
   return {
     clearHomeInterval,
     getEquipmentStatus,
-    rotatCamera,
     getEquipmentwarning,
+    rotatCamera,
+    createInterval,
     equipmentWarning,
     equipmentSpeedList,
     equipmentTemperatureList,

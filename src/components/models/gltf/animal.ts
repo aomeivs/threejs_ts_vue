@@ -1,15 +1,15 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-30 15:59:40
- * @LastEditTime: 2024-03-18 14:45:14
+ * @LastEditTime: 2024-03-20 16:52:09
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/models/gltf/animal.ts
  * 联系方式:910592680@qq.com
  */
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-import turbine from '@/assets/3d-gltf-model/turbine.glb'
-import equipment from '@/assets/3d-gltf-model/equipment_cc.glb'
+// import turbine from '@/assets/3d-gltf-model/turbine.glb'
+// import equipment from '@/assets/3d-gltf-model/equipment_cc.glb'
 import factory from '@/assets/3d-gltf-model/factory.glb'
 import sky from '@/assets/hdr/kloppenheim_05_puresky_1k.hdr'
 import arrowImg from '@/assets/arror.webp'

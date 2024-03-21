@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-08 17:30:37
- * @LastEditTime: 2024-03-20 14:08:58
+ * @LastEditTime: 2024-03-20 17:03:43
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/TipItem.vue
@@ -18,7 +18,7 @@
     </div>
     <div class="state">
       <!-- offLine fault -->
-      <div class="icon" :class="{'normal':props.state=='1','fault':props.state=='0'}"></div>
+      <div class="icon" :class="[props.state=='1'?'normal':'fault']"></div>
     </div>
   </div>
 </template>

@@ -6,10 +6,9 @@ import 'nprogress/nprogress.css'
 // import { storage } from '/@/cool/utils'
 // import { useBaseStore } from '/$/base'
 // import { router } from '../router'
-
+const isDev = import.meta.env.DEV
 axios.defaults.timeout = 30000
 axios.defaults.withCredentials = false
-
 NProgress.configure({
   showSpinner: true
 })
@@ -22,26 +21,26 @@ NProgress.configure({
 
 // @ts-ignore
 axios.interceptors.request.eject(axios._req)
-
 // @ts-ignore
 axios._req = axios.interceptors.request.use(
   (req: any) => {
     // const { user } = useBaseStore()
+    console.error('>>>>>>>>>>>>>>>>>>')
 
-    // if (req.url) {
-    //   // 请求进度条
-    //   if (!config.ignore.NProgress.some((e: string) => req.url.includes(e))) {
-    //     NProgress.start()
-    //   }
-    // }
+    if (req.url) {
+      //   // 请求进度条
+      //   if (!config.ignore.NProgress.some((e: string) => req.url.includes(e))) {
+      NProgress.start()
+      //   }
+    }
 
-    // // 请求信息
-    // if (isDev) {
-    //   console.group(req.url)
-    //   console.log('method:', req.method)
-    //   console.table('data:', req.method == 'get' ? req.params : req.data)
-    //   console.groupEnd()
-    // }
+    // 请求信息
+    if (isDev) {
+      console.group(req.url)
+      console.log('method:', req.method)
+      console.table('data:', req.method == 'get' ? req.params : req.data)
+      console.groupEnd()
+    }
 
     // 验证 token
     // if (user.token) {

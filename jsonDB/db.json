@@ -4,22 +4,22 @@
     "getequipmentStatusRTs": [
       {
         "equipmentCode": "YTZJWQD1",
-        "equipmentName": "预脱脂加温启动23",
-        "equipmentValue": "1"
+        "equipmentName": "预脱脂A运行",
+        "equipmentValue": "0"
       },
       {
         "equipmentCode": "YTZJWQD2",
-        "equipmentName": "预脱脂加温启动23",
+        "equipmentName": "预脱脂B运行",
         "equipmentValue": "1"
       },
       {
         "equipmentCode": "YTZJWQD3",
-        "equipmentName": "预脱脂加温启动",
-        "equipmentValue": "0"
+        "equipmentName": "主脱脂A运行",
+        "equipmentValue": "1"
       },
       {
         "equipmentCode": "YTZJWQD4",
-        "equipmentName": "预脱脂加温启动",
+        "equipmentName": "主脱脂B运行",
         "equipmentValue": "0"
       },
       {
@@ -34,7 +34,7 @@
       },
       {
         "equipmentCode": "YTZJWQD7",
-        "equipmentName": "水分烘干炉燃烧机运行",
+        "equipmentName": "水洗1A运行",
         "equipmentValue": "13"
       },
       {
@@ -44,53 +44,53 @@
       },
       {
         "equipmentCode": "YTZJWQD9",
+        "equipmentName": "硅烷A运行",
+        "equipmentValue": "10"
+      },
+      {
+        "equipmentCode": "SFHGLRSJYX000",
         "equipmentName": "水分烘干炉燃烧机运行",
-        "equipmentValue": "10"
-      },
-      {
-        "equipmentCode": "SFHGLRSJYX000",
-        "equipmentName": "测试状态",
-        "equipmentValue": "0"
-      },
-      {
-        "equipmentCode": "SFHGLRSJYX000",
-        "equipmentName": "测试状态",
-        "equipmentValue": "10"
-      },
-      {
-        "equipmentCode": "SFHGLRSJYX000",
-        "equipmentName": "测试状态",
         "equipmentValue": "13"
       },
       {
         "equipmentCode": "SFHGLRSJYX000",
-        "equipmentName": "测试状态",
+        "equipmentName": "纯水洗A运行",
+        "equipmentValue": "3"
+      },
+      {
+        "equipmentCode": "SFHGLRSJYX000",
+        "equipmentName": "纯水洗B运行",
+        "equipmentValue": "10"
+      },
+      {
+        "equipmentCode": "SFHGLRSJYX000",
+        "equipmentName": "吹水风机运行",
         "equipmentValue": "12"
       },
       {
         "equipmentCode": "SFHGLRSJYX010",
-        "equipmentName": "测试温度状态",
+        "equipmentName": "预脱脂加温启动",
         "equipmentValue": "0"
       },
       {
         "equipmentCode": "SFHGLRSJYX010",
-        "equipmentName": "测试温度状态",
+        "equipmentName": "主脱脂加温启动",
         "equipmentValue": "10"
       },
       {
         "equipmentCode": "SFHGLRSJYX010",
-        "equipmentName": "测试温度状态",
+        "equipmentName": "水分烘干炉燃烧机运行",
         "equipmentValue": "20"
       },
       {
         "equipmentCode": "SFHGLRSJYX010",
-        "equipmentName": "测试温度状态",
+        "equipmentName": "水分烘干炉燃烧机小火",
         "equipmentValue": "30"
       },
       {
         "equipmentCode": "SFHGLRSJYX010",
-        "equipmentName": "测试温度状态",
-        "equipmentValue": "30"
+        "equipmentName": "水分烘干炉燃烧机大火",
+        "equipmentValue": "3"
       }
     ],
     "MESSAGE": "成功"
@@ -100,39 +100,39 @@
     "getequipmentWarningRTs": [
       {
         "createTime": "2024-02-29T08:00:00Z",
-        "faultName": "故障1",
+        "faultName": "水干炉循环风机1运行故障1",
         "isDispose": "已处理",
-        "name": "设备1"
+        "name": "水干炉循环风机1"
       },
       {
         "createTime": "2024-02-28T10:00:00Z",
-        "faultName": "故障2",
+        "faultName": "水干炉循环风机2运行故障2",
         "isDispose": "未处理",
-        "name": "设备2"
+        "name": "水干炉循环风机2"
+      },
+      {
+        "createTime": "2024-02-29T08:00:00Z",
+        "faultName": "水干炉进口风幕运行故障1",
+        "isDispose": "已处理",
+        "name": "水干炉进口风幕运行"
+      },
+      {
+        "createTime": "2024-02-28T10:00:00Z",
+        "faultName": "水干炉出口风幕运行故障2",
+        "isDispose": "未处理",
+        "name": "水干炉出口风幕运行"
       },
       {
         "createTime": "2024-02-29T08:00:00Z",
         "faultName": "故障1",
         "isDispose": "已处理",
-        "name": "设备1"
+        "name": "水干炉出口风幕运行"
       },
       {
         "createTime": "2024-02-28T10:00:00Z",
-        "faultName": "故障2",
+        "faultName": "固化炉燃烧机1运行故障2",
         "isDispose": "未处理",
-        "name": "设备2"
-      },
-      {
-        "createTime": "2024-02-29T08:00:00Z",
-        "faultName": "故障1",
-        "isDispose": "已处理",
-        "name": "设备1"
-      },
-      {
-        "createTime": "2024-02-28T10:00:00Z",
-        "faultName": "故障2",
-        "isDispose": "未处理",
-        "name": "设备2"
+        "name": "固化炉燃烧机"
       }
     ],
     "inThoseDays": 5,
