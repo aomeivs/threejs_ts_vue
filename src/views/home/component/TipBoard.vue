@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-14 13:27:40
- * @LastEditTime: 2024-03-21 13:09:18
+ * @LastEditTime: 2024-03-21 15:35:40
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/TipBoard.vue
@@ -11,12 +11,15 @@
 import TipItem from './TipItem.vue'
 import { htmlMeshCollection } from '../data'
 import { App, scene } from '@/App'
-import { onMounted, ref } from 'vue'
-import { Vector3 } from 'three'
+import { onMounted, ref, watch } from 'vue'
+import { Color, Vector3 } from 'three'
 import { useHomeStore } from '@/stores/home'
 import { storeToRefs } from 'pinia'
 const { boardTopList, boardBottomList } = storeToRefs(useHomeStore())
 onMounted(() => {})
+watch(boardTopList, (newValue) => {
+  meshWaring(newValue)
+})
 let self: App
 const init = (app: App) => {
   self = app
@@ -47,6 +50,31 @@ const linkHtmMesh = (elementId: string) => {
   }
 }
 
+/**
+ * 模型报警监控
+ */
+const meshWaring = (newValue: any[]) => {
+  const obj = newValue.find((item: { equipmentValue: string }) => item.equipmentValue === '0')
+  if (obj && obj.meshName) {
+    const mesh = scene.getObjectByName(obj.meshName)
+    mesh?.traverse((child: any) => {
+      if (child.isMesh) {
+        self?.selectAnimate(
+          child,
+          {
+            emissive: new Color(0xff0000)
+          },
+          {
+            emissive: new Color(0xff0000)
+          },
+          500,
+          5
+        )
+      }
+    })
+  }
+}
+
 defineExpose({ init })
 </script>
 
@@ -68,6 +96,7 @@ defineExpose({ init })
     <tip-item
       v-for="(item, index) in boardBottomList"
       :key="item.target"
+      :meshName="item.meshName"
       :id="item.target"
       class="item"
       :name="item.alias"

@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-21 13:07:56
+ * @LastEditTime: 2024-03-21 14:00:53
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/stores/home.ts
@@ -28,19 +28,28 @@ export const useHomeStore = defineStore('home', () => {
   async function getEquipmentStatusDispach() {
     const result = await getequipmentStatus()
     const data = result.getequipmentStatusRTs
-    const speedIDs = ['SFHGLRSJYX000']
-    const temperatureIDs = ['SFHGLRSJYX010']
+    const speedIDs = ['TC2FFSD', 'L4XSD', 'TC1FFSD']
+    const temperatureIDs = ['ZTZSW', 'SFHGLW', 'YTZSW', 'GHL2SW', 'GHL1SW']
     equipmentList.value = data
     equipmentSpeedList.value = data.filter((item) => speedIDs.includes(item.equipmentCode))
+    
+
+    equipmentSpeedList.value.push({
+      equipmentCode: 'DEMO',
+      equipmentValue: '13',
+      equipmentName: 'L1-L3速度'
+    })
     equipmentTemperatureList.value = data.filter((item) =>
       temperatureIDs.includes(item.equipmentCode)
     )
+
+    
     // 剩余的设备要排除speedIDs和temperatureIDs
     equipmentStatusList.value = data.filter(
       (item) => !speedIDs.concat(temperatureIDs).includes(item.equipmentCode)
     )
 
-
+    
     boardTopList.value = htmlMeshCollection.filter((html) => {
       const obj = equipmentList.value.find((child) => child.equipmentCode == html.target)
       if (obj) {
@@ -63,6 +72,30 @@ export const useHomeStore = defineStore('home', () => {
         return false
       }
     })
+
+
+    // 测试数据
+    equipmentSpeedList.value.map((item) => {
+      item.equipmentValue = Math.ceil((Math.random() * 100) % 13) + ''
+      return item
+    })
+    equipmentTemperatureList.value.map((item) => {
+      item.equipmentValue = Math.ceil((Math.random() * 100) % 100) + ''
+      return item
+    })
+    equipmentStatusList.value.map((item) => {
+      item.equipmentValue = Math.random()>0.5?'1':'0'
+      return item
+    })
+    boardTopList.value.map((item) => {
+      item.equipmentValue = Math.random()>0.5?'1':'0'
+      return item
+    })
+    boardBottomList.value.map((item) => {
+      item.equipmentValue = Math.random()>0.5?'1':'0'
+      return item
+    })
+
   }
 
   return {

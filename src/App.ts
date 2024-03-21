@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-21 13:01:20
+ * @LastEditTime: 2024-03-21 15:27:44
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -489,13 +489,25 @@ class App {
    * 部件闪烁动画
    * @param child
    */
-  selectAnimate(child: any) {
-    new TWEEN.Tween({ intensity: 0.5 })
-      .to({ intensity: 0.2 }, 500)
-      .repeat(10)
+  selectAnimate(
+    child: Object3D,
+    start: Partial<Record<keyof MeshStandardMaterial, any>> = {},
+    end: Partial<Record<keyof MeshStandardMaterial, any>> = {},
+    time: number = 500,
+    repeat: number = 10
+  ) {
+    const defaultParams = { emissiveIntensity: 0.5 }
+    const endParams = { emissiveIntensity: 0.2 }
+    Object.assign(defaultParams, start)
+    Object.assign(endParams, end)
+    new TWEEN.Tween(defaultParams)
+      .to(endParams, time)
+      .repeat(repeat)
       .yoyo(true)
-      .onUpdate((obj) => {
-        child.material.emissiveIntensity = obj.intensity
+      .onUpdate((obj: any) => {
+        Object.entries(defaultParams).map((item) => {
+          obj[item[0]] && (child.material[item[0]] = obj[item[0]])
+        })
       })
       .repeatDelay(100)
       .start()

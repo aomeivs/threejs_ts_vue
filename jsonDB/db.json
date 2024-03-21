@@ -3,94 +3,282 @@
     "code": 200,
     "getequipmentStatusRTs": [
       {
-        "equipmentCode": "YTZJWQD1",
-        "equipmentName": "预脱脂A运行",
-        "equipmentValue": "1"
+        "equipmentValue": "1",
+        "equipmentCode": "YTZAYX",
+        "equipmentName": "预脱脂A运行"
       },
       {
-        "equipmentCode": "YTZJWQD2",
-        "equipmentName": "预脱脂B运行",
-        "equipmentValue": "1"
+        "equipmentValue": "1",
+        "equipmentCode": "YTZBYX",
+        "equipmentName": "预脱脂B运行"
       },
       {
-        "equipmentCode": "YTZJWQD3",
-        "equipmentName": "主脱脂A运行",
-        "equipmentValue": "1"
+        "equipmentValue": "1",
+        "equipmentCode": "ZTZAYX",
+        "equipmentName": "主脱脂A运行"
       },
       {
-        "equipmentCode": "YTZJWQD4",
-        "equipmentName": "主脱脂B运行",
-        "equipmentValue": "0"
+        "equipmentValue": "1",
+        "equipmentCode": "ZTZBYX",
+        "equipmentName": "主脱脂B运行"
       },
       {
-        "equipmentCode": "YTZJWQD5",
-        "equipmentName": "预脱脂加温启动",
-        "equipmentValue": "0"
+        "equipmentValue": "1",
+        "equipmentCode": "SX1AYX",
+        "equipmentName": "水洗1A运行"
       },
       {
-        "equipmentCode": "YTZJWQD6",
-        "equipmentName": "水分烘干炉燃烧机运行",
-        "equipmentValue": "10"
+        "equipmentValue": "1",
+        "equipmentCode": "SX1BYX",
+        "equipmentName": "水洗1B运行"
       },
       {
-        "equipmentCode": "YTZJWQD7",
-        "equipmentName": "水洗1A运行",
-        "equipmentValue": "13"
+        "equipmentValue": "1",
+        "equipmentCode": "SX2AYX",
+        "equipmentName": "水洗2A运行"
       },
       {
-        "equipmentCode": "YTZJWQD8",
-        "equipmentName": "水分烘干炉燃烧机运行",
-        "equipmentValue": "1"
+        "equipmentValue": "1",
+        "equipmentCode": "SX2BYX",
+        "equipmentName": "水洗2B运行"
       },
       {
-        "equipmentCode": "YTZJWQD9",
-        "equipmentName": "硅烷A运行",
-        "equipmentValue": "10"
+        "equipmentValue": "1",
+        "equipmentCode": "GWAYX",
+        "equipmentName": "硅烷A运行"
       },
       {
-        "equipmentCode": "SFHGLRSJYX000",
-        "equipmentName": "水分烘干炉燃烧机运行",
-        "equipmentValue": "13"
+        "equipmentValue": "1",
+        "equipmentCode": "TC2FFSD",
+        "equipmentName": "TC2粉房速度",
+        "type": "speed"
       },
       {
-        "equipmentCode": "SFHGLRSJYX000",
-        "equipmentName": "纯水洗A运行",
-        "equipmentValue": "3"
+        "equipmentValue": "1",
+        "equipmentCode": "GWBYX",
+        "equipmentName": "硅烷B运行"
       },
       {
-        "equipmentCode": "SFHGLRSJYX000",
-        "equipmentName": "纯水洗B运行",
-        "equipmentValue": "10"
+        "equipmentValue": "1",
+        "equipmentCode": "L4XSD",
+        "equipmentName": "L4线速度（打砂机线）",
+        "type": "speed"
       },
       {
-        "equipmentCode": "SFHGLRSJYX000",
-        "equipmentName": "吹水风机运行",
-        "equipmentValue": "12"
+        "equipmentValue": "1",
+        "equipmentCode": "SX3AYX",
+        "equipmentName": "水洗3A运行"
       },
       {
-        "equipmentCode": "SFHGLRSJYX010",
-        "equipmentName": "预脱脂加温启动",
-        "equipmentValue": "0"
+        "equipmentValue": "1",
+        "equipmentCode": "SX3BYX",
+        "equipmentName": "水洗3B运行"
       },
       {
-        "equipmentCode": "SFHGLRSJYX010",
-        "equipmentName": "主脱脂加温启动",
-        "equipmentValue": "10"
+        "equipmentValue": "1",
+        "equipmentCode": "TC1FFSD",
+        "equipmentName": "TC1粉房速度",
+        "type": "speed"
       },
       {
-        "equipmentCode": "SFHGLRSJYX010",
-        "equipmentName": "水分烘干炉燃烧机运行",
-        "equipmentValue": "20"
+        "equipmentValue": "1",
+        "equipmentCode": "CSXAYX",
+        "equipmentName": "纯水洗A运行"
       },
       {
-        "equipmentCode": "SFHGLRSJYX010",
-        "equipmentName": "水分烘干炉燃烧机小火",
-        "equipmentValue": "30"
+        "equipmentValue": "1",
+        "equipmentCode": "CSXBYX",
+        "equipmentName": "纯水洗B运行"
       },
       {
-        "equipmentCode": "SFHGLRSJYX010",
-        "equipmentName": "水分烘干炉燃烧机大火",
-        "equipmentValue": "3"
+        "equipmentValue": "1",
+        "equipmentCode": "CSFJYX",
+        "equipmentName": "吹水风机运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "QCLPFJYX",
+        "equipmentName": "前处理排风机运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "YTZJWQD",
+        "equipmentName": "预脱脂加温启动"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "ZTZJWQD",
+        "equipmentName": "主脱脂加温启动"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJYX",
+        "equipmentName": "水分烘干炉燃烧机运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJXH",
+        "equipmentName": "水分烘干炉燃烧机小火"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLRSJDH",
+        "equipmentName": "水分烘干炉燃烧机大火"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "SGLXHFJ1YX",
+        "equipmentName": "水干炉循环风机1运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "SGLXHFJ2YX",
+        "equipmentName": "水干炉循环风机2运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "SGLJKFMYX",
+        "equipmentName": "水干炉进口风幕运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "SGLCKFMYX",
+        "equipmentName": "水干炉出口风幕运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "GHLRSJ1YX",
+        "equipmentName": "固化炉燃烧机1运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "GHLRSJ1XH",
+        "equipmentName": "固化炉燃烧机1小火"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "GHLRSJ1DH",
+        "equipmentName": "固化炉燃烧机1大火"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "GHLRSJ2YX",
+        "equipmentName": "固化炉燃烧机2运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "GHLRSJ2XH",
+        "equipmentName": "固化炉燃烧机2小火"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "QLCFJ2YX",
+        "equipmentName": "强冷吹风机2运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "GHLRSJ2DH",
+        "equipmentName": "固化炉燃烧机2大火"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "QLPFJYX",
+        "equipmentName": "强冷排风机运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "GHLXHFJ1YX",
+        "equipmentName": "固化炉循环风机1运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "L1XYX",
+        "equipmentName": "L1线运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "GHLXHFJ2YX",
+        "equipmentName": "固化炉循环风机2运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "L2XYX",
+        "equipmentName": "L2线运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "GHLXHFJ3YX",
+        "equipmentName": "固化炉循环风机3运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "L3XYX",
+        "equipmentName": "L3线运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "GHLXHFJ4YX",
+        "equipmentName": "固化炉循环风机4运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "ZTZSW",
+        "equipmentName": "主脱脂水温",
+        "type": "temperature"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "L4XYX",
+        "equipmentName": "L4线运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "GHLPFQFJYX",
+        "equipmentName": "固化炉排废气风机运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "TC1FFYX",
+        "equipmentName": "TC1粉房运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "FHLCKFMYX",
+        "equipmentName": "固化炉出口风幕运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "SFHGLW",
+        "equipmentName": "水分烘干炉温",
+        "type": "temperature"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "YTZSW",
+        "equipmentName": "预脱脂水温",
+        "type": "temperature"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "GHL2SW",
+        "equipmentName": "固化炉2炉温",
+        "type": "temperature"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "GHL1SW",
+        "equipmentName": "固化炉1炉温",
+        "type": "temperature"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "TC2FFYX",
+        "equipmentName": "TC2粉房运行"
+      },
+      {
+        "equipmentValue": "1",
+        "equipmentCode": "QCLFJ1YX",
+        "equipmentName": "强冷吹风机1运行"
       }
     ],
     "MESSAGE": "成功"
