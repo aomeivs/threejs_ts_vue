@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 10:58:02
- * @LastEditTime: 2024-03-21 14:15:45
+ * @LastEditTime: 2024-03-21 16:40:47
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description 模型上的2d元素，标注，弹窗
  * @FilePath: /vue3_ts_three/src/views/home/component/CssBoard.vue
@@ -9,8 +9,8 @@
 -->
 
 <script setup lang="ts">
-import { type App, type HtmlMeshCollection,equipment,show } from '@/App'
-import { ref, toRefs, watch } from 'vue'
+import { type App, type HtmlMeshCollection, equipment, show } from '@/App'
+import { ref, watch } from 'vue'
 import { htmlMeshCollection } from '../data'
 // import dayjs from 'dayjs'
 import { useHomeStore } from '@/stores/home'

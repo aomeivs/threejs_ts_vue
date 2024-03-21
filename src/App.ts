@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-21 16:26:31
+ * @LastEditTime: 2024-03-21 17:47:44
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -27,7 +27,8 @@ import {
   Vector3,
   CameraHelper,
   Object3D,
-  Box3
+  Box3,
+  Layers
 } from 'three'
 import { Loop } from '@/components/helpers/Loop'
 import { loadAnimals, loadArrow, loadBackground } from '@/components/models/gltf/animal'
@@ -46,6 +47,7 @@ import type { GetequipmentStatusRT } from './types/api'
 import { useHomeStore } from './stores/home'
 import { storeToRefs } from 'pinia'
 import pinia from './stores'
+import { globalConfig } from './config/config'
 const { equipmentList } = storeToRefs(useHomeStore(pinia))
 export type Equipment = Partial<{
   name: string
@@ -53,12 +55,13 @@ export type Equipment = Partial<{
   userData: any
   date: any
 }>
-const isDEV = import.meta.env.VITE_HOST_DEBUG
+const isDebug = globalConfig.debug
 let camera: PerspectiveCamera
 let controls: ExtendedOrbitControls
 let renderer: WebGLRenderer
 let cssRenderer: CSS2DRenderer
 let scene: Scene
+const layers = new Layers()
 let loop: Loop
 let stats: Stats
 let turbineLabel: any
@@ -79,12 +82,12 @@ export interface SelectObject extends Object3D {
   ancestors: Object3D
 }
 //  声明一个 EnumerationModelType
-enum ModelName {
+export enum ModelName {
   FACTORY = 'factory', // 工厂模型
   TURBINE = 'turbine', // 风车
   EQUIPMENT = 'equipment' // 设备
 }
-export type DefaultParamsKey = 'color'|'emissive'|'emissiveIntensity'
+export type DefaultParamsKey = 'color' | 'emissive' | 'emissiveIntensity'
 class App {
   actions: { [key: string]: AnimationAction }
   model: ModelEntity
@@ -98,7 +101,7 @@ class App {
     // 控制GUI\STATS
     {
       stats = new Stats() //一个仪表板，用于显示每秒帧数，监视性能
-      isDEV === '1' && createGUI(this) //.hide()
+      isDebug && createGUI(this) //.hide()
     }
 
     // scene\camera\renderer\light\helper
@@ -112,7 +115,7 @@ class App {
       const axesHelper = new AxesHelper(5) //坐标轴
       const lightHelper: DirectionalLightHelper[] = [] //平行光
       directionalLights.forEach((light, index) => {
-        if (index === 0 && isDEV === '1') {
+        if (index === 0 && isDebug) {
           const cameraHelper = new CameraHelper(light.shadow.camera) //模拟相机
           lightHelper.push(new DirectionalLightHelper(light, 0.2))
 
@@ -154,6 +157,7 @@ class App {
     await loadBackground(scene)
     // const { scene: animalScene, action } = await loadAnimals(loadingManager)
     this.model = await loadAnimals(loadingManager)
+    // 设置加载模型
     this.setLoadModel()
     // 一种一进入就显示设备标签
     this.createLabels()
@@ -165,7 +169,7 @@ class App {
   setLoadModel() {
     Object.entries(this.model).forEach((data) => {
       const { model, action } = data[1]
-      const name = data[0]
+      const name = data[0] as ModelName
       if (action) {
         //没执行这一步，这个action是什么作用
         this.actions[action.name!] = action
@@ -185,11 +189,11 @@ class App {
       } else {
         // 发电机模型
         model.scale.multiplyScalar(0.001)
-        scene.add(model)
         // equipment 材质设置以及部件存储
         this.initEquipment()
         // turbine 材质设置
         this.initTurbine()
+        scene.add(model)
       }
     })
   }
@@ -222,8 +226,9 @@ class App {
       scene.add(arrow)
     }
   }
-  initEquipment() {
-    this.model.equipment.model.traverse((child: any) => {
+  initEquipment(layer: number = 1) {
+    this.model.equipment!.model.traverse((child: Object3D) => {
+      child.layers.set(layer)
       const meshChild = child as Mesh & {
         currentHex?: number
       }
@@ -237,8 +242,9 @@ class App {
       }
     })
   }
-  initTurbine() {
-    this.model.turbine.model.traverse((child: any) => {
+  initTurbine(layer: number = 1) {
+    this.model.turbine!.model.traverse((child: Object3D) => {
+      child.layers.set(layer)
       const meshChild = child as Mesh & {
         currentHex?: number
       }
@@ -253,7 +259,7 @@ class App {
     })
   }
   initFactory() {
-    this.model.factory.model.traverse((child: any) => {
+    this.model.factory!.model.traverse((child: any) => {
       const meshChild = child as Mesh & {
         currentHex?: number
       }
@@ -315,6 +321,7 @@ class App {
       model.visible = show
     }
   }
+  changeLayer(layer: number) {}
   showTurbineLabel(show: boolean) {
     turbineLabel.visible = show
   }
@@ -379,7 +386,7 @@ class App {
    *
    * @param name 监听鼠标
    */
-  onPointerClick(name: string) {
+  onPointerClick(name: ModelName) {
     // 监听mouseup事件
     document.addEventListener('click', async (event: MouseEvent) => {
       if (this.isOrbiting) {
@@ -392,7 +399,7 @@ class App {
       mouse.y = -(event.offsetY / this.container.clientHeight) * 2 + 1
       const raycaster = new Raycaster()
       raycaster.setFromCamera(mouse, camera)
-      const intersects = raycaster.intersectObjects(this.model[name].model.children, true)
+      const intersects = raycaster.intersectObjects(this.model[name]!.model.children, true)
       if (intersects.length <= 0) {
         return false
       }
@@ -500,7 +507,7 @@ class App {
     const defaultParams: Partial<Record<keyof MeshStandardMaterial, any>> = {
       emissiveIntensity: 0.5
     }
-    
+
     const endParams: Partial<Record<keyof MeshStandardMaterial, any>> = { emissiveIntensity: 0.2 }
     Object.assign(defaultParams, start)
     Object.assign(endParams, end)
