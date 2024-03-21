@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 17:35:20
- * @LastEditTime: 2024-03-12 17:40:25
+ * @LastEditTime: 2024-03-21 11:20:42
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/ViewBoard.vue
@@ -15,6 +15,13 @@
   </div>
 </template>
 <script setup lang="ts">
-import { useHome } from '@/use/useHome'
-const { rotatCamera } = useHome()
+import type { App } from '@/App'
+
+let self: App
+const init = (app: App) => {
+  self = app
+}
+const rotatCamera = (type: number) => self.rotatCamera(type)
+
+defineExpose({ init })
 </script>

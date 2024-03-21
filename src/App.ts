@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-20 16:03:35
+ * @LastEditTime: 2024-03-21 13:01:20
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -270,7 +270,7 @@ class App {
           newMaterial.roughness = 0.2
           newMaterial.metalness = 0.7
         }
-  
+
         meshChild.castShadow = true
         meshChild.receiveShadow = true
         newMaterial.envMapIntensity = 0.5
@@ -447,6 +447,7 @@ class App {
           this.clearSelect(selectObject)
           // 创建线SVG，并清空
           this.createLineSVG([])
+
           return false
         } else {
           // 清除equipmentMaterialMap中的equipment的材质
@@ -579,6 +580,18 @@ class App {
       })
       .easing(TWEEN.Easing.Sinusoidal.InOut)
       .start()
+  }
+  /**
+   * 视角控制
+   * @param type
+   */
+  rotatCamera(type: number) {
+    const targetPosition: any = {
+      1: { x: 0, y: 13, z: 9 },
+      2: { x: 0, y: 18, z: 0 },
+      3: { x: -10, y: 10, z: 10 }
+    }
+    this.createCameraTween(targetPosition[type], new Vector3(0, 0, 0))
   }
 }
 export { App, show, equipment, camera, controls, scene, TWEEN }

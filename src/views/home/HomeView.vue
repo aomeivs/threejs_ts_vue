@@ -1,7 +1,7 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-20 16:09:08
+ * @LastEditTime: 2024-03-21 11:18:42
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/HomeView.vue
@@ -27,6 +27,7 @@ import ViewBoard from './component/ViewBoard.vue'
 import { App, show, equipment } from '@/App'
 const tipBoardRef = ref<InstanceType<typeof TipBoard> | null>(null)
 const cssBorderRef = ref<InstanceType<typeof CssBoard> | null>(null)
+  const viewBoardRef = ref<InstanceType<typeof ViewBoard> | null>(null)
 let app: App
 const main = async () => {
   const container = document.getElementById('webgl-container')
@@ -35,6 +36,7 @@ const main = async () => {
   app.start() // 循环渲染
   tipBoardRef.value!.init(app) // 初始化设备连线板
   cssBorderRef.value!.init(app) // 初始化点击提示板
+  viewBoardRef.value!.init(app) // 初始化点击提示板
 }
 onMounted(() => {
   main()
@@ -48,12 +50,12 @@ onMounted(() => {
         <left-board></left-board>
         <div class="board-container">
           <div class="webgl-view">
-            <view-board></view-board>
+            <view-board ref="viewBoardRef"></view-board>
             <!-- webgl-container -->
             <div class="webgl-container" id="webgl-container"></div>
             <tip-board ref="tipBoardRef"></tip-board>
           </div>
-          <bottom-board></bottom-board>
+          <bottom-board ref="bottomBoardRef"></bottom-board>
         </div>
       </div>
     </div>
