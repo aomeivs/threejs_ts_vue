@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-21 15:27:44
+ * @LastEditTime: 2024-03-21 16:26:31
  * @LastEditors: zhoulei zhoulei@kehaida.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -84,6 +84,7 @@ enum ModelName {
   TURBINE = 'turbine', // 风车
   EQUIPMENT = 'equipment' // 设备
 }
+export type DefaultParamsKey = 'color'|'emissive'|'emissiveIntensity'
 class App {
   actions: { [key: string]: AnimationAction }
   model: ModelEntity
@@ -490,14 +491,17 @@ class App {
    * @param child
    */
   selectAnimate(
-    child: Object3D,
+    child: Mesh,
     start: Partial<Record<keyof MeshStandardMaterial, any>> = {},
     end: Partial<Record<keyof MeshStandardMaterial, any>> = {},
     time: number = 500,
     repeat: number = 10
   ) {
-    const defaultParams = { emissiveIntensity: 0.5 }
-    const endParams = { emissiveIntensity: 0.2 }
+    const defaultParams: Partial<Record<keyof MeshStandardMaterial, any>> = {
+      emissiveIntensity: 0.5
+    }
+    
+    const endParams: Partial<Record<keyof MeshStandardMaterial, any>> = { emissiveIntensity: 0.2 }
     Object.assign(defaultParams, start)
     Object.assign(endParams, end)
     new TWEEN.Tween(defaultParams)
@@ -506,7 +510,8 @@ class App {
       .yoyo(true)
       .onUpdate((obj: any) => {
         Object.entries(defaultParams).map((item) => {
-          obj[item[0]] && (child.material[item[0]] = obj[item[0]])
+          const key = item[0] as DefaultParamsKey
+          obj[key] && ((child.material as MeshStandardMaterial)[key] = obj[key])
         })
       })
       .repeatDelay(100)
