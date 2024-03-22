@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
  * @LastEditTime: 2024-03-19 16:56:21
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/api/factory.ts
- * 联系方式:910592680@qq.com
+ * 
  */
 import type { EquipmentStatusRT, EquipmentWarning } from '@/types/api'
 import { defHttp } from '@/utils/http/axios'

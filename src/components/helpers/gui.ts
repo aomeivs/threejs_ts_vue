@@ -1,11 +1,11 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-02-02 10:29:09
- * @LastEditTime: 2024-03-21 17:34:22
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditTime: 2024-03-22 10:09:15
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/gui.ts
- * 联系方式:910592680@qq.com
+ 
  */
 import { type App,camera } from '@/App'
 import GUI from 'lil-gui'
@@ -17,27 +17,27 @@ const createGUI = (app: App) => {
     width: 300
   })
   // 添加一个按钮
-  const view0 = gui.addFolder('图层0')
-  const view = gui.addFolder('图层1')
+  const view0 = gui.addFolder('工厂模型')
+  const view = gui.addFolder('风力发电机模型')
   const viewParams0 = {
-    图层0: true
+    显示: true
     // turbineLabel: false
   }
   view0
-    .add(viewParams0, '图层0')
-    .name('图层0')
+    .add(viewParams0, '显示')
+    .name('显示')
     .onChange((value: boolean) => {
       camera.layers.toggle(0)
     })
   const viewParams = {
-    图层1: false,
+    显示: false,
     颜色材质: true,
     线框材质: true
     // turbineLabel: false
   }
   view
-    .add(viewParams, '图层1')
-    .name('图层1')
+    .add(viewParams, '显示')
+    .name('显示')
     .onChange((value: boolean) => {
       camera.layers.toggle(1)
     })

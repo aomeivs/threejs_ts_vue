@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-01-29 10:57:00
  * @LastEditTime: 2024-03-18 13:48:42
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/renderer.ts
- * 联系方式:910592680@qq.com
+ * 
  */
 import { PCFSoftShadowMap, WebGLRenderer } from 'three'
 import { CSS2DRenderer } from 'three/examples/jsm/renderers/CSS2DRenderer.js'

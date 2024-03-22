@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-01-29 10:57:11
  * @LastEditTime: 2024-03-07 15:50:47
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/Resizer.ts
- * 联系方式:910592680@qq.com
+ * 
  */
 import type { PerspectiveCamera, WebGLRenderer } from 'three'
 import type { CSS2DRenderer, EffectComposer } from 'three/examples/jsm/Addons.js'

@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-03-12 10:58:02
  * @LastEditTime: 2024-03-21 16:40:47
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description 模型上的2d元素，标注，弹窗
  * @FilePath: /vue3_ts_three/src/views/home/component/CssBoard.vue
- * 联系方式:910592680@qq.com
+ * 
 -->
 
 <script setup lang="ts">

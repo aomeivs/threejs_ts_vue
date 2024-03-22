@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-02-18 15:14:15
  * @LastEditTime: 2024-02-18 15:23:42
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/utils/http/axios/axiosRetry.ts
- * 联系方式:910592680@qq.com
+ * 
  */
 import { AxiosError } from 'axios'
 import type { AxiosInstance } from 'axios'

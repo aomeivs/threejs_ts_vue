@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-03-19 15:50:08
  * @LastEditTime: 2024-03-19 15:50:11
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/types/api.d.ts
- * 联系方式:910592680@qq.com
+ * 
  */
 export interface GetequipmentWarningRT {
   name: string

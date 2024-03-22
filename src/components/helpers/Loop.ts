@@ -4,7 +4,7 @@
  * @LastEditTime: 2024-03-15 10:57:48
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/Loop.ts
- * 联系方式:910592680@qq.com
+ * 
  */
 import { Clock, type PerspectiveCamera, type Scene, type WebGLRenderer } from 'three'
 import type { UpdateTable } from './update'

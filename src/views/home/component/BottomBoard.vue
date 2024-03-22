@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-03-12 13:35:28
  * @LastEditTime: 2024-03-20 17:03:46
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/BottomBoard.vue
- * 联系方式:910592680@qq.com
+ * 
 -->
 <script setup lang="ts">
 import { useHomeStore } from '@/stores/home'

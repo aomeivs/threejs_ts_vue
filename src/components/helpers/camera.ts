@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-01-29 10:56:24
  * @LastEditTime: 2024-03-13 09:30:53
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/camera.ts
- * 联系方式:910592680@qq.com
+ * 
  */
 import { PerspectiveCamera} from 'three'
 

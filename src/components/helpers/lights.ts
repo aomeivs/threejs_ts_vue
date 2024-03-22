@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-01-29 11:04:58
  * @LastEditTime: 2024-03-08 13:20:04
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/lights.ts
- * 联系方式:910592680@qq.com
+ * 
  */
 import { AmbientLight, DirectionalLight } from 'three'
 const createLights = () => {

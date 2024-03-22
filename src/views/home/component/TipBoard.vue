@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-03-14 13:27:40
  * @LastEditTime: 2024-03-21 15:35:40
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/TipBoard.vue
- * 联系方式:910592680@qq.com 科海达信息技术有限公司
+ *  科海达信息技术有限公司
 -->
 <script setup lang="ts">
 import TipItem from './TipItem.vue'

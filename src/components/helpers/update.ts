@@ -5,7 +5,7 @@
  * @LastEditors: Do not edit
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/update.ts
- * 联系方式:910592680@qq.com
+ * 
  */
 import { Clock, Object3D } from 'three'
 export type UpdateTable = Object3D & { tick?: (delta: number) => void } & any

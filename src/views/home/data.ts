@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-03-11 09:46:03
  * @LastEditTime: 2024-03-21 13:42:22
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/data.ts
- * 联系方式:910592680@qq.com
+ * 
  */
 import type { HtmlMeshCollection } from '@/App'
 export const htmlMeshCollection: HtmlMeshCollection[] = [

@@ -1,11 +1,11 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-30 15:59:40
- * @LastEditTime: 2024-03-21 17:31:38
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditTime: 2024-03-22 10:15:48
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/models/gltf/animal.ts
- * 联系方式:910592680@qq.com
+ 
  */
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 import turbine from '@/assets/3d-gltf-model/turbine.glb'
@@ -33,9 +33,9 @@ import {
 import { RGBELoader } from 'three/examples/jsm/Addons.js'
 import { MeshoptDecoder } from 'three/examples/jsm/libs/meshopt_decoder.module.js'
 import { ModelName } from '@/App'
-
+export type ModelParsed = { model: Object3D; action?: AnimationClipExtends }
 export type ModelEntity = {
-  [key in ModelName]?: { model: Object3D; action?: AnimationClipExtends }
+  [key in ModelName]?: ModelParsed
 }
 
 const model: ModelEntity = {}
@@ -54,9 +54,9 @@ const loadAnimals = async (loadManager?: LoadingManager): Promise<ModelEntity> =
   ])
   // const [factoryData] = await Promise.all([loader.loadAsync(factory)])
   const turbineModel = setupModel(animalData, 'Anim_0')
-  turbineModel.model.position.set(0, -1, 0)
+  turbineModel.model.position.set(0, -3, 0)
   const equipmentModel = { model: equipmentData.scene }
-  equipmentModel.model.position.set(0, -1, 0)
+  equipmentModel.model.position.set(0, -3, 0)
   const factoryModel = { model: factoryData.scene }
   factoryModel.model.position.set(0, 0, 0)
 

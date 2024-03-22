@@ -1,11 +1,11 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-21 17:47:44
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditTime: 2024-03-22 10:11:57
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
- * 联系方式:910592680@qq.com
+ 
  */
 import { createCamera } from '@/components/helpers/camera'
 import { createCSS2Renderer, createRenderer } from '@/components/helpers/renderer'
@@ -37,7 +37,11 @@ import { loadingManager } from '@/components/helpers/loadingManager'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import * as TWEEN from '@tweenjs/tween.js'
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
-import type { ModelEntity } from '@/components/models/gltf/animal'
+import type {
+  AnimationClipExtends,
+  ModelEntity,
+  ModelParsed
+} from '@/components/models/gltf/animal'
 import { createGUI } from '@/components/helpers/gui'
 import { ref } from 'vue'
 import { ViewHelper } from 'three/examples/jsm/Addons.js'
@@ -167,35 +171,11 @@ class App {
     this.createArrow()
   }
   setLoadModel() {
-    Object.entries(this.model).forEach((data) => {
-      const { model, action } = data[1]
-      const name = data[0] as ModelName
-      if (action) {
-        //没执行这一步，这个action是什么作用
-        this.actions[action.name!] = action
-        loop.updatables.push(model)
-      }
-      // 模型同步缩放合适尺寸
-      if (name == ModelName.FACTORY) {
-        model.scale.multiplyScalar(0.03)
-        model.position.set(-2, 0, -2)
-        this.setModelAncestors(
-          htmlMeshCollection.map((mesh) => mesh.meshName),
-          model
-        )
-        // factory 材质设置
-        this.initFactory()
-        scene.add(model)
-      } else {
-        // 发电机模型
-        model.scale.multiplyScalar(0.001)
-        // equipment 材质设置以及部件存储
-        this.initEquipment()
-        // turbine 材质设置
-        this.initTurbine()
-        scene.add(model)
-      }
-    })
+    this.initFactory(this.model.factory!)
+    //  equipment 材质设置以及部件存储
+    this.initEquipment(this.model.equipment!)
+    // turbine 材质设置
+    this.initTurbine(this.model.turbine!)
   }
   async createArrow() {
     const pointName = Array.from(Array(15).keys(), (num) => 'DD_JT' + +(num + 1))
@@ -226,8 +206,15 @@ class App {
       scene.add(arrow)
     }
   }
-  initEquipment(layer: number = 1) {
-    this.model.equipment!.model.traverse((child: Object3D) => {
+  initEquipment(modelParsed: ModelParsed, layer: number = 1) {
+    const { model, action } = modelParsed
+    if (action) {
+      this.actions[action.name!] = action
+      loop.updatables.push(model)
+    }
+    // 发电机模型
+    model.scale.multiplyScalar(0.001)
+    model.traverse((child: Object3D) => {
       child.layers.set(layer)
       const meshChild = child as Mesh & {
         currentHex?: number
@@ -241,9 +228,17 @@ class App {
         equipmentMaterialMap.set(meshChild.name, meshChild) // Map 存储各个部件
       }
     })
+    scene.add(model)
   }
-  initTurbine(layer: number = 1) {
-    this.model.turbine!.model.traverse((child: Object3D) => {
+  initTurbine(modelParsed: ModelParsed, layer: number = 1) {
+    const { model, action } = modelParsed
+    if (action) {
+      this.actions[action.name!] = action
+      loop.updatables.push(model)
+    }
+    // 发电机模型
+    model.scale.multiplyScalar(0.001)
+    model.traverse((child: Object3D) => {
       child.layers.set(layer)
       const meshChild = child as Mesh & {
         currentHex?: number
@@ -257,9 +252,23 @@ class App {
         equipmentMaterialMap.set(meshChild.name, meshChild) // Map 存储各个部件
       }
     })
+    scene.add(model)
   }
-  initFactory() {
-    this.model.factory!.model.traverse((child: any) => {
+  initFactory(modelParsed: ModelParsed, layer: number = 0) {
+    const { model, action } = modelParsed
+    if (action) {
+      this.actions[action.name!] = action
+      loop.updatables.push(model)
+    }
+    model.scale.multiplyScalar(0.03)
+    model.position.set(-2, 0, -2)
+    this.setModelAncestors(
+      htmlMeshCollection.map((mesh) => mesh.meshName),
+      model
+    )
+    // factory 材质设置
+    model.traverse((child: any) => {
+      child.layers.set(layer)
       const meshChild = child as Mesh & {
         currentHex?: number
       }
@@ -284,6 +293,7 @@ class App {
         meshChild.material = newMaterial
       }
     })
+    scene.add(model)
   }
   //不明白这个方法是什么作用
   setModelAncestors(groupsName: string[], model: Object3D) {

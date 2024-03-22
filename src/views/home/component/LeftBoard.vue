@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-03-12 13:04:14
  * @LastEditTime: 2024-03-21 11:03:08
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/LeftBoard.vue
- * 联系方式:910592680@qq.com
+ * 
 -->
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted } from 'vue'

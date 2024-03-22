@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
  * @LastEditTime: 2024-03-12 13:01:43
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/README.md
- * 联系方式:910592680@qq.com 
+ *  
 -->
 # vue3_ts_three
 

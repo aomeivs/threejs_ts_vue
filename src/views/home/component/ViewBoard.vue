@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-03-12 17:35:20
  * @LastEditTime: 2024-03-21 11:20:42
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/ViewBoard.vue
- * 联系方式:910592680@qq.com
+ * 
 -->
 <template>
   <div class="camera">

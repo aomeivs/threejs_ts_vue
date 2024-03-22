@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-01-29 11:06:34
  * @LastEditTime: 2024-03-08 14:08:24
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/controls.ts
- * 联系方式:910592680@qq.com
+ * 
  */
 import type { PerspectiveCamera } from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'

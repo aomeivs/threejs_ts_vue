@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-02-18 14:54:43
  * @LastEditTime: 2024-02-18 15:04:28
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/utils/service.ts
- * 联系方式:910592680@qq.com
+ * 
  */
 import request from './request'
 export class BaseService {

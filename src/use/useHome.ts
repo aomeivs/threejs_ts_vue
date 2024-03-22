@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-03-12 13:48:38
  * @LastEditTime: 2024-03-21 13:08:39
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/use/useHome.ts
- * 联系方式:910592680@qq.com
+ * 
  */
 import { getequipmentwarning } from '@/api/factory'
 import { ref } from 'vue'

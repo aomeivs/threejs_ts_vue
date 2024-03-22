@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-03-08 17:30:37
  * @LastEditTime: 2024-03-21 14:48:11
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/TipItem.vue
- * 联系方式:910592680@qq.com
+ * 
 -->
 <template>
   <div :id="id" :key="id">

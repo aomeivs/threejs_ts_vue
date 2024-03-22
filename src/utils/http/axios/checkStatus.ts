@@ -2,10 +2,10 @@
  * @Author: zhou lei
  * @Date: 2024-02-18 15:14:15
  * @LastEditTime: 2024-02-18 15:26:08
- * @LastEditors: zhoulei zhoulei@kehaida.com
+ * @LastEditors: zhoulei 
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/utils/http/axios/checkStatus.ts
- * 联系方式:910592680@qq.com
+ * 
  */
 import type { ErrorMessageMode } from '#/axios'
 // import { useMessage } from '@/hooks/web/useMessage';
