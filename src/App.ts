@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-22 12:22:37
+ * @LastEditTime: 2024-03-22 13:01:23
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -27,8 +27,7 @@ import {
   Vector3,
   CameraHelper,
   Object3D,
-  Box3,
-  Layers
+  Box3
 } from 'three'
 import { Loop } from '@/components/helpers/Loop'
 import { loadAnimals, loadArrow, loadBackground } from '@/components/models/gltf/animal'
@@ -37,11 +36,7 @@ import { loadingManager } from '@/components/helpers/loadingManager'
 import Stats from 'three/examples/jsm/libs/stats.module.js'
 import * as TWEEN from '@tweenjs/tween.js'
 import { CSS2DRenderer, CSS2DObject } from 'three/examples/jsm/renderers/CSS2DRenderer.js'
-import type {
-  AnimationClipExtends,
-  ModelEntity,
-  ModelParsed
-} from '@/components/models/gltf/animal'
+import type { ModelEntity, ModelParsed } from '@/components/models/gltf/animal'
 import { createGUI } from '@/components/helpers/gui'
 import { ref } from 'vue'
 import { ViewHelper } from 'three/examples/jsm/Addons.js'
@@ -60,12 +55,12 @@ export type Equipment = Partial<{
   date: any
 }>
 const isDebug = globalConfig.debug
+
 let camera: PerspectiveCamera
 let controls: ExtendedOrbitControls
 let renderer: WebGLRenderer
 let cssRenderer: CSS2DRenderer
 let scene: Scene
-const layers = new Layers()
 let loop: Loop
 let stats: Stats
 let turbineLabel: any
@@ -97,11 +92,13 @@ class App {
   model: ModelEntity
   container: HTMLElement
   isOrbiting: boolean
+  cameraLayer:number
   constructor(container: HTMLElement) {
     this.container = container
     this.actions = {}
     this.model = {}
     this.isOrbiting = false
+    this.cameraLayer = 0
     // 控制GUI\STATS
     {
       stats = new Stats() //一个仪表板，用于显示每秒帧数，监视性能
@@ -398,7 +395,8 @@ class App {
    *
    * @param name 监听鼠标
    */
-  onPointerClick(models:Object3D[]) {
+  onPointerClick(models: Object3D[]) {
+    console.log('this.cameraLayer::::',this.cameraLayer)
     // 监听mouseup事件
     document.addEventListener('click', async (event: MouseEvent) => {
       if (this.isOrbiting) {
@@ -410,6 +408,7 @@ class App {
       mouse.x = (event.offsetX / this.container.clientWidth) * 2 - 1
       mouse.y = -(event.offsetY / this.container.clientHeight) * 2 + 1
       const raycaster = new Raycaster()
+      raycaster.layers.set(this.cameraLayer)
       raycaster.setFromCamera(mouse, camera)
       const intersects = raycaster.intersectObjects(models, true)
       if (intersects.length <= 0) {
@@ -565,7 +564,7 @@ class App {
       console.log('label.element.addEventListener("click')
     })
     scene.add(turbineLabel)
-    this.onPointerClick([this.model.factory!.model,this.model.equipment!.model])
+    this.onPointerClick([this.model.factory!.model, this.model.equipment!.model])
   }
   /**
    * 效果：模型上初始化显示的标注；html元素=》网格模型对象=》定位=》添加到场景
@@ -628,6 +627,10 @@ class App {
       3: { x: -10, y: 10, z: 10 }
     }
     this.createCameraTween(targetPosition[type], new Vector3(0, 0, 0))
+  }
+  changeLayers(layer: number) {
+    this.cameraLayer = layer
+    camera.layers.set(layer)
   }
 }
 export { App, show, equipment, camera, controls, scene, TWEEN }

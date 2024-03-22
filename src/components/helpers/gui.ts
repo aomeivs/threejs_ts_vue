@@ -1,13 +1,13 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-02-02 10:29:09
- * @LastEditTime: 2024-03-22 12:07:03
+ * @LastEditTime: 2024-03-22 12:58:26
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/gui.ts
  
  */
-import { type App,camera } from '@/App'
+import { type App, camera } from '@/App'
 import GUI from 'lil-gui'
 
 const createGUI = (app: App) => {
@@ -26,9 +26,9 @@ const createGUI = (app: App) => {
   }
   view0
     .add(viewParams0, '显示')
-    .name('显示')
+    .name('模型切换显示')
     .onChange((value: boolean) => {
-      camera.layers.toggle(0)
+      app.changeLayers(value ? 0 : 1)
     })
   const viewParams = {
     显示: false,
@@ -36,12 +36,7 @@ const createGUI = (app: App) => {
     线框材质: true
     // turbineLabel: false
   }
-  view
-    .add(viewParams, '显示')
-    .name('显示')
-    .onChange((value: boolean) => {
-      camera.layers.toggle(1)
-    })
+
   view
     .add(viewParams, '颜色材质')
     .name('颜色材质')
