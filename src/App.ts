@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-22 13:01:23
+ * @LastEditTime: 2024-03-22 13:20:54
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -211,7 +211,7 @@ class App {
     }
     // 发电机模型
     model.scale.multiplyScalar(0.001)
-    this.setModelAncestors(eqipmentMeshCollection, model)
+    this.setModelAncestors(eqipmentMeshCollection.map(mesh => mesh.meshName), model)
     model.traverse((child: Object3D) => {
       child.layers.set(layer)
       const meshChild = child as Mesh & {
@@ -471,7 +471,7 @@ class App {
         } else {
           // 清除equipmentMaterialMap中的equipment的材质
           this.clearSelect(equipmentMaterialMap.get(equipment.value?.meshName))
-          const obj = htmlMeshCollection.find((html) => html.meshName === selectObject.name)
+          const obj = htmlMeshCollection.concat(eqipmentMeshCollection).find((html) => html.meshName === selectObject.name)
           if (obj) {
             const child = equipmentList.value.find((child) => child.equipmentCode == obj.target)
             child && Object.assign(obj, child)
