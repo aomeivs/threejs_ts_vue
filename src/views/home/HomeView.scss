@@ -55,6 +55,7 @@
             margin-bottom: 15px;
           }
           &-value {
+            pointer-events: all;
             // 传输线速度
             &.speed {
               :deep(.el-progress-bar__outer) {
@@ -333,6 +334,7 @@
               margin-bottom: 15px;
             }
             &-value {
+              pointer-events: all;
               height: 297px;
               display: grid;
               grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;

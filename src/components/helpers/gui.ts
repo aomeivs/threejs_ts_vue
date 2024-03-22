@@ -1,8 +1,8 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-02-02 10:29:09
- * @LastEditTime: 2024-03-22 10:09:15
- * @LastEditors: zhoulei 
+ * @LastEditTime: 2024-03-22 10:52:03
+ * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/gui.ts
  
@@ -16,6 +16,7 @@ const createGUI = (app: App) => {
     title: '控制参数',
     width: 300
   })
+  gui.close()
   // 添加一个按钮
   const view0 = gui.addFolder('工厂模型')
   const view = gui.addFolder('风力发电机模型')
