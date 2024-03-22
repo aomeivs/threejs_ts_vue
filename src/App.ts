@@ -1,8 +1,8 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-22 10:11:57
- * @LastEditors: zhoulei 
+ * @LastEditTime: 2024-03-22 12:22:37
+ * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
  
@@ -46,7 +46,7 @@ import { createGUI } from '@/components/helpers/gui'
 import { ref } from 'vue'
 import { ViewHelper } from 'three/examples/jsm/Addons.js'
 import useEffectHooks, { type OutlineEffectType } from '@/components/effect/outline'
-import { htmlMeshCollection } from './views/home/data'
+import { eqipmentMeshCollection, htmlMeshCollection } from './views/home/data'
 import type { GetequipmentStatusRT } from './types/api'
 import { useHomeStore } from './stores/home'
 import { storeToRefs } from 'pinia'
@@ -214,6 +214,7 @@ class App {
     }
     // 发电机模型
     model.scale.multiplyScalar(0.001)
+    this.setModelAncestors(eqipmentMeshCollection, model)
     model.traverse((child: Object3D) => {
       child.layers.set(layer)
       const meshChild = child as Mesh & {
@@ -225,7 +226,7 @@ class App {
         newMaterial.roughness = 0
         newMaterial.metalness = 0.8
         meshChild.material = newMaterial
-        equipmentMaterialMap.set(meshChild.name, meshChild) // Map 存储各个部件
+        // equipmentMaterialMap.set(meshChild.name, meshChild) // Map 存储各个部件
       }
     })
     scene.add(model)
@@ -238,6 +239,7 @@ class App {
     }
     // 发电机模型
     model.scale.multiplyScalar(0.001)
+
     model.traverse((child: Object3D) => {
       child.layers.set(layer)
       const meshChild = child as Mesh & {
@@ -249,7 +251,6 @@ class App {
         newMaterial.roughness = 0.7
         newMaterial.metalness = 0.7
         meshChild.material = newMaterial
-        equipmentMaterialMap.set(meshChild.name, meshChild) // Map 存储各个部件
       }
     })
     scene.add(model)
@@ -295,18 +296,20 @@ class App {
     })
     scene.add(model)
   }
-  //不明白这个方法是什么作用
+  //为需要渲染的模型设置父级
   setModelAncestors(groupsName: string[], model: Object3D) {
     groupsName.forEach((groupName) => {
       const selecmodel = model.getObjectByName(groupName)!
       equipmentMaterialMap.set(groupName, selecmodel)
-      selecmodel.traverse((child) => {
-        ;(child as Mesh).isMesh &&
-          Object.assign(child, {
-            ancestors: selecmodel
-          })
-      })
+      selecmodel &&
+        selecmodel.traverse((child) => {
+          ;(child as Mesh).isMesh &&
+            Object.assign(child, {
+              ancestors: selecmodel
+            })
+        })
     })
+    console.log('equipmentMaterialMap::::', equipmentMaterialMap)
   }
   // render() {
   //   renderer.render(scene, camera)
@@ -331,7 +334,6 @@ class App {
       model.visible = show
     }
   }
-  changeLayer(layer: number) {}
   showTurbineLabel(show: boolean) {
     turbineLabel.visible = show
   }
@@ -396,7 +398,7 @@ class App {
    *
    * @param name 监听鼠标
    */
-  onPointerClick(name: ModelName) {
+  onPointerClick(models:Object3D[]) {
     // 监听mouseup事件
     document.addEventListener('click', async (event: MouseEvent) => {
       if (this.isOrbiting) {
@@ -409,7 +411,7 @@ class App {
       mouse.y = -(event.offsetY / this.container.clientHeight) * 2 + 1
       const raycaster = new Raycaster()
       raycaster.setFromCamera(mouse, camera)
-      const intersects = raycaster.intersectObjects(this.model[name]!.model.children, true)
+      const intersects = raycaster.intersectObjects(models, true)
       if (intersects.length <= 0) {
         return false
       }
@@ -563,7 +565,7 @@ class App {
       console.log('label.element.addEventListener("click')
     })
     scene.add(turbineLabel)
-    this.onPointerClick(ModelName.FACTORY)
+    this.onPointerClick([this.model.factory!.model,this.model.equipment!.model])
   }
   /**
    * 效果：模型上初始化显示的标注；html元素=》网格模型对象=》定位=》添加到场景

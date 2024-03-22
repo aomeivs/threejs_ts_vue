@@ -1,11 +1,11 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-11 09:46:03
- * @LastEditTime: 2024-03-21 13:42:22
- * @LastEditors: zhoulei 
+ * @LastEditTime: 2024-03-22 11:53:33
+ * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/data.ts
- * 
+ *
  */
 import type { HtmlMeshCollection } from '@/App'
 export const htmlMeshCollection: HtmlMeshCollection[] = [
@@ -73,4 +73,17 @@ export const htmlMeshCollection: HtmlMeshCollection[] = [
     position: 'bottom',
     state: 1
   }
+]
+/**
+ */
+export const eqipmentMeshCollection = [
+  'pasted__extrudedSurface2',
+  'pasted__extrudedSurface8',
+  'pasted__group59_pCylinder158',
+  'pasted__pCube70',
+  'pasted__pCube97',
+  'polySurface152',
+  'polySurface156',
+  'polySurface230',
+  'polySurface258'
 ]
