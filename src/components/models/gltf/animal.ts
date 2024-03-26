@@ -1,8 +1,8 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-30 15:59:40
- * @LastEditTime: 2024-03-22 10:15:48
- * @LastEditors: zhoulei 
+ * @LastEditTime: 2024-03-26 15:01:25
+ * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/models/gltf/animal.ts
  
@@ -44,16 +44,15 @@ const model: ModelEntity = {}
  * @param loadManager
  * @returns
  */
-const loadAnimals = async (loadManager?: LoadingManager): Promise<ModelEntity> => {
+const loadModel = async (loadManager?: LoadingManager): Promise<ModelEntity> => {
   const loader = new GLTFLoader(loadManager)
   loader.setMeshoptDecoder(MeshoptDecoder)
-  const [animalData, equipmentData, factoryData] = await Promise.all([
-    loader.loadAsync(turbine),
-    loader.loadAsync(equipment),
-    loader.loadAsync(factory)
-  ])
-  // const [factoryData] = await Promise.all([loader.loadAsync(factory)])
-  const turbineModel = setupModel(animalData, 'Anim_0')
+
+  const turbineData = await loader.loadAsync(turbine)
+  const equipmentData = await loader.loadAsync(equipment)
+  const factoryData = await loader.loadAsync(factory)
+
+  const turbineModel = setupModel(turbineData, 'Anim_0')
   turbineModel.model.position.set(0, -3, 0)
   const equipmentModel = { model: equipmentData.scene }
   equipmentModel.model.position.set(0, -3, 0)
@@ -89,7 +88,7 @@ const loadBackground = async (scene: Scene) => {
   const texture = await rgbeLoader.setDataType(HalfFloatType).loadAsync(sky)
   // scene.background = texture
   texture.mapping = EquirectangularReflectionMapping
-  texture.colorSpace = 'srgb-linear'
+  // texture.colorSpace = 'srgb-linear'
   scene.environment = texture
   return texture
 }
@@ -98,7 +97,8 @@ const loadArrow = async (position?: [x: number, y: number, z: number]) => {
   const texture = await new TextureLoader().loadAsync(arrowImg)
   // const material = new SpriteMaterial({ map: texture, color: 0xffff00 })
   // const arrow = new Sprite(material)
-  const geometry = new PlaneGeometry(3, 1)
+  // const textureWidth = 28 texture.repeat 需要缩放对应比例
+  const geometry = new PlaneGeometry(4, 1)
   const material = new MeshStandardMaterial({
     map: texture,
     transparent: true, // 开启透明
@@ -110,23 +110,23 @@ const loadArrow = async (position?: [x: number, y: number, z: number]) => {
     const [x, y, z] = position
     arrow.position.set(x, y, z)
   }
-  textureAnimator(texture, 13, 1)
+  textureAnimator(texture, 7, 1)
   return { arrow, texture }
 }
 
 const textureAnimator = (texture: Texture, tilesHoriz: number, tilesVert: number) => {
+  // U阵列重复
   texture.wrapS = RepeatWrapping
-  texture.wrapT = RepeatWrapping
+  // 铺满纹理需要重复的次数
   texture.repeat.set(1 / tilesHoriz, 1 / tilesVert)
   // 当前帧
   let currentTile = 0
-
   Object.assign(texture, {
-    tick: () => {
-      currentTile++
-      const currentColumn = currentTile % tilesHoriz
-      texture.offset.x = currentColumn / tilesHoriz
+    tick: (delta: number) => {
+      currentTile = currentTile + delta
+      // 每帧移动的距离
+      texture.offset.x = currentTile / tilesHoriz
     }
   })
 }
-export { loadAnimals, loadBackground, loadArrow, textureAnimator }
+export { loadModel, loadBackground, loadArrow, textureAnimator }

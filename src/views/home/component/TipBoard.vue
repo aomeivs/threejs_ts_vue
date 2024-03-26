@@ -1,8 +1,8 @@
 <!--
  * @Author: zhou lei
  * @Date: 2024-03-14 13:27:40
- * @LastEditTime: 2024-03-21 15:35:40
- * @LastEditors: zhoulei 
+ * @LastEditTime: 2024-03-25 11:07:04
+ * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/component/TipBoard.vue
  *  科海达信息技术有限公司
@@ -55,7 +55,7 @@ const linkHtmMesh = (elementId: string) => {
  */
 const meshWaring = (newValue: any[]) => {
   const obj = newValue.find((item: { equipmentValue: string }) => item.equipmentValue === '0')
-  if (obj && obj.meshName) {
+  if (obj && obj.meshName && scene) {
     const mesh = scene.getObjectByName(obj.meshName)
     mesh?.traverse((child: any) => {
       if (child.isMesh) {

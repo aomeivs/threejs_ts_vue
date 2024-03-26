@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-22 13:20:54
+ * @LastEditTime: 2024-03-26 15:14:27
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -27,10 +27,11 @@ import {
   Vector3,
   CameraHelper,
   Object3D,
-  Box3
+  Box3,
+  Texture
 } from 'three'
 import { Loop } from '@/components/helpers/Loop'
-import { loadAnimals, loadArrow, loadBackground } from '@/components/models/gltf/animal'
+import { loadModel, loadArrow, loadBackground } from '@/components/models/gltf/animal'
 import { loadingManager } from '@/components/helpers/loadingManager'
 // 调试工具
 import Stats from 'three/examples/jsm/libs/stats.module.js'
@@ -63,7 +64,8 @@ let cssRenderer: CSS2DRenderer
 let scene: Scene
 let loop: Loop
 let stats: Stats
-let turbineLabel: any
+let textture: Texture
+let css2dLabel: CSS2DObject
 const turbineLabels = []
 let outline: OutlineEffectType
 let count = 0
@@ -92,7 +94,7 @@ class App {
   model: ModelEntity
   container: HTMLElement
   isOrbiting: boolean
-  cameraLayer:number
+  cameraLayer: number
   constructor(container: HTMLElement) {
     this.container = container
     this.actions = {}
@@ -146,7 +148,7 @@ class App {
     //this.outline([])
     // loop.updatables.push(controls)
     // outline 渲染会导致抗锯齿问题和其它显示问题
-    loop.updatables.push(controls, outline.compose)
+    loop.updatables.push(controls, outline.compose, TWEEN)
 
     // 响应式renderer
     {
@@ -154,10 +156,9 @@ class App {
     }
   }
   async init() {
-    loop.updatables.push(TWEEN)
-    await loadBackground(scene)
-    // const { scene: animalScene, action } = await loadAnimals(loadingManager)
-    this.model = await loadAnimals(loadingManager)
+    textture = await loadBackground(scene)
+    // const { scene: animalScene, action } = await loadModel(loadingManager)
+    this.model = await loadModel(loadingManager)
     // 设置加载模型
     this.setLoadModel()
     // 一种一进入就显示设备标签
@@ -183,14 +184,15 @@ class App {
         return worldPosition
       }
       mesh.getWorldPosition(worldPosition)
-      // mesh.visible = false
+      mesh.visible = false
       return worldPosition
     })
     for (let i = 0; i < positions.length; i++) {
       const pos = positions[i].toArray()
-      pos[1] = pos[1] + 0.2
-      const { arrow, texture } = await loadArrow(pos)
+      // pos[1] = pos[1] + 0.2
+      const { arrow, texture: arrowTexture } = await loadArrow(pos)
       arrow.name = 'C_DD_JT' + +(i + 1)
+      arrowTexture.name = 'C_DD_JT' + +(i + 1)
       arrow.scale.multiplyScalar(0.3)
       if ([4, 5, 13, 14, 15].includes(i + 1)) {
         arrow.rotation.set(Math.PI / 2, 0, 0)
@@ -199,7 +201,7 @@ class App {
       }
 
       arrow.material.emissive.setHex(0x00ff00)
-      loop.updatables.push(texture)
+      loop.updatables.push(arrowTexture)
       scene.add(arrow)
     }
   }
@@ -211,7 +213,10 @@ class App {
     }
     // 发电机模型
     model.scale.multiplyScalar(0.001)
-    this.setModelAncestors(eqipmentMeshCollection.map(mesh => mesh.meshName), model)
+    this.setModelAncestors(
+      eqipmentMeshCollection.map((mesh) => mesh.meshName),
+      model
+    )
     model.traverse((child: Object3D) => {
       child.layers.set(layer)
       const meshChild = child as Mesh & {
@@ -223,7 +228,6 @@ class App {
         newMaterial.roughness = 0
         newMaterial.metalness = 0.8
         meshChild.material = newMaterial
-        // equipmentMaterialMap.set(meshChild.name, meshChild) // Map 存储各个部件
       }
     })
     scene.add(model)
@@ -271,7 +275,8 @@ class App {
         currentHex?: number
       }
       if (meshChild.isMesh) {
-        const newMaterial = (meshChild.material as MeshStandardMaterial).clone()
+        const childMaterial = meshChild.material as MeshStandardMaterial
+        const newMaterial = childMaterial.clone()
         meshChild.currentHex = newMaterial.emissive.getHex()
         if (meshChild.name.includes('支架盖')) {
           newMaterial.emissive.setHex(0x000000)
@@ -281,14 +286,15 @@ class App {
           newMaterial.roughness = 0
           newMaterial.metalness = 0
         } else {
-          newMaterial.roughness = 0.2
-          newMaterial.metalness = 0.7
+          newMaterial.roughness = 0.5
+          newMaterial.metalness = 0.9
         }
-
+        // 暂时不需要为单独物体设置不同的映射纹理，由scene提供统一的映射纹理即可；
+        newMaterial.envMap = textture
+        newMaterial.envMapIntensity = 0.3
+        meshChild.material = newMaterial
         meshChild.castShadow = true
         meshChild.receiveShadow = true
-        newMaterial.envMapIntensity = 0.5
-        meshChild.material = newMaterial
       }
     })
     scene.add(model)
@@ -306,13 +312,13 @@ class App {
             })
         })
     })
-    console.log('equipmentMaterialMap::::', equipmentMaterialMap)
   }
   // render() {
   //   renderer.render(scene, camera)
   // }
   start() {
     loop.start()
+    console.log('this.updatables', loop.updatables)
   }
   play(actionName: string, play: boolean) {
     const action = this.actions[actionName]
@@ -332,7 +338,7 @@ class App {
     }
   }
   showTurbineLabel(show: boolean) {
-    turbineLabel.visible = show
+    css2dLabel.visible = show
   }
 
   createLineSVG(targets: HtmlMeshCollection[]) {
@@ -396,15 +402,16 @@ class App {
    * @param name 监听鼠标
    */
   onPointerClick(models: Object3D[]) {
-    console.log('this.cameraLayer::::',this.cameraLayer)
     // 监听mouseup事件
-    document.addEventListener('click', async (event: MouseEvent) => {
+    this.container.addEventListener('click', async (event: MouseEvent) => {
       if (this.isOrbiting) {
         ///1.处理区分是：鼠标点击事件/还是鼠标移动改变相机
         this.isOrbiting = false
         return
       }
       const mouse = new Vector2()
+      // mouse.x = (<鼠标相对于可视区域的横坐标> / <可视区域的宽>) * 2 - 1;
+      // mouse.y = -(<鼠标相对于可视区域的纵坐标> / <可视区域的高>) * 2 + 1;
       mouse.x = (event.offsetX / this.container.clientWidth) * 2 - 1
       mouse.y = -(event.offsetY / this.container.clientHeight) * 2 + 1
       const raycaster = new Raycaster()
@@ -429,7 +436,7 @@ class App {
    */
   clearSelect(selectObject: any) {
     outline.outlinePass.selectedObjects = []
-    turbineLabel.visible = false
+    css2dLabel.visible = false
     selectObject &&
       selectObject.traverse((child: any) => {
         if (child.isMesh) {
@@ -471,7 +478,9 @@ class App {
         } else {
           // 清除equipmentMaterialMap中的equipment的材质
           this.clearSelect(equipmentMaterialMap.get(equipment.value?.meshName))
-          const obj = htmlMeshCollection.concat(eqipmentMeshCollection).find((html) => html.meshName === selectObject.name)
+          const obj = htmlMeshCollection
+            .concat(eqipmentMeshCollection)
+            .find((html) => html.meshName === selectObject.name)
           if (obj) {
             const child = equipmentList.value.find((child) => child.equipmentCode == obj.target)
             child && Object.assign(obj, child)
@@ -540,9 +549,9 @@ class App {
    * @param intersect
    */
   updateLabal(intersect: any) {
-    turbineLabel.visible = !show.value
+    css2dLabel.visible = !show.value
     const point = intersect.point
-    turbineLabel.position.set(point.x, point.y, point.z)
+    css2dLabel.position.set(point.x, point.y, point.z)
   }
   /**
    * 效果：点击弹窗标注；creat=》添加场景=》监听鼠标事件onPointerClick()
@@ -551,19 +560,19 @@ class App {
   createTurbineLabel(target: string) {
     const dom: HTMLElement = document.querySelector(target)!
     // dom.style.background = 'rgba(100,100,0,0.5)'
-    turbineLabel = new CSS2DObject(dom)
-    turbineLabel.name = 'turbineLabel'
-    turbineLabel.scale.set(0.003, 0.003, 0.003)
+    css2dLabel = new CSS2DObject(dom)
+    css2dLabel.name = 'css2DLabel'
+    css2dLabel.scale.set(0.003, 0.003, 0.003)
 
     if (show.value) {
-      turbineLabel.visible = true
+      css2dLabel.visible = true
     } else {
-      turbineLabel.visible = false
+      css2dLabel.visible = false
     }
     dom.addEventListener('pointerdown', () => {
       console.log('label.element.addEventListener("click')
     })
-    scene.add(turbineLabel)
+    scene.add(css2dLabel)
     this.onPointerClick([this.model.factory!.model, this.model.equipment!.model])
   }
   /**
@@ -630,7 +639,9 @@ class App {
   }
   changeLayers(layer: number) {
     this.cameraLayer = layer
+    css2dLabel.layers.set(layer)
+    css2dLabel.visible = false
     camera.layers.set(layer)
   }
 }
-export { App, show, equipment, camera, controls, scene, TWEEN }
+export { App, show, equipment, camera, controls, scene, TWEEN, loop }
