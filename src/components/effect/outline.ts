@@ -1,11 +1,11 @@
 import {
   WebGLRenderTarget,
   HalfFloatType,
-  RGBAFormat,
   Vector2,
   WebGLRenderer,
   Scene,
-  Camera
+  Camera,
+  SRGBColorSpace,
 } from 'three'
 import {
   EffectComposer,
@@ -14,10 +14,15 @@ import {
   ShaderPass,
   FXAAShader,
   SMAAPass,
-  OutputPass
+  OutputPass,
+  CopyShader
 } from 'three/examples/jsm/Addons.js'
 let renderer: WebGLRenderer, scene: Scene, camera: Camera, container: HTMLElement
-export type OutlineEffectType = { compose: EffectComposer; outlinePass: OutlinePass }
+export type OutlineEffectType = {
+  compose: EffectComposer
+  mapComposer?: EffectComposer
+  outlinePass: OutlinePass
+}
 // 为点击的模型添加 outlinepass 效果
 const outlineEffect = (selectedObjects: any, color: number = 0x15c5e8): OutlineEffectType => {
   const [w, h] = [
@@ -27,11 +32,12 @@ const outlineEffect = (selectedObjects: any, color: number = 0x15c5e8): OutlineE
   const pixelRatio: number = 2
   const targetRenderer = new WebGLRenderTarget(w, h, {
     type: HalfFloatType,
-    format: RGBAFormat
+    colorSpace: SRGBColorSpace
   })
   targetRenderer.samples = 8
   const compose = new EffectComposer(renderer, targetRenderer)
   const renderPass = new RenderPass(scene, camera)
+
   // renderPass.clear = false
   const outlinePass = new OutlinePass(new Vector2(w, h), scene, camera)
   const effectFXAA = new ShaderPass(FXAAShader)
@@ -39,6 +45,8 @@ const outlineEffect = (selectedObjects: any, color: number = 0x15c5e8): OutlineE
     w * renderer.getPixelRatio() * pixelRatio,
     h * renderer.getPixelRatio() * pixelRatio
   )
+  const copyPass = new ShaderPass(CopyShader)
+  copyPass.renderToScreen = true
   // const gammaPass = new ShaderPass(GammaCorrectionShader)
   // const dotScreenShader = new ShaderPass(DotScreenShader)
   // dotScreenShader.uniforms['scale'].value = 4
@@ -62,6 +70,8 @@ const outlineEffect = (selectedObjects: any, color: number = 0x15c5e8): OutlineE
   // 伽马校正
   // compose.addPass(gammaPass)
   // compose.addPass(dotScreenShader)
+  compose.addPass(copyPass)
+
   const params = {
     edgeStrength: 3,
     edgeGlow: 1,

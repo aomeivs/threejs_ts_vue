@@ -1,8 +1,7 @@
-
 <!--
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-25 11:05:39
+ * @LastEditTime: 2024-03-27 10:57:23
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/views/home/HomeView.vue
@@ -56,6 +55,14 @@ onMounted(() => {
 </template>
 <style lang="scss" scoped>
 @import './HomeView.scss';
+#webgl-viewport {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 300px;
+  height: 200px;
+  z-index: 9;
+}
 </style>
 <style>
 .pathshadow {

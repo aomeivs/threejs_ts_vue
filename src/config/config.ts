@@ -1,8 +1,8 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-21 09:35:14
- * @LastEditTime: 2024-03-21 16:46:26
- * @LastEditors: zhoulei 
+ * @LastEditTime: 2024-03-27 15:49:19
+ * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/config/config.ts
  * 

@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-26 15:14:27
+ * @LastEditTime: 2024-03-27 15:44:33
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -48,6 +48,7 @@ import { useHomeStore } from './stores/home'
 import { storeToRefs } from 'pinia'
 import pinia from './stores'
 import { globalConfig } from './config/config'
+import { MiniMap } from './components/effect/miniMap'
 const { equipmentList } = storeToRefs(useHomeStore(pinia))
 export type Equipment = Partial<{
   name: string
@@ -72,6 +73,7 @@ let count = 0
 const equipmentMaterialMap = new Map()
 const show = ref(false)
 const equipment = ref<HtmlMeshCollection>()
+
 export interface HtmlMeshCollection extends Partial<GetequipmentStatusRT> {
   target: string
   meshName: string
@@ -142,14 +144,11 @@ class App {
     container.appendChild(cssRenderer.domElement)
     container.appendChild(renderer.domElement)
     container.appendChild(stats.dom)
-    loop = new Loop(camera, scene, renderer, cssRenderer, stats, viewHelper)
-
-    outline = useEffectHooks(renderer, scene, camera).outlineEffect([])
-    //this.outline([])
-    // loop.updatables.push(controls)
+    // effectComposer Renderer替代WebGlRenderer
     // outline 渲染会导致抗锯齿问题和其它显示问题
+    outline = useEffectHooks(renderer, scene, camera).outlineEffect([])
+    loop = new Loop(camera, scene, renderer, cssRenderer, stats, viewHelper)
     loop.updatables.push(controls, outline.compose, TWEEN)
-
     // 响应式renderer
     {
       new Resizer(container, camera, renderer, cssRenderer, outline.compose) //刚加载设置大小，以及监控浏览器窗口变化大小变化
@@ -167,6 +166,9 @@ class App {
      * 加载箭头,模型路线上的动画箭头
      */
     this.createArrow()
+    // 小地图组件 需要完善
+    // const miniMap = new MiniMap({scene:scene,container:this.container,target:this.model.factory?.model})
+    // loop.updatables.push(miniMap)
   }
   setLoadModel() {
     this.initFactory(this.model.factory!)
@@ -208,6 +210,7 @@ class App {
   initEquipment(modelParsed: ModelParsed, layer: number = 1) {
     const { model, action } = modelParsed
     if (action) {
+      action.play()
       this.actions[action.name!] = action
       loop.updatables.push(model)
     }
@@ -235,6 +238,7 @@ class App {
   initTurbine(modelParsed: ModelParsed, layer: number = 1) {
     const { model, action } = modelParsed
     if (action) {
+      action.play()
       this.actions[action.name!] = action
       loop.updatables.push(model)
     }
@@ -321,15 +325,9 @@ class App {
     console.log('this.updatables', loop.updatables)
   }
   play(actionName: string, play: boolean) {
-    const action = this.actions[actionName]
-    if (action) {
-      if (play) {
-        action.paused = false
-        action.play()
-      } else {
-        action.paused = true
-      }
-    }
+    this.actions[actionName].paused = !play
+    // action.play()在初始被调用时，不需要设置以下！
+    // play && this.actions[actionName].play()
   }
   show(showName: string, show: boolean) {
     const model = scene.getObjectByName(showName)
@@ -593,7 +591,8 @@ class App {
       csslabel.position.set(worldPosition.x, worldPosition.y, worldPosition.z)
       csslabel.scale.set(0.003, 0.003, 0.003)
       csslabel.visible = true
-      turbineLabels.push(csslabel) ///这一句是什么作用
+      // css2d标签
+      turbineLabels.push(csslabel)
       scene.add(csslabel)
     })
   }

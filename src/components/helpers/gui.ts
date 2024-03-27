@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-02-02 10:29:09
- * @LastEditTime: 2024-03-22 12:58:26
+ * @LastEditTime: 2024-03-26 15:35:32
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/gui.ts
@@ -56,7 +56,7 @@ const createGUI = (app: App) => {
   //     app.showTurbineLabel(value)
   //   })
   const animationParams = {
-    播放: false
+    播放: true
   }
   const animation = gui.addFolder('动画')
   animation.add(animationParams, '播放').onChange((value: boolean) => {
