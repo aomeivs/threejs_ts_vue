@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-27 15:44:33
+ * @LastEditTime: 2024-03-27 16:56:20
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -48,7 +48,7 @@ import { useHomeStore } from './stores/home'
 import { storeToRefs } from 'pinia'
 import pinia from './stores'
 import { globalConfig } from './config/config'
-import { MiniMap } from './components/effect/miniMap'
+// import { MiniMap } from './components/effect/miniMap'
 const { equipmentList } = storeToRefs(useHomeStore(pinia))
 export type Equipment = Partial<{
   name: string
