@@ -1,11 +1,12 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-28 14:42:06
- * @LastEditTime: 2024-03-28 16:37:27
+ * @LastEditTime: 2024-03-28 17:20:51
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/effect/exploder.ts
  */
+import { TWEEN } from '@/App'
 import { Object3D, Box3, Vector3 } from 'three'
 
 // 初始化爆炸数据保存到每个mesh的userdata上
@@ -44,20 +45,23 @@ const getWorldCenterPosition = (box: Box3, scalar = 0.5): Vector3 => {
 }
 
 const explodeModel = (model: Object3D, scalar: number) => {
-  model.traverse(function (value) {
+  model.traverse((child) => {
     // @ts-ignore
-    if (!value.isMesh || !value.userData.originPosition) return
-    const distance = value.userData.worldDir
+    if (!child.isMesh || !child.userData.originPosition) return
+    const distance = child.userData.worldDir
       .clone()
-      .multiplyScalar(value.userData.worldDistance.length() * scalar)
+      .multiplyScalar(child.userData.worldDistance.length() * scalar)
     const offset = new Vector3().subVectors(
-      value.userData.meshCenter,
-      value.userData.originPosition
+      child.userData.meshCenter,
+      child.userData.originPosition
     )
-    const center = value.userData.explodeCenter
+    const center = child.userData.explodeCenter
     const newPos = new Vector3().copy(center).add(distance).sub(offset)
-    const localPosition = value.parent?.worldToLocal(newPos.clone())
-    localPosition && value.position.copy(localPosition)
+    const localPosition = child.parent?.worldToLocal(newPos.clone())
+    if (localPosition) {
+      // child.position.copy(localPosition)
+      new TWEEN.Tween(child.position).to(localPosition, 800).start()
+    }
   })
 }
 
