@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-28 15:16:01
+ * @LastEditTime: 2024-03-28 16:41:29
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -48,7 +48,8 @@ import { useHomeStore } from './stores/home'
 import { storeToRefs } from 'pinia'
 import pinia from './stores'
 import { globalConfig } from './config/config'
-import Exploder from './components/effect/exploder'
+import { explodeModel, initExplodeModel } from './components/effect/exploder'
+// import Exploder from './components/effect/exploder'
 // import { MiniMap } from './components/effect/miniMap'
 const { equipmentList } = storeToRefs(useHomeStore(pinia))
 export type Equipment = Partial<{
@@ -174,9 +175,7 @@ class App {
     // loop.updatables.push(miniMap)
 
     // 模型爆炸 exploder
-    // const position = new Vector3(0,0,0)
-    // const exploder = new Exploder(scene, this.model.equipment!.model.id, position)
-    // exploder.explode()
+    initExplodeModel(this.model.factory?.model!)
   }
   setLoadModel() {
     this.initFactory(this.model.factory!)

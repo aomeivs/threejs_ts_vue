@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-02-02 10:29:09
- * @LastEditTime: 2024-03-26 15:35:32
+ * @LastEditTime: 2024-03-28 16:47:20
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/gui.ts
@@ -9,6 +9,7 @@
  */
 import { type App, camera } from '@/App'
 import GUI from 'lil-gui'
+import { explodeModel } from '../effect/exploder'
 
 const createGUI = (app: App) => {
   // 创建GUI对象
@@ -21,7 +22,8 @@ const createGUI = (app: App) => {
   const view0 = gui.addFolder('工厂模型')
   const view = gui.addFolder('风力发电机模型')
   const viewParams0 = {
-    显示: true
+    显示: true,
+    爆破: false
     // turbineLabel: false
   }
   view0
@@ -30,6 +32,17 @@ const createGUI = (app: App) => {
     .onChange((value: boolean) => {
       app.changeLayers(value ? 0 : 1)
     })
+  view0
+    .add(viewParams0, '爆破')
+    .name('工厂模型展开')
+    .onChange((value: boolean) => {
+      if (value) {
+        explodeModel(app.model.factory?.model!, 2)
+      } else {
+        explodeModel(app.model.factory?.model!, 1)
+      }
+    })
+
   const viewParams = {
     显示: false,
     颜色材质: true,

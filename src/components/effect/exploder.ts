@@ -1,105 +1,64 @@
-import { Scene, Vector3, Box3 } from 'three'
-
-/**
- * Exploder class is used to explode an object
+/*
+ * @Author: zhou lei
+ * @Date: 2024-03-28 14:42:06
+ * @LastEditTime: 2024-03-28 16:37:27
+ * @LastEditors: zhoulei && 910592680@qq.com
+ * @Description: Description
+ * @FilePath: /vue3_ts_three/src/components/effect/exploder.ts
  */
-export default class Exploder {
-  static DEFAULT_SCALE = 1
-  private scene: Scene
-  private objectId: number // target object to be exploded
-  public position: Vector3 // position of exploder
-  private scale: number // power of exploder, means how far will a sub-object exploded away
-  private explodedTimes: number = 0 // an object can be exploded more than once
+import { Object3D, Box3, Vector3 } from 'three'
 
-  /**
-   * Constructor of Explode
-   * @param objectId target object id, that is going to be exploded
-   * @param position if undefined, will explode object by its center
-   * @param scale scale factor, 1 means 1 time farer away from exploder's position
-   */
-  public constructor(
-    scene: Scene,
-    objectId: number,
-    position: Vector3 | undefined = undefined,
-    scale: number = Exploder.DEFAULT_SCALE
-  ) {
-    this.scene = scene
-    this.objectId = objectId
-    if (!objectId) {
-      console.log(`Invalid objectId: ${objectId}`)
-    }
-    this.scale = scale
-    if (scale <= 0) {
-      console.log(`Invalid scale: ${scale}`)
-    }
-    if (position) {
-      this.position = position
-    } else {
-      this.position = new Vector3()
-      this.getObjectCenter(this.position)
-    }
-  }
+// 初始化爆炸数据保存到每个mesh的userdata上
+const initExplodeModel = (modelObject: Object3D) => {
+  if (!modelObject) return
 
-  /**
-   * Explode the object
-   */
-  public explode() {
-    if (!this.objectId || !this.position || !this.scale) {
-      console.log(
-        `Invalid objectId: ${this.objectId}, or position: ${this.position}, or this.power: ${this.scale}`
-      )
-      return
-    }
-    const object = this.scene.getObjectById(this.objectId)
-    if (!object || !object.children) {
-      console.log('No children to explode!')
-      return
-    }
-    console.log(`position: ${this.position.x}, ${this.position.y}, ${this.position.z}`)
-    object.children.forEach((childObj) => {
-      const pos = new Vector3(childObj.position.x, childObj.position.y, childObj.position.z)
-      const distance = pos.sub(this.position) // get distance from childObj to exploder position
-      childObj.position.addScaledVector(distance, this.scale)
-    })
-    this.explodedTimes++
-  }
+  // 计算模型中心
+  const explodeBox = new Box3()
+  explodeBox.setFromObject(modelObject)
+  const explodeCenter = getWorldCenterPosition(explodeBox)
 
-  /**
-   * Unexplode the object
-   */
-  public unexplode() {
-    const object = this.scene.getObjectById(this.objectId)
-    if (!object || !object.children) {
-      console.log('No children to explode!')
-      return
-    }
-    for (let i = this.explodedTimes; i > 0; --i) {
-      object.children.forEach((childObj) => {
-        const pos = new Vector3(childObj.position.x, childObj.position.y, childObj.position.z)
-        const factor = this.scale / (1 + this.scale)
-        const dist = pos.sub(this.position)
-        dist.x *= factor
-        dist.y *= factor
-        dist.z *= factor
-        childObj.position.sub(dist)
-      })
-    }
-  }
+  const meshBox = new Box3()
 
-  private getObjectCenter(center: Vector3) {
-    const bbox = new Box3()
-    if (!this.objectId) {
-      console.log(`Invalid objectId: ${this.objectId}`)
-      return
+  // 遍历整个模型，保存数据到userData上，以便爆炸函数使用
+  modelObject.traverse(function (value: any) {
+    if (value.isMark || value.isMarkChild || value.isLine || value.isSprite) return
+    if (value.isMesh) {
+      meshBox.setFromObject(value)
+
+      const meshCenter = getWorldCenterPosition(meshBox)
+      // 爆炸方向
+      value.userData.worldDir = new Vector3().subVectors(meshCenter, explodeCenter).normalize()
+      // 爆炸距离 mesh中心点到爆炸中心点的距离
+      value.userData.worldDistance = new Vector3().subVectors(meshCenter, explodeCenter)
+      // 原始坐标
+      value.userData.originPosition = value.getWorldPosition(new Vector3())
+      // mesh中心点
+      value.userData.meshCenter = meshCenter.clone()
+      value.userData.explodeCenter = explodeCenter.clone()
     }
-    const object = this.scene.getObjectById(this.objectId)
-    if (!object || !object.children) {
-      console.log('No children to explode!')
-      return
-    }
-    object.traverse((obj) => {
-      bbox.expandByObject(obj)
-    })
-    bbox.getCenter(center)
-  }
+  })
 }
+
+const getWorldCenterPosition = (box: Box3, scalar = 0.5): Vector3 => {
+  return new Vector3().addVectors(box.max, box.min).multiplyScalar(scalar)
+}
+
+const explodeModel = (model: Object3D, scalar: number) => {
+  model.traverse(function (value) {
+    // @ts-ignore
+    if (!value.isMesh || !value.userData.originPosition) return
+    const distance = value.userData.worldDir
+      .clone()
+      .multiplyScalar(value.userData.worldDistance.length() * scalar)
+    const offset = new Vector3().subVectors(
+      value.userData.meshCenter,
+      value.userData.originPosition
+    )
+    const center = value.userData.explodeCenter
+    const newPos = new Vector3().copy(center).add(distance).sub(offset)
+    const localPosition = value.parent?.worldToLocal(newPos.clone())
+    localPosition && value.position.copy(localPosition)
+  })
+}
+
+export { initExplodeModel, explodeModel }
