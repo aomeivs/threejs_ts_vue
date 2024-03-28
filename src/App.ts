@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-27 16:56:20
+ * @LastEditTime: 2024-03-28 15:16:01
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -48,6 +48,7 @@ import { useHomeStore } from './stores/home'
 import { storeToRefs } from 'pinia'
 import pinia from './stores'
 import { globalConfig } from './config/config'
+import Exploder from './components/effect/exploder'
 // import { MiniMap } from './components/effect/miniMap'
 const { equipmentList } = storeToRefs(useHomeStore(pinia))
 export type Equipment = Partial<{
@@ -153,6 +154,7 @@ class App {
     {
       new Resizer(container, camera, renderer, cssRenderer, outline.compose) //刚加载设置大小，以及监控浏览器窗口变化大小变化
     }
+
   }
   async init() {
     textture = await loadBackground(scene)
@@ -166,9 +168,15 @@ class App {
      * 加载箭头,模型路线上的动画箭头
      */
     this.createArrow()
+    
     // 小地图组件 需要完善
     // const miniMap = new MiniMap({scene:scene,container:this.container,target:this.model.factory?.model})
     // loop.updatables.push(miniMap)
+
+    // 模型爆炸 exploder
+    // const position = new Vector3(0,0,0)
+    // const exploder = new Exploder(scene, this.model.equipment!.model.id, position)
+    // exploder.explode()
   }
   setLoadModel() {
     this.initFactory(this.model.factory!)
