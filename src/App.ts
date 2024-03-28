@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-28 16:41:29
+ * @LastEditTime: 2024-03-28 17:12:55
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -48,9 +48,8 @@ import { useHomeStore } from './stores/home'
 import { storeToRefs } from 'pinia'
 import pinia from './stores'
 import { globalConfig } from './config/config'
-import { explodeModel, initExplodeModel } from './components/effect/exploder'
-// import Exploder from './components/effect/exploder'
-// import { MiniMap } from './components/effect/miniMap'
+import { initExplodeModel } from './components/effect/exploder'
+import { miniMapInit, miniMapTick } from './components/effect/miniMap'
 const { equipmentList } = storeToRefs(useHomeStore(pinia))
 export type Equipment = Partial<{
   name: string
@@ -155,7 +154,6 @@ class App {
     {
       new Resizer(container, camera, renderer, cssRenderer, outline.compose) //刚加载设置大小，以及监控浏览器窗口变化大小变化
     }
-
   }
   async init() {
     textture = await loadBackground(scene)
@@ -169,10 +167,13 @@ class App {
      * 加载箭头,模型路线上的动画箭头
      */
     this.createArrow()
-    
+
     // 小地图组件 需要完善
-    // const miniMap = new MiniMap({scene:scene,container:this.container,target:this.model.factory?.model})
-    // loop.updatables.push(miniMap)
+    miniMapInit({ scene: scene, container: this.container, target: this.model.factory?.model })
+    loop.updatables.push({
+      name: 'miniMap',
+      tick: miniMapTick
+    })
 
     // 模型爆炸 exploder
     initExplodeModel(this.model.factory?.model!)

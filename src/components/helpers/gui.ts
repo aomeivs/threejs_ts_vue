@@ -7,7 +7,7 @@
  * @FilePath: /vue3_ts_three/src/components/helpers/gui.ts
  
  */
-import { type App, camera } from '@/App'
+import { type App } from '@/App'
 import GUI from 'lil-gui'
 import { explodeModel } from '../effect/exploder'
 
@@ -23,7 +23,8 @@ const createGUI = (app: App) => {
   const view = gui.addFolder('风力发电机模型')
   const viewParams0 = {
     显示: true,
-    爆破: false
+    爆破: false,
+    小地图: false
     // turbineLabel: false
   }
   view0
@@ -40,6 +41,17 @@ const createGUI = (app: App) => {
         explodeModel(app.model.factory?.model!, 2)
       } else {
         explodeModel(app.model.factory?.model!, 1)
+      }
+    })
+  view0
+    .add(viewParams0, '小地图')
+    .name('开启小地图')
+    .onChange((value: boolean) => {
+      const mapcanvas: HTMLElement = document.querySelector('#mapcanvas')!
+      if (value) {
+        mapcanvas.style.display = 'block'
+      } else {
+        mapcanvas.style.display = 'none'
       }
     })
 
