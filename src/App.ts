@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-28 17:12:55
+ * @LastEditTime: 2024-03-29 15:56:09
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -28,7 +28,8 @@ import {
   CameraHelper,
   Object3D,
   Box3,
-  Texture
+  Texture,
+  Group
 } from 'three'
 import { Loop } from '@/components/helpers/Loop'
 import { loadModel, loadArrow, loadBackground } from '@/components/models/gltf/animal'
@@ -68,7 +69,7 @@ let loop: Loop
 let stats: Stats
 let textture: Texture
 let css2dLabel: CSS2DObject
-const turbineLabels = []
+// const turbineLabels = []
 let outline: OutlineEffectType
 let count = 0
 const equipmentMaterialMap = new Map()
@@ -197,6 +198,8 @@ class App {
       mesh.visible = false
       return worldPosition
     })
+    const arrowGroup = new Group()
+    arrowGroup.name = 'arrowGroup'
     for (let i = 0; i < positions.length; i++) {
       const pos = positions[i].toArray()
       // pos[1] = pos[1] + 0.2
@@ -212,8 +215,9 @@ class App {
 
       arrow.material.emissive.setHex(0x00ff00)
       loop.updatables.push(arrowTexture)
-      scene.add(arrow)
+      arrowGroup.add(arrow)
     }
+    scene.add(arrowGroup)
   }
   initEquipment(modelParsed: ModelParsed, layer: number = 1) {
     const { model, action } = modelParsed
@@ -585,23 +589,47 @@ class App {
    * 效果：模型上初始化显示的标注；html元素=》网格模型对象=》定位=》添加到场景
    */
   createLabels() {
+    let labelGroup = scene.getObjectByName('labelGroup') as Group
+    if (labelGroup) {
+      this.updateLabels(labelGroup, true)
+    } else {
+      labelGroup = new Group()
+      labelGroup.name = 'labelGroup'
+      this.updateLabels(labelGroup)
+      scene.add(labelGroup)
+    }
+  }
+  updateLabels(labelGroup: Group, cache: boolean = false) {
+    if (cache) {
+      labelGroup.traverse((csslabel: any) => {
+        const mesh = scene.getObjectByName(
+          csslabel.name.slice(0, csslabel.name.indexOf('_css2DLabel'))
+        )!
+        if (!mesh) return
+        const worldPosition = new Vector3()
+        mesh.getWorldPosition(worldPosition)
+        csslabel!.position.set(worldPosition.x, worldPosition.y, worldPosition.z)
+      })
+      return
+    }
     htmlMeshCollection.forEach((obj) => {
       const mesh = scene.getObjectByName(obj.meshName)
       if (!mesh) return
       const dom: HTMLElement = document.querySelector(`#css2object-${obj.target}`)!
       if (!dom) return
+
       const csslabel = new CSS2DObject(dom)
-      csslabel.name = obj.meshName
+      csslabel.name = obj.meshName + '_css2DLabel'
       dom.addEventListener('pointerdown', () => {})
-      // 把mesh局部坐标转换到世界坐标
-      const worldPosition = new Vector3()
-      mesh.getWorldPosition(worldPosition)
-      csslabel.position.set(worldPosition.x, worldPosition.y, worldPosition.z)
+
       csslabel.scale.set(0.003, 0.003, 0.003)
       csslabel.visible = true
       // css2d标签
-      turbineLabels.push(csslabel)
-      scene.add(csslabel)
+      labelGroup.add(csslabel)
+      // 把mesh局部坐标转换到世界坐标
+      const worldPosition = new Vector3()
+      mesh.getWorldPosition(worldPosition)
+      csslabel!.position.set(worldPosition.x, worldPosition.y, worldPosition.z)
     })
   }
 
@@ -651,4 +679,4 @@ class App {
     camera.layers.set(layer)
   }
 }
-export { App, show, equipment, camera, controls, scene, TWEEN, loop }
+export { App, show, equipment, camera, controls, scene, loop }

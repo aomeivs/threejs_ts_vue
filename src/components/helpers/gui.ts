@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-02-02 10:29:09
- * @LastEditTime: 2024-03-28 17:21:34
+ * @LastEditTime: 2024-03-29 15:50:47
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/gui.ts
@@ -38,10 +38,13 @@ const createGUI = (app: App) => {
     .name('工厂模型展开')
     .onChange((value: boolean) => {
       if (value) {
-        explodeModel(app.model.factory?.model!, 1.5)
+        explodeModel(app.model.factory?.model!, 3)
       } else {
         explodeModel(app.model.factory?.model!, 1)
       }
+      setTimeout(() => {
+        app.createLabels()
+      }, 1000)
     })
   view0
     .add(viewParams0, '小地图')
