@@ -1,13 +1,13 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-02-02 10:29:09
- * @LastEditTime: 2024-03-29 15:50:47
+ * @LastEditTime: 2024-03-29 17:20:34
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/helpers/gui.ts
  
  */
-import { type App } from '@/App'
+import { scene, type App } from '@/App'
 import GUI from 'lil-gui'
 import { explodeModel } from '../effect/exploder'
 
@@ -37,13 +37,20 @@ const createGUI = (app: App) => {
     .add(viewParams0, '爆破')
     .name('工厂模型展开')
     .onChange((value: boolean) => {
+      scene.getObjectByName('labelGroup')?.traverse((child) => {
+        child.visible = false
+      })
+
       if (value) {
-        explodeModel(app.model.factory?.model!, 3)
+        explodeModel(app.model.factory?.model!, 1.5)
       } else {
         explodeModel(app.model.factory?.model!, 1)
       }
       setTimeout(() => {
         app.createLabels()
+        scene.getObjectByName('labelGroup')?.traverse((child) => {
+          child.visible = true
+        })
       }, 1000)
     })
   view0

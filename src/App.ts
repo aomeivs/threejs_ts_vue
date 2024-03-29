@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-29 15:56:09
+ * @LastEditTime: 2024-03-29 16:44:37
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -600,37 +600,37 @@ class App {
     }
   }
   updateLabels(labelGroup: Group, cache: boolean = false) {
+    let mesh
+    const worldPosition = new Vector3()
     if (cache) {
       labelGroup.traverse((csslabel: any) => {
-        const mesh = scene.getObjectByName(
-          csslabel.name.slice(0, csslabel.name.indexOf('_css2DLabel'))
-        )!
+        mesh = this.model.factory?.model.getObjectByName(csslabel.name)!
         if (!mesh) return
-        const worldPosition = new Vector3()
+        const box3 = new Box3().setFromObject(mesh)
+        box3.getCenter(worldPosition)
+        // mesh.getWorldPosition(worldPosition)
+        csslabel!.position.set(worldPosition.x, worldPosition.y, worldPosition.z)
+      })
+    } else {
+      htmlMeshCollection.forEach((obj) => {
+        mesh = scene.getObjectByName(obj.meshName)
+        if (!mesh) return
+        const dom: HTMLElement = document.querySelector(`#css2object-${obj.target}`)!
+        if (!dom) return
+
+        const csslabel = new CSS2DObject(dom)
+        csslabel.name = obj.meshName
+        dom.addEventListener('pointerdown', () => {})
+
+        csslabel.scale.set(0.003, 0.003, 0.003)
+        csslabel.visible = true
+        // css2d标签
+        labelGroup.add(csslabel)
+        // 把mesh局部坐标转换到世界坐标
         mesh.getWorldPosition(worldPosition)
         csslabel!.position.set(worldPosition.x, worldPosition.y, worldPosition.z)
       })
-      return
     }
-    htmlMeshCollection.forEach((obj) => {
-      const mesh = scene.getObjectByName(obj.meshName)
-      if (!mesh) return
-      const dom: HTMLElement = document.querySelector(`#css2object-${obj.target}`)!
-      if (!dom) return
-
-      const csslabel = new CSS2DObject(dom)
-      csslabel.name = obj.meshName + '_css2DLabel'
-      dom.addEventListener('pointerdown', () => {})
-
-      csslabel.scale.set(0.003, 0.003, 0.003)
-      csslabel.visible = true
-      // css2d标签
-      labelGroup.add(csslabel)
-      // 把mesh局部坐标转换到世界坐标
-      const worldPosition = new Vector3()
-      mesh.getWorldPosition(worldPosition)
-      csslabel!.position.set(worldPosition.x, worldPosition.y, worldPosition.z)
-    })
   }
 
   createCameraTween(pos: Vector3, target: Vector3 = controls.target) {

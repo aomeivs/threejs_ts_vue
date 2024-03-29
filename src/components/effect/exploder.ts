@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-28 14:42:06
- * @LastEditTime: 2024-03-29 14:13:02
+ * @LastEditTime: 2024-03-29 16:43:08
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/effect/exploder.ts
