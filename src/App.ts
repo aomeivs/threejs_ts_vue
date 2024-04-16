@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-12 09:20:35
- * @LastEditTime: 2024-03-29 16:44:37
+ * @LastEditTime: 2024-03-29 17:37:40
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/App.ts
@@ -226,6 +226,7 @@ class App {
       this.actions[action.name!] = action
       loop.updatables.push(model)
     }
+    model.name = ModelName.EQUIPMENT
     // 发电机模型
     model.scale.multiplyScalar(0.001)
     this.setModelAncestors(
@@ -254,6 +255,7 @@ class App {
       this.actions[action.name!] = action
       loop.updatables.push(model)
     }
+    model.name = ModelName.TURBINE
     // 发电机模型
     model.scale.multiplyScalar(0.001)
 
@@ -278,6 +280,7 @@ class App {
       this.actions[action.name!] = action
       loop.updatables.push(model)
     }
+    model.name = ModelName.FACTORY
     model.scale.multiplyScalar(0.03)
     model.position.set(-2, 0, -2)
     this.setModelAncestors(

@@ -1,0 +1,444 @@
+.bg {
+  width: 1920px;
+  height: 1080px;
+  background: url('/images/bg-body.png') no-repeat 0 0 #051045;
+  display: flex;
+  position: relative;
+  color: white;
+  .bg-border {
+    flex: 1;
+    background: url('/images/bg-body3.png') no-repeat center transparent;
+    width: 1890px;
+    height: 1072px;
+    background-size: contain;
+    :deep(.header) {
+      .title {
+        font-weight: 500;
+        font-size: 38px;
+        color: #f3f7ff;
+        line-height: 53px;
+        letter-spacing: 1px;
+        text-shadow: 0px 2px 17px rgba(255, 255, 255, 0.25);
+        text-align: center;
+        font-style: normal;
+        text-align: center;
+        margin-top: 5px;
+      }
+      .time {
+        position: absolute;
+        height: 28px;
+        font-weight: 500;
+        font-size: 24px;
+        color: #ffffff;
+        line-height: 28px;
+        text-align: center;
+        font-style: normal;
+        right: 64px;
+        top: 52px;
+        text-align: right;
+      }
+    }
+
+    .board {
+      display: flex;
+      :deep(.board-left) {
+        margin-left: 45px;
+        width: 420px;
+        .board-item {
+          width: 420px;
+          margin-bottom: 15px;
+          &-title {
+            background: url(images/bg-title.png) no-repeat left top;
+            width: 100%;
+            height: 36px;
+            line-height: 36px;
+            margin-bottom: 15px;
+          }
+          &-value {
+            pointer-events: all;
+            // 传输线速度
+            &.speed {
+              :deep(.el-progress-bar__outer) {
+                background-color: #ebeef569;
+              }
+              :deep(.el-progress__text) {
+                min-width: auto;
+              }
+              .item {
+                display: flex;
+                height: 80px;
+                .no {
+                  flex: 32px 0 0;
+                  margin-left: 8px;
+                  display: flex;
+                  align-items: center;
+                  .icon {
+                    width: 22px;
+                    height: 20px;
+                    line-height: 20px;
+                    text-align: center;
+                    background: rgba(255, 255, 0, 0.1);
+                    // margin-top: 32px;
+                    font-size: 12px;
+                  }
+                }
+                .line-container {
+                  flex: 1 0 auto;
+                  .labels {
+                    margin-bottom: 8px;
+                    margin-top: 8px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-around;
+                    .value {
+                      color: white;
+                      font-size: 18px;
+                    }
+                  }
+                }
+              }
+            }
+            /**
+            温度控制
+            **/
+            &.temperature {
+              display: grid;
+              grid-template-columns: 1fr 1fr;
+              .item {
+                white-space: nowrap;
+                color: white;
+                display: flex;
+                width: 198px;
+                height: 40px;
+                box-shadow: inset 0px 0px 75px 0px rgba(23, 156, 255, 0.2);
+                justify-content: space-around;
+                align-items: center;
+                padding: 8px;
+                & > div {
+                  flex: 1;
+                  &:last-child {
+                    text-align: right;
+                  }
+                }
+              }
+            }
+
+            .table-head {
+              display: flex;
+              font-size: 14px;
+              margin-bottom: 5px;
+              padding-right: 0;
+              & > div {
+                flex: 1 0 0;
+                &:nth-child(n + 3) {
+                  flex: 0.5 0 0;
+                  text-align: center;
+                }
+              }
+            }
+            .scroll {
+              height: 200px;
+              width: 100%;
+              overflow: hidden;
+            }
+
+            .scroll .item {
+              display: flex;
+              align-items: center;
+              &:nth-child(even) {
+                background-color: #5773ff11;
+              }
+              & > div {
+                &:nth-child(n + 3) {
+                  flex: 0.5 0 0;
+                  text-align: center;
+                  & > .btn {
+                    color: #5773ff;
+                    display: inline-block;
+                    border: 1px solid #274bfe;
+                    background: #274bfe66;
+                    padding: 0 5px;
+                    margin-right: 4px;
+                  }
+                }
+                flex: 1 0 0;
+              }
+            }
+          }
+        }
+        .device-total {
+          display: flex;
+          width: 417px;
+
+          background: rgba(181, 197, 255, 0.06);
+          box-shadow: inset 0px 2px 12px 0px rgba(39, 115, 255, 0.3);
+          backdrop-filter: blur(2px);
+          margin-bottom: 15px;
+          .total-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            .txt {
+              margin-left: 23px;
+            }
+            .num {
+              font-size: 26px;
+              margin-left: 12px;
+              color: white;
+            }
+          }
+        }
+      }
+      .board-container {
+        flex: 1 0 0;
+        padding-left: 50px;
+        :deep(.webgl-view) {
+          width: 1340px;
+          height: 600px;
+          margin-top: 40px;
+          position: relative;
+          .camera {
+            position: absolute;
+            right: 0;
+            z-index: 1;
+            cursor: pointer;
+            & > div {
+              pointer-events: fill;
+              width: 64px;
+              border: 1px solid #00000033;
+              text-align: center;
+              background-color: #00b1ff33;
+              &:hover {
+                transition: 0.2s;
+                background: #00b1ffdd;
+              }
+            }
+          }
+          .webgl-container {
+            width: 1340px;
+            height: 600px;
+            border: 1px solid #a3a3a333;
+          }
+          .tips-top,
+          .tips-bottom {
+            .item {
+              position: absolute;
+              cursor: pointer;
+              width: 220px;
+              height: 83px;
+              background: rgba(0, 0, 0, 0.2);
+              box-shadow: inset 0px 2px 40px 0px #2773ff66;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+
+              .line {
+                width: 30px;
+                .icon {
+                  width: 2px;
+                  height: 34px;
+                  background: #00ffff;
+                }
+              }
+              .device {
+                flex:1;
+                .name {
+                  white-space: nowrap;
+                  width: 75px;
+                  height: 25px;
+                  font-weight: 500;
+                  font-size: 18px;
+                  color: #40a9ff;
+                  line-height: 25px;
+                  text-shadow: 1px 1px 2px #000;
+                }
+                .code {
+                  width: 88px;
+                  height: 17px;
+                  font-weight: 600;
+                  font-size: 12px;
+                  color: #ffffff;
+                  line-height: 17px;
+                }
+              }
+              @keyframes fadeinout {
+                0% {
+                  opacity: 0.5;
+                }
+                50% {
+                  opacity: 0.8;
+                }
+                100% {
+                  opacity: 0.5;
+                }
+              }
+              .state {
+                width: 32px;
+                height: 32px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                .icon {
+                  width: 16px;
+                  height: 16px;
+                  border-radius: 50%;
+                  animation: fadeinout 0.8s infinite ease-in-out;
+                  background: rgb(113, 113, 113);
+                  box-shadow: 0px 0 0 8px rgba(160, 160, 160, 0.3);
+                  transform: scale(0.7);
+                  &.normal {
+                    background: rgba(39, 255, 187);
+                    box-shadow: 0px 0 0 8px rgba(39, 255, 187, 0.3);
+                  }
+                  &.fault {
+                    background: rgb(225, 59, 9);
+                    box-shadow: 0px 0 0 8px rgba(245, 84, 30, 0.3);
+                  }
+                  &.offLine {
+                    background: rgb(113, 113, 113);
+                    box-shadow: 0px 0 0 8px rgba(160, 160, 160, 0.3);
+                  }
+                }
+              }
+            }
+          }
+          .tips-top {
+            position: absolute;
+            top: 0;
+            .item-2 {
+              left: 200px;
+            }
+          }
+          .tips-bottom {
+            .item {
+              bottom: 0;
+              &.item-2 {
+                left: 200px;
+              }
+            }
+          }
+          .circle-animate {
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+          }
+        }
+        :deep(.device-status) {
+          width: 1284px;
+          .board-item {
+            &-title {
+              background: url(images/bg-title.png) no-repeat left top;
+              width: 100%;
+              height: 36px;
+              line-height: 36px;
+              margin-bottom: 15px;
+            }
+            &-value {
+              pointer-events: all;
+              height: 297px;
+              display: grid;
+              grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+              grid-gap: 22px;
+              align-items: flex-start;
+              align-content: flex-start;
+              .device-status-item {
+                display: flex;
+                align-items: center;
+                white-space: nowrap;
+                .icon {
+                  width: 12px;
+                  height: 12px;
+                  border-radius: 50%;
+                  background: #a4a9a6;
+                  margin-right: 8px;
+                  box-shadow: 0 0 0 4px #a4a9a67a;
+                  transition: 0.2s;
+                  transform: scale(0.7);
+                  animation: fadeinout 0.8s infinite ease-in-out;
+                  &.normal {
+                    background: rgba(39, 255, 187);
+                    box-shadow: 0px 0 0 8px rgba(39, 255, 187, 0.3);
+                    transition: 0.2s;
+                  }
+                  &.fault {
+                    background: rgb(225, 59, 9);
+                    box-shadow: 0px 0 0 8px rgba(245, 84, 30, 0.3);
+                    transition: 0.2s;
+                  }
+                  &.offLine {
+                    background: rgb(113, 113, 113);
+                    box-shadow: 0px 0 0 8px rgba(160, 160, 160, 0.3);
+                    transition: 0.2s;
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+:deep(.css2object) {
+  position: absolute;
+  top: 0;
+  width: 300px;
+  height: 200px;
+  margin-left: 150px;
+  margin-top: -100px;
+  background: rgba(0, 148, 253, 0.794);
+  color: white;
+  font-weight: bold;
+  border-radius: 8px 8px 8px 0;
+  box-shadow: 0 0 8px #00b1ff;
+  padding: 8px;
+  list-style: none;
+  white-space: nowrap;
+  text-shadow: 1px 1px 2px #000;
+  .deg {
+    width: 8px;
+    height: 8px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: #000;
+  }
+  .triangle {
+    position: absolute; /* 设置相对定位 */
+    bottom: 0;
+    left: -10px;
+  }
+
+  /* 使用 ::before 伪元素来创建三角形 */
+  .triangle::before {
+    content: ''; /* 必需属性，表示没有内容 */
+    position: absolute; /* 设置绝对定位 */
+    bottom: -10px; /* 调整三角形与矩形之间的距离 */
+    left: 50%; /* 将三角形水平居中 */
+    transform: translateX(-50%); /* 再次调整三角形的位置 */
+    transform: rotate(225deg); /* 旋转三角形
+    width: 20px; /* 控制三角形的大小 */
+    height: 20px;
+    background-color: transparent; /* 清除默认背景色 */
+    border-style: solid; /* 设置为实线边框 */
+    border-width: 10px; /* 控制边框的宽度 */
+    border-top-color: transparent; /* 上边框不显示 */
+    border-right-color: transparent; /* 右边框不显示 */
+    border-bottom-color: #ff0; /* 下边框显示为黑色 */
+    border-left-color: transparent; /* 左边框不显示 */
+  }
+}
+:deep(.css2object2) {
+  height: auto;
+  margin-top: -30px;
+  width: auto;
+  margin-left: auto;
+  background: rgba(0, 144, 222, 0.8);
+  border-radius: 8px;
+  box-shadow: none;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px #000;
+  .triangle {
+    display: none;
+  }
+}

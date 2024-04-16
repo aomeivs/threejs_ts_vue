@@ -1,7 +1,7 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-03-28 14:42:06
- * @LastEditTime: 2024-03-29 16:43:08
+ * @LastEditTime: 2024-03-29 17:57:16
  * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/components/effect/exploder.ts
@@ -40,15 +40,15 @@ const initExplodeModel = (modelObject: Object3D) => {
 }
 /**
  * 返回mesh中心点：通过将框的最大和最小角向量相加，然后乘以一个标量值
- * @param box 
- * @returns 
+ * @param box
+ * @returns
  */
 const getWorldCenterPosition = (box: Box3): Vector3 => {
   return box.getCenter(new Vector3())
 }
 
-const explodeModel = (model: Object3D, scalar: number) => {
-  model.traverse((child: any) => {
+const explodeModel = (model: Object3D, name: string, scalar: number) => {
+  model.getObjectByName(name)!.traverse((child: any) => {
     if (!child.isMesh || !child.userData.originPosition) return
     const distance = child.userData.worldDir
       .clone()

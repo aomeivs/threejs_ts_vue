@@ -2979,6 +2979,11 @@ vue-demi@>=0.14.7:
   resolved "https://registry.npmmirror.com/vue-demi/-/vue-demi-0.14.7.tgz"
   integrity sha512-EOG8KXDQNwkJILkx/gPcoL/7vH+hORoBaKgGe+6W7VFMvCYJfmF2dGbvgDroVnI8LU7/kTu8mbjRZGBU1z9NTA==
 
+vue-draggable-resizable@^3.0.0:
+  version "3.0.0"
+  resolved "https://registry.npmmirror.com/vue-draggable-resizable/-/vue-draggable-resizable-3.0.0.tgz#82146819bfff8007d66a001d39a3227253d5d3f2"
+  integrity sha512-kABSggcXPoDB8dOTVE09ZkccxiMdNDUaLl7STTeghsFE3o+mk653iumrkmjKLfIBA/w5ZXWJmarBqoqsmWLzEg==
+
 vue-eslint-parser@^9.3.1, vue-eslint-parser@^9.4.0:
   version "9.4.2"
   resolved "https://registry.npmmirror.com/vue-eslint-parser/-/vue-eslint-parser-9.4.2.tgz"

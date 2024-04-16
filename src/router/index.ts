@@ -1,14 +1,16 @@
 /*
  * @Author: zhou lei
  * @Date: 2024-01-29 10:38:55
- * @LastEditTime: 2024-03-05 15:50:21
- * @LastEditors: zhoulei 
+ * @LastEditTime: 2024-04-01 17:02:08
+ * @LastEditors: zhoulei && 910592680@qq.com
  * @Description: Description
  * @FilePath: /vue3_ts_three/src/router/index.ts
- * 
+ *
  */
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/home/HomeView.vue'
+import WmsView from '../views/wms/WmsView.vue'
+import DeviceView from '../views/device/DeviceView.vue'
 import Home2View from '../views/Home2View.vue'
 
 const router = createRouter({
@@ -16,8 +18,22 @@ const router = createRouter({
   routes: [
     {
       path: '/',
+      name: 'index',
+      redirect: '/home'
+    },
+    {
+      path: '/home',
       name: 'home',
       component: HomeView
+    },
+    {
+      path: '/wms',
+      name: 'wms',
+      component: WmsView
+    },{
+      path: '/device',
+      name: 'device',
+      component: DeviceView
     },
     {
       path: '/home2',
